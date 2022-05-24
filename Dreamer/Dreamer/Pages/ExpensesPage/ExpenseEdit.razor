@@ -1,0 +1,162 @@
+﻿@page "/expenses/expensesedit/{id}"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IExpensesMaster _expenseMaster
+@inject IAccountLedger accountLedger
+@inject IWarehouse _warehouse
+@inject IVoucherType _voucherType
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Expense"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Expense"] </a></li> 
+                <li> @localizer["Expense"] / @localizer["Edit"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+                <EditForm Model="@master" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+<div class="card-body">
+                                <div class="card-title mb-3"> @localizer["Expenses Category"]</div>
+                                    <div class="row">
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="firstName1">@localizer["Date"]</label>
+                                            <input class="form-control" @bind="master.Date" type="date">
+                                        <ValidationMessage For="@(() => master.Date)" />
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Reference"]</label>
+                                            <input class="form-control" @bind="master.VoucherNo" readonly type="text">
+                                        <ValidationMessage For="@(() => master.VoucherNo)" />
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Warehouse"]</label>
+                                            <select class="form-control" @bind="@master.WarehouseId">
+                                                <option value="0">Choose Warehouse</option>
+                                                @foreach(var item in listWarehouse)
+                                        {
+                                            <option value="@item.WarehouseId">@item.Name</option>
+                                        }
+                                    </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Group"]</label>
+                                            <select class="form-control" @bind="@master.LedgerId">
+                                                <option value="0">Choose Category</option>
+                                                @foreach(var item in listExpensesCategory)
+                                        {
+                                            <option value="@item.LedgerId">@item.LedgerName</option>
+                                        }
+                                    </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Amount"]</label>
+                                            <input class="form-control" @bind="master.Amount" type="text">
+                                        <ValidationMessage For="@(() => master.Amount)" />
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Details"]</label>
+                                            <input class="form-control" @bind="master.Narration" type="text">
+                                        <ValidationMessage For="@(() => master.Narration)" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="btn btn-primary">@localizer["Submit"]</button>
+                                            <button type="button" class="btn btn-danger" @onclick="@Cancel">@localizer["Back to List"]</button>
+                                        </div>
+                                    </div>
+                            </div>
+            </div> 
+            </div>
+            </div>
+            </EditForm>
+            </div>
+            </div>
+@code {
+    [Parameter]
+    public string id { get; set; }
+    ExpenseMaster master = new ExpenseMaster();
+    List<AccountLedgerView> listExpensesCategory = new List<AccountLedgerView>();
+    List<Warehouse> listWarehouse = new List<Warehouse>();
+    int decExpenseVoucherType = 10;
+    string strSerialNo;
+    string strMenu = "Expenses";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected async override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strEdit == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        master = _expenseMaster.EdiById(Convert.ToInt32(id));
+        listExpensesCategory = accountLedger.ViewAllExpensesCategory(1);
+        listWarehouse = _warehouse.GetAll();
+        StateHasChanged();
+    }
+    public async Task HandleValidSubmit()
+    {
+        if (master.WarehouseId == 0)
+        {
+            Snackbar.Add("Choose Warehouse.", Severity.Info);
+        }
+        else if (master.LedgerId == 0)
+        {
+            Snackbar.Add("Choose Category.", Severity.Info);
+        }
+        else
+        {
+            master.VoucherTypeId = decExpenseVoucherType;
+            master.FinancialYearId = 1;
+            master.ModifyDate = DateTime.UtcNow;
+            master.CompanyId = 1;
+                bool isSave = false;
+                isSave = _expenseMaster.Update(master);
+                if(isSave == true)
+                {
+                Snackbar.Add("Saved Successfully.", Severity.Success);
+                navManager.NavigateTo("/expenses/expenseslist");
+                }
+                else
+                {
+                    Snackbar.Add("Invalid.", Severity.Error);
+                }
+        }
+    }
+    void Cancel()
+    {
+        navManager.NavigateTo("/expenses/expenseslist");
+    }
+    }

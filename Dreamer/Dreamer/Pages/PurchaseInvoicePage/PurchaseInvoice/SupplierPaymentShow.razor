@@ -1,0 +1,98 @@
+﻿@page "/purchase/supplierpaymentshow/{id}"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject ICompany _company
+@inject IPaymentSupplier _paymentSupplier
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Payment Details"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Payment List"] </a></li> 
+                <li>@localizer["Payment Details"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+<div class="row">
+    <div class="mb-2 col-md-12">
+        <button onclick="printDiv('PrintDiv')" class="btn btn-warning btn-icon ripple btn-sm"><i class="i-Billing"></i>
+          Print</button>
+        </div>
+        </div>
+
+
+
+        <div id="PrintDiv" class="invoice mt-5">
+            <div class="invoice-print">
+                <div class="row justify-content-md-center">
+                    <h4 class="font-weight-bold">@localizer["Supplier Detail"] : @master.VoucherNo</h4>
+                    </div> <hr> <div class="row mt-5">
+                        <div class="mb-4 col-sm-12 col-md-6 col-lg-6">
+                            <h5 class="font-weight-bold">@localizer["Supplier Info"]</h5> 
+                            <div>@master.LedgerName</div> 
+                            <div>@master.Email</div> 
+                            <div>@master.Mobile</div> 
+                            <div>@master.Address</div>
+                        </div> <div class="mb-4 col-sm-12 col-md-6 col-lg-6">
+                            <h5 class="font-weight-bold">@localizer["Company Info"]</h5> 
+                            <div>@company.CompanyName</div> 
+                            <div>@company.Address</div> 
+                            <div>@company.PhoneNo</div> 
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                  <h5 class="font-weight-bold"></h5> 
+                  <div class="table-responsive"><table class="table table-hover table-md">
+                      <thead class="bg-gray-300">
+                          <tr><th scope="col">@localizer["Voucher No"]</th> 
+                              <th scope="col">@localizer["Paid By"]</th> 
+                              <th scope="col">@localizer["Amount"]</th> 
+                              </tr>
+                              </thead> 
+                              <tbody>
+                                  <tr>
+                                      <td>@master.VoucherNo</td>
+                                      <td>@master.PaymentType</td>
+                                      <td>@master.Amount</td>
+                                      </tr>
+                                      </tbody>
+                                      </table>
+                                      </div>
+                                      </div> 
+</div> 
+                                                                      </div>
+                                                                      </div>
+                                                                      </div>
+         </div>
+         </div>
+            </div>
+            </div>
+            </div>
+            </div>
+@code {
+    [Parameter]
+    public string id { get; set; }
+    PaymentReceiveView master = new PaymentReceiveView();
+    Company company = new Company();
+    protected async override void OnInitialized()
+    {
+        master = _paymentSupplier.PaymentSupplierView(Convert.ToInt32(id));
+        company = _company.Edit(1);
+        StateHasChanged();
+    }
+    void Cancel()
+    {
+        navManager.NavigateTo("/purchase/purchaseinvoicelist");
+    }
+    }

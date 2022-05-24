@@ -1,0 +1,125 @@
+﻿@page "/setting/warehouseedit/{id}"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IWarehouse accountLedger
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Warehouse"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Setting"] </a></li> 
+                <li> @localizer["Warehouse"] / @localizer["Edit"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+                <EditForm Model="@master" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+<div class="card-body">
+                                <div class="card-title mb-3">@localizer["Warehouse"]</div>
+                                    <div class="row">
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="firstName1">@localizer["Warehouse Name"]</label>
+                                            <input class="form-control" @bind="master.Name" type="text">
+                                        <ValidationMessage For="@(() => master.Name)" />
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Mobile"]</label>
+                                            <input class="form-control" @bind="master.Mobile" type="text">
+                                        <ValidationMessage For="@(() => master.Mobile)" />
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Email"]</label>
+                                            <input class="form-control" @bind="master.Email" type="text">
+                                        <ValidationMessage For="@(() => master.Email)" />
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Country"]</label>
+                                            <input class="form-control" @bind="master.Country" type="text">
+                                        <ValidationMessage For="@(() => master.Country)" />
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["City"]</label>
+                                            <input class="form-control" @bind="master.City" type="text">
+                                        <ValidationMessage For="@(() => master.City)" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="btn btn-primary">@localizer["Submit"]</button>
+                                            <button type="button" class="btn btn-danger" @onclick="@Cancel">@localizer["Back to List"]</button>
+                                        </div>
+                                    </div>
+                            </div>
+            </div> 
+            </div>
+            </div>
+            </EditForm>
+            </div>
+            </div>
+@code {
+    [Parameter]
+    public string id { get; set; }
+    Warehouse master = new Warehouse();
+    string strMenu = "Warehouse";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected async override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strEdit == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        master = accountLedger.Edit(Convert.ToInt32(id));
+        StateHasChanged();
+    }
+    public async Task HandleValidSubmit()
+    {
+            master.ModifyDate = DateTime.UtcNow;
+            master.CompanyId = 1;
+            var isCheck = accountLedger.CheckNameId(master.Name);
+            if (isCheck == master.WarehouseId || isCheck == 0)
+            {
+                accountLedger.Update(master);
+                Snackbar.Add("Saved Successfully.", Severity.Success);
+                navManager.NavigateTo("/setting/warehouselist");
+            }
+            else
+            {
+                Snackbar.Add("Code Already Exists.", Severity.Info);
+            }
+    }
+    void Cancel()
+    {
+        navManager.NavigateTo("/setting/warehouselist");
+    }
+    }

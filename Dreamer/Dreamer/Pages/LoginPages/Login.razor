@@ -1,0 +1,97 @@
+﻿@page  "/"
+@layout LoginLayout
+@using Newtonsoft.Json
+@using System.Security.Claims
+@inject ILocalStorageService sessionStorage
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorageService
+@inject IUserService userService
+@inject IJSRuntime jsRunTime
+@inject ISnackbar Snackbar
+<div class="auth-layout-wrap">
+    <div class="auth-content">
+        <div class="card o-hidden">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="p-4">
+                        <div class="auth-logo text-center mb-4"><img src="img/logo.jpg" alt=""></div>
+                        <h1 class="mb-3 text-18">Sign In</h1>
+                        <form>
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input class="form-control form-control-rounded" @bind="user.EmailAddress">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input class="form-control form-control-rounded" @bind="user.Password" type="password">
+                            </div>
+                            <input type="button" @onclick="() =>ValidateUser()" class="btn btn-rounded btn-primary btn-block mt-2" value="Login" />
+                        </form>
+                        <div class="mt-3 text-center"><a class="text-muted">
+                                <u>@LoginMesssage</u></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    private Users user;
+    public string LoginMesssage { get; set; }
+    ClaimsPrincipal claimsPrincipal;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        user = new Users();
+
+        claimsPrincipal = (await authenticationStateTask).User;
+        if (claimsPrincipal.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/dashboard");
+        }
+        {
+            user.EmailAddress = "admin@gmail.com";
+            user.Password = "0000000";
+        }
+        StateHasChanged();
+
+    }
+
+    private async Task<bool> ValidateUser()
+    {
+        //assume that user is valid
+        //call an API
+
+        if (user.EmailAddress == string.Empty)
+        {
+            Snackbar.Add("Type email address.", Severity.Warning);
+        }
+        else if (user.Password == string.Empty)
+        {
+            Snackbar.Add("Type password.", Severity.Warning);
+        }
+        else
+        {
+            var returnedUser = await userService.LoginAsync(user);
+
+            if (returnedUser.EmailAddress != null)
+            {
+                await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser);
+                await localStorageService.SetItemAsync("RoleId", returnedUser.Role.RoleId);
+                PublicVariables._roleId = returnedUser.Role.RoleId;
+                NavigationManager.NavigateTo("/dashboard");
+            }
+            else
+            {
+                Snackbar.Add("Invalid username or password.", Severity.Info);
+                //LoginMesssage = "Invalid username or password";
+            }
+        }
+            return await Task.FromResult(true);
+
+    } 
+}

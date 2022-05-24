@@ -1,0 +1,263 @@
+﻿@page "/purchase/purchasereturnlist"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IPurchaseReturnInvoice _purchaseReturn
+@inject IVoucherType _voucherType
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@using NPOI.SS.UserModel
+@using NPOI.XSSF.UserModel
+@using System.IO
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Purchase Return"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Purchase Return Invoice"] </a></li> 
+                <li> @localizer["list"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="card-body">
+            <div class="vgt-wrap "> 
+            <div class="vgt-inner-wrap">
+                <div class="vgt-global-search vgt-clearfix">
+                 <div class="vgt-global-search__actions vgt-pull-right">
+                     <div class="mt-2 mb-3">
+                         <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf"><i class="i-File-TXT"></i> PDF
+        </button>
+        <button type="button" @onclick="@(async ()=> {await GenerateExcel();})" class="btn btn-outline-danger btn-icon m-1"><i class="i-File-Excel"></i> EXCEL
+        </button>
+                         <a href="/purchase/purchasereturnadd" class="btn btn-outline btn-btn btn-primary btn-icon m-1"><i class="i-Add"></i>
+          @localizer["Create"]
+        </a>
+        </div>
+        </div>
+        </div>
+        <div class="vgt-responsive">
+            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<PurchaseReturnMasterView,bool>(Search)">
+    <ToolBarContent>
+        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@localizer["Voucher No"]</MudTh>
+        <MudTh>@localizer["Date"]</MudTh>
+        <MudTh>@localizer["Supplier Name"]</MudTh>
+        @*<MudTh>VoucherType</MudTh>*@
+        <MudTh>@localizer["Amount"]</MudTh>
+        <MudTh>@localizer["Paid"]</MudTh>
+        <MudTh>@localizer["BalanceDue"]</MudTh>
+        <MudTh>@localizer["Status"]</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="">@context.VoucherNo</MudTd>
+        <MudTd DataLabel="">@context.Date</MudTd>
+        <MudTd DataLabel="">@context.LedgerName</MudTd>
+        @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
+        <MudTd DataLabel="">@context.GrandTotal</MudTd>
+        <MudTd DataLabel="">@context.PaymentAmount</MudTd>
+        <MudTd DataLabel="">@context.BalanceDue</MudTd>
+        <MudTd DataLabel="">
+            @if(context.Status == "Paid")
+            {
+             <span class="badge badge-outline-success">@context.Status</span>
+            }
+            else if(context.Status == "Partial Paid")
+            {
+             <span class="badge badge-outline-primary">@context.Status</span>
+            }
+             else
+            {
+                 <span class="badge badge-outline-success">@context.Status</span>                       
+            }
+           </MudTd>
+        <MudTd DataLabel="">
+            <div class="dropdown">
+              <button class="btn dropdown-toggle btn-link btn-lg text-decoration-none dropdown-toggle-no-caret" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             </button>
+             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 34px, 0px);">
+                 <a class="dropdown-item" href="/purchase/purchasereturndetails/@context.PurchaseReturnMasterId"><i class="nav-icon i-Eye font-weight-bold mr-2"></i>PurchaseReturn Details</a>
+                 <a class="dropdown-item" href="/purchase/purchasereturnedit/@context.PurchaseReturnMasterId"><i class="nav-icon i-Pen-2 font-weight-bold mr-2"></i>Edit PurchaseReturn</a>
+         <a class="dropdown-item" @onclick="() => Delete(context.PurchaseReturnMasterId)"><i class="nav-icon i-Close-Window font-weight-bold mr-2"></i>Delete Sales</a></div>
+                                                </div>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" />
+    </PagerContent>
+</MudTable>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private string searchString1 = "";
+    private string searchString2 = "";
+    List<PurchaseReturnMasterView> listModel = new List<PurchaseReturnMasterView>();
+    string strMenu = "Purchase Return";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected async override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strShow == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        LoadData();
+    }
+    private async void LoadData()
+    {
+        listModel = _purchaseReturn.PurchaseReturnInvoiceView(1); // 1 is companyid
+    }
+    async Task Delete(int id)
+    {
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (confirmed)
+        {
+            PurchaseReturnMaster view = new PurchaseReturnMaster();
+            view = _purchaseReturn.Edit(id);
+            bool isSave = false;
+            isSave = _purchaseReturn.Delete(id , view.VoucherNo, 1 , 1); // 1 is companyid //1 is financialyearid
+            if (isSave == true)
+            {
+                Snackbar.Add("Delete Successfully.", Severity.Success);
+                LoadData();
+            }
+            else
+            {
+                Snackbar.Add("Cannot be delete. already in used.", Severity.Info);
+            }
+        }
+    }
+    private bool Search(PurchaseReturnMasterView element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString1))
+            return true;
+        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+    protected async Task GenerateExcel()
+    {
+        IWorkbook workbook = new XSSFWorkbook();
+        var dataFormat = workbook.CreateDataFormat();
+        var dataStyle = workbook.CreateCellStyle();
+        dataStyle.DataFormat = dataFormat.GetFormat("MM/yy/dddd HH:mm:ss");
+        ISheet worksheet = workbook.CreateSheet("Sheet1");
+
+
+
+        int rowNumber1 = 0;
+        IRow row1 = worksheet.CreateRow(rowNumber1++);
+        //TbleHeder
+        ICell cell1 = row1.CreateCell(3);
+        cell1.SetCellValue("PurchaseReturn");
+
+        int rowNumber = 1;
+        IRow row = worksheet.CreateRow(rowNumber++);
+        //TbleHeder
+        ICell cell = row.CreateCell(0);
+        cell.SetCellValue("Voucher No");
+
+        cell = row.CreateCell(1);
+        cell.SetCellValue("Date");
+
+        cell = row.CreateCell(2);
+        cell.SetCellValue("Supplier Name");
+
+        cell = row.CreateCell(3);
+        cell.SetCellValue("Voucher Type");
+
+        cell = row.CreateCell(4);
+        cell.SetCellValue("Amount");
+
+        cell = row.CreateCell(5);
+        cell.SetCellValue("Balance Due");
+
+        cell = row.CreateCell(6);
+        cell.SetCellValue("Status");
+
+
+        //Tble Body
+        foreach (var objDue in listModel)
+    {
+            row = worksheet.CreateRow(rowNumber++);
+
+            cell = row.CreateCell(0);
+            cell.SetCellValue(objDue.VoucherNo);
+
+            cell = row.CreateCell(1);
+            cell.SetCellValue(objDue.Date.ToString());
+
+            cell = row.CreateCell(2);
+            cell.SetCellValue(objDue.LedgerName);
+
+            cell = row.CreateCell(3);
+            cell.SetCellValue(objDue.VoucherTypeName);
+
+            cell = row.CreateCell(4);
+            cell.SetCellValue(objDue.GrandTotal.ToString());
+
+            cell = row.CreateCell(5);
+            cell.SetCellValue(objDue.BalanceDue.ToString());
+
+            cell = row.CreateCell(6);
+            cell.SetCellValue(objDue.Status.ToString());
+
+        }
+        MemoryStream ms = new MemoryStream();
+        workbook.Write(ms);
+        byte[] bytes = ms.ToArray();
+        ms.Close();
+
+        await JsRuntime.SaveAsFileAsync("PurchaseReturn", bytes, "application/vnd.ms-excel");
+    }
+    private void GeneratePdf()
+    {
+        PdfPurchaseReturn pdfExp = new PdfPurchaseReturn();
+        JsRuntime.InvokeAsync<PurchaseReturnMasterView>(
+            "saveAsFile",
+            "PurchaseReturn.pdf",
+            Convert.ToBase64String(pdfExp.Report(listModel))
+        );
+    }
+}

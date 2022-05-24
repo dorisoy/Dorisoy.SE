@@ -1,0 +1,71 @@
+﻿<style type="text/css">
+    .account-description {
+        position: absolute;
+        transition: opacity .25s ease-in-out;
+        -moz-transition: opacity .25s ease-in-out;
+        z-index: 1000;
+    }
+
+    .modalBackground {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+</style>
+@if (Visible)
+{
+    <div class="modalBackground" @onclick="Close">
+        <div class="btnPopupCard" @onclick:stopPropagation="true"
+             style="@($"opacity:{Opacity};left:{HorizontalOffSet}px;top:{VerticalOffSet}px")">
+            <div class="card rounded" style="width:400px; height:300px;">
+                <div class="card-body">
+                    <h4 class="card-title">My Popup Card</h4>
+                    <p class="card-title">
+                        @TextContent
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6" style="text-align:center;">
+                            <button class="btn btn-danger" @onclick="Close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    [Parameter]
+    public RenderFragment TextContent { get; set; }
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClose { get; set; }
+    [Parameter]
+    public int HorizontalOffSet { get; set; }
+    [Parameter]
+    public int VerticalOffSet { get; set; }
+
+    private bool Visible { get; set; }
+    private double Opacity { get; set; }
+
+    [Parameter] public string Title { get; set; } = "Popup Card Title";
+    [Parameter] public string Width { get; set; } = "400px";
+    [Parameter] public string Height { get; set; } = "300px";
+    [Parameter] public decimal FadeMs { get; set; } = 0;
+
+    public async Task Close(MouseEventArgs args = null)
+    {
+        Visible = false;
+        await OnClose.InvokeAsync(args);
+    }
+    public void Show(MouseEventArgs args = null)
+    {
+        if (args != null)
+        {
+            HorizontalOffSet = (int)(args.ClientX);
+            VerticalOffSet = (int)(args.ClientY);
+        }
+        Visible = true;
+        Opacity = 1.0;
+    }
+}

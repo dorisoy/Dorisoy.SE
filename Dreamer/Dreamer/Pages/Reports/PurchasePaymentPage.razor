@@ -1,0 +1,307 @@
+﻿@page "/report/purchasepayment"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IPaymentSupplier _paymentSupplier
+@inject IPurchaseInvoice _purchaseInvoice
+@inject IAccountLedger _supplier
+@inject IWarehouse _warehouse
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@using NPOI.SS.UserModel
+@using NPOI.XSSF.UserModel
+@using System.IO
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Purchase Payment"]</h1>
+            <ul>
+                <li><a href="">@localizer["Purchase Payment"] </a></li> 
+                <li> @localizer["Report"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="card-body">
+            <div class="vgt-wrap "> 
+            <div class="vgt-inner-wrap">
+                <div class="vgt-global-search vgt-clearfix">
+                 <div class="vgt-global-search__actions vgt-pull-right">
+                     <div class="mt-2 mb-3">
+                          <button class="btn btn-outline-success ripple m-1" @onclick="@(() => OpenDrawer(Anchor.End))"><i class="i-File-TXT"></i> @localizer["Filter"]
+        </button>
+                             <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf"><i class="i-File-TXT"></i> PDF
+        </button>
+        <button type="button" @onclick="@(async ()=> {await GenerateExcel();})" class="btn btn-outline-danger btn-icon m-1"><i class="i-File-Excel"></i> EXCEL
+        </button>
+        </div>
+        </div>
+        </div>
+        <div class="vgt-responsive">
+            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<PaymentReceiveView,bool>(Search)">
+    <ToolBarContent>
+        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@localizer["Date"]</MudTh>
+        <MudTh>@localizer["Supplier Name"]</MudTh>
+        <MudTh>@localizer["Voucher No"]</MudTh>
+        <MudTh>@localizer["Purchase"]</MudTh>
+        <MudTh>@localizer["Voucher Type"]</MudTh>
+        <MudTh>@localizer["Paid By"]</MudTh>
+        <MudTh>@localizer["Amount"]</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="">@context.Date</MudTd>
+        <MudTd DataLabel="">@context.LedgerName</MudTd>
+        <MudTd DataLabel="">@context.VoucherNo</MudTd>
+        <MudTd DataLabel="">@context.PurchaseVoucherNo</MudTd>
+        <MudTd DataLabel="">@context.VoucherTypeName</MudTd>
+        <MudTd DataLabel="">@context.PaymentType</MudTd>
+        <MudTd DataLabel="">@context.Amount</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" />
+    </PagerContent>
+</MudTable>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        @*Filter*@
+        <MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">Filter</MudText>
+    </MudDrawerHeader>
+    <MudNavMenu>
+        <div class="row">
+            <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+        <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["From Date"]</legend>
+            <div>
+<input type="date" class="form-control" @bind="FromDate" />
+    </div>
+    </fieldset>
+    </div>
+    <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+        <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["To Date"]</legend>
+            <div>
+<input type="date" class="form-control" @bind="ToDate" />
+    </div>
+    </fieldset>
+    </div>
+            <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+        <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Supplier"]</legend>
+            <div>
+<select class="form-control" @bind="CustomerId" style="width:238px;">
+    <option value="0">Choose</option>
+                              @foreach(var item in listSupplier)
+                                {
+                                    <option value="@item.LedgerId">@item.LedgerName</option>
+                                }
+                            </select>
+    </div>
+    </fieldset>
+    </div>
+    <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+    <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">Purchase VoucherNo.</legend>
+            <div>
+<select class="form-control" @bind="PurchaseMasterId" style="width:238px;">
+                              <option value="0">Choose</option>
+                              @foreach(var item in listPurchaseVoucher)
+                                {
+                                    <option value="@item.PurchaseMasterId">@item.VoucherNo</option>
+                                }
+                            </select>
+    </div>
+    </fieldset>
+    </div>
+
+    </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <button type="button" class="btn btn-primary ripple m-1 btn-sm btn-block" @onclick="() => Search()"><i class="i-Filter-2"></i>
+            @localizer["Filter"]
+          </button></div>
+          <div class="col-sm-12 col-md-6">
+              <button type="button" class="btn btn-danger ripple m-1 btn-sm btn-block" @onclick="@(() => CloseDrawer())"><i class="i-Power-2"></i>
+            @localizer["Close"]
+          </button>
+          </div>
+        </div>
+    </MudNavMenu>
+</MudDrawer>
+@code {
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private string searchString1 = "";
+    private string searchString2 = "";
+    bool open;
+    Anchor anchor;
+    List<AccountLedgerView> listSupplier = new List<AccountLedgerView>();
+    List<PaymentReceiveView> listModel = new List<PaymentReceiveView>();
+    List<PurchaseMasterView> listPurchaseVoucher = new List<PurchaseMasterView>();
+    DateTime FromDate = DateTime.UtcNow.AddDays(-1);
+    DateTime ToDate = DateTime.UtcNow;
+    int CustomerId = 0;
+    int PurchaseMasterId = 0;
+    string strMenu = "Supplier Payment";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected async override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strShow == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        listSupplier = _supplier.ViewAllSupplier(1); // 1 is companyid
+        listPurchaseVoucher = _purchaseInvoice.PurchaseInvoiceView(1);
+        listModel = _paymentSupplier.PurchasePaymentView(Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CustomerId , PurchaseMasterId);
+        StateHasChanged();
+    }
+    private async void Search()
+    {
+        listModel = _paymentSupplier.PurchasePaymentView(Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CustomerId , PurchaseMasterId);
+        
+        StateHasChanged();
+    }
+    private bool Search(PaymentReceiveView element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString1))
+            return true;
+        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+    protected async Task GenerateExcel()
+    {
+        IWorkbook workbook = new XSSFWorkbook();
+        var dataFormat = workbook.CreateDataFormat();
+        var dataStyle = workbook.CreateCellStyle();
+        dataStyle.DataFormat = dataFormat.GetFormat("MM/yy/dddd HH:mm:ss");
+        ISheet worksheet = workbook.CreateSheet("Sheet1");
+
+
+
+        int rowNumber1 = 0;
+        IRow row1 = worksheet.CreateRow(rowNumber1++);
+        //TbleHeder
+        ICell cell1 = row1.CreateCell(3);
+        cell1.SetCellValue("Purchase Payment");
+
+        int rowNumber = 1;
+        IRow row = worksheet.CreateRow(rowNumber++);
+        //TbleHeder
+        ICell cell = row.CreateCell(0);
+        cell.SetCellValue("Date");
+
+        cell = row.CreateCell(1);
+        cell.SetCellValue("Supplier Name");
+
+        cell = row.CreateCell(2);
+        cell.SetCellValue("Voucher No");
+
+
+        cell = row.CreateCell(3);
+        cell.SetCellValue("Purchase");
+
+        cell = row.CreateCell(4);
+        cell.SetCellValue("VoucherType");
+
+        cell = row.CreateCell(5);
+        cell.SetCellValue("Paid By");
+
+        cell = row.CreateCell(6);
+        cell.SetCellValue("Amount");
+
+
+        //Tble Body
+        foreach (var objDue in listModel)
+    {
+            row = worksheet.CreateRow(rowNumber++);
+
+            cell = row.CreateCell(0);
+            cell.SetCellValue(objDue.Date);
+
+            cell = row.CreateCell(1);
+            cell.SetCellValue(objDue.LedgerName);
+
+            cell = row.CreateCell(2);
+            cell.SetCellValue(objDue.VoucherNo);
+
+
+            cell = row.CreateCell(3);
+            cell.SetCellValue(objDue.PurchaseVoucherNo);
+
+            cell = row.CreateCell(4);
+            cell.SetCellValue(objDue.VoucherTypeName);
+
+            cell = row.CreateCell(5);
+            cell.SetCellValue(objDue.PaymentType);
+
+            cell = row.CreateCell(6);
+            cell.SetCellValue(objDue.Amount.ToString());
+
+        }
+        MemoryStream ms = new MemoryStream();
+        workbook.Write(ms);
+        byte[] bytes = ms.ToArray();
+        ms.Close();
+
+        await JsRuntime.SaveAsFileAsync("PurchasePayment", bytes, "application/vnd.ms-excel");
+    }
+    private void GeneratePdf()
+    {
+        PdfPurchasePayment pdfExp = new PdfPurchasePayment();
+        JsRuntime.InvokeAsync<PaymentReceiveView>(
+            "saveAsFile",
+            "PurchasePayment.pdf",
+            Convert.ToBase64String(pdfExp.Report(listModel))
+        );
+    }
+    void OpenDrawer(Anchor anchor)
+    {
+        open = true;
+        this.anchor = anchor;
+    }
+    void CloseDrawer()
+    {
+        open = false;
+    }
+}

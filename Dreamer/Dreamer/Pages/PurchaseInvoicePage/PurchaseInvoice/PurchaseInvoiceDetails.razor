@@ -1,0 +1,164 @@
+﻿@page "/purchase/purchaseinvoicedetails/{id}"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject ICompany _company
+@inject IPurchaseInvoice _purchaseInvoice
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Purchase Details"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Purchase List"] </a></li> 
+                <li>@localizer["Purchase Details"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+<div class="row">
+    <div class="mb-2 col-md-12"><a href="/purchase/purchaseinvoiceedit/@id" class="btn btn-success btn-icon ripple btn-sm" title="Edit"><i class="i-Edit"></i> <span>Edit Purchase</span></a>
+@*        <button class="btn btn-info btn-icon ripple btn-sm"><i class="i-Envelope-2"></i>
+          Email
+        </button>*@ 
+        @*<button class="btn btn-secondary btn-icon ripple btn-sm"><i class="i-Speach-Bubble"></i>
+          SMS
+        </button>*@
+        @*<button class="btn btn-primary btn-icon ripple btn-sm" @onclick="GeneratePdf"><i class="i-File-TXT"></i> PDF
+        </button>*@
+        <button onclick="printDiv('PrintDiv')" class="btn btn-warning btn-icon ripple btn-sm"><i class="i-Billing"></i>
+          Print
+        </button> <button class="btn btn-danger btn-icon ripple btn-sm"><i class="i-Close-Window"></i>
+          Delete
+        </button>
+        </div>
+        </div>
+
+
+
+        <div id="PrintDiv" class="invoice mt-5">
+            <div class="invoice-print">
+                <div class="row justify-content-md-center">
+                    <h4 class="font-weight-bold">@localizer["Purchase Detail"] : @master.VoucherNo</h4>
+                    </div> <hr> <div class="row mt-5">
+                        <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
+                            <h5 class="font-weight-bold">@localizer["Supplier Info"]</h5> 
+                            <div>@master.LedgerName</div> 
+                            <div>@master.Email</div> 
+                            <div>@master.Phone</div> 
+                            <div>@master.Address</div>
+                        </div> 
+                        <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
+                            <h5 class="font-weight-bold">@localizer["Company Info"]</h5> 
+                            <div>@company.CompanyName</div> 
+                            <div>@company.Address</div> 
+                            <div>@company.PhoneNo</div>
+                            </div>
+                            <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
+                                <h5 class="font-weight-bold">Purchase Info</h5> 
+                                <div>Voucher No : @master.VoucherNo</div> 
+              <div>@localizer["Warehouse"] : @master.WarehouseName</div> <div>
+              @localizer["Payment Status"] :
+              <span class="badge badge-outline-success">@master.Status</span></div>
+              </div>
+              </div> <div class="row mt-3"><div class="col-md-12">
+                  <h5 class="font-weight-bold">Order Summary</h5> 
+                  <div class="table-responsive"><table class="table table-hover table-md">
+                      <thead class="bg-gray-300">
+                          <tr><th scope="col">@localizer["Product"]</th> 
+                              <th scope="col">@localizer["Quantity"]</th> 
+                              <th scope="col">@localizer["Rate"]</th> 
+                              <th scope="col">@localizer["Unit"]</th> 
+                              <th scope="col">@localizer["Discount"]</th> 
+                              <th scope="col">@localizer["Tax"]</th> 
+                              <th scope="col">@localizer["Subtotal"]</th>
+                              </tr>
+                              </thead> 
+                              <tbody>
+                                  @foreach(var item in listPurchaseDetails)
+                                  {
+                                  <tr>
+                                      <td>@item.ProductName</td>
+                                      <td>@item.Qty</td>
+                                      <td>@item.PurchaseRate</td>
+                                      <td>@item.UnitName</td>
+                                      <td>@item.DiscountAmount</td>
+                                      <td>@item.TaxAmount</td>
+                                      <td>@item.Amount</td>
+                                      </tr>
+                                  }
+                                      </tbody>
+                                      </table>
+                                      </div>
+                                      </div> 
+                                      <div class="offset-md-9 col-md-3 mt-4">
+                                          <table class="table table-striped table-sm">
+                                              <tbody><tr><td class="bold">@localizer["Tax"]</td>
+                                                  <td><span>@master.TotalTax</span></td></tr>
+                                                  <tr><td class="bold">@localizer["Discount"]</td> <td>@master.BillDiscount</td></tr>
+                                                  <tr><td class="bold">@localizer["Shipping"]</td> <td>@master.ShippingAmount</td></tr> 
+                                                  <tr><td><span class="font-weight-bold">@localizer["Grand Total"]</span>
+                                                      </td> <td><span class="font-weight-bold">@master.GrandTotal</span></td></tr>
+                                                      <tr><td><span class="font-weight-bold">@localizer["Paid"]</span></td> <td>
+                                                          <span class="font-weight-bold">@master.PaymentAmount</span></td></tr> 
+                                                          <tr><td><span class="font-weight-bold">@localizer["Due"]</span></td> 
+                                                              <td><span class="font-weight-bold">@master.BalanceDue</span></td></tr>
+                                                              </tbody>
+                                                              </table></div></div> 
+                                                              <hr style="display: none;"> <div class="row mt-4">
+                                                                  <div class="col-md-12"><p></p>
+                                                                      </div>
+                                                                      </div>
+                                                                      </div>
+                                                                      </div>
+         </div>
+         </div>
+            </div>
+            </div>
+            </div>
+            </div>
+@code {
+    [Parameter]
+    public string id { get; set; }
+    PurchaseMasterView master = new PurchaseMasterView();
+    List<ProductView> listPurchaseDetails = new List<ProductView>();
+    Company company = new Company();
+    protected async override void OnInitialized()
+    {
+        master = _purchaseInvoice.PrintPurchaseMasterView(Convert.ToInt32(id));
+        listPurchaseDetails = _purchaseInvoice.PurchaseInvoiceDetails(Convert.ToInt32(id));
+        company = _company.Edit(1);
+        StateHasChanged();
+    }
+    private void GeneratePdf()
+    {
+        //List<ProductView> oStudents = new List<ProductView>();
+        //for(int i = 1; i <=9; i++)
+        //{
+        //    oStudents.Add(new ProductView()
+        //        {
+        //            ProductId = i,
+        //            ProductName = "Product" + i,
+        //            UnitName = "Unit" + i
+        //});
+        //}
+        RptPurchase oRptStudent = new RptPurchase();
+        JsRuntime.InvokeAsync<ProductView>(
+            "saveAsFile",
+            "ProductList.pdf",
+            Convert.ToBase64String(oRptStudent.Report(listPurchaseDetails , company))
+        );
+    }
+    void Cancel()
+    {
+        navManager.NavigateTo("/purchase/purchaseinvoicelist");
+    }
+    }

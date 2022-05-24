@@ -1,0 +1,90 @@
+﻿@page "/product/qrcode/{id}"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IProduct _product
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+@using QRCoder
+@using System.Drawing
+@using System.Drawing.Imaging
+@using System.IO
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1>@localizer["QR Code"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Product"] </a></li> 
+                <li> @localizer["QR Code"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-responsive">
+                                                            <div id="PrintDiv">
+                                    <div class="paddin5ps">
+                                    <table class="table-bordered barcode-collaps">
+                                                                                                                                    <tbody><tr><td class="barcode-toptd">  
+                                                    <div class="barcode-inner barcode-innerdiv">
+                                                        <img src="@QRCodeStr" class="img-responsive center-block qrcode-image" alt="" height="80" width="80">
+                                                        <div class="product-name-details qrcode-productdetails">@master.ProductName</div>
+                                                        <div class="price barcode-price">@master.SalesRate 
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                                                                                                                                            </tr></tbody></table>
+                                </div>
+                                </div>
+                                                        </div>
+                                
+                                </div>
+                                <div class="form-group">
+                                <div class="text-center">
+                                <a class="btn btn-info" style="cursor:pointer; color:#ffffff;" onclick="printDiv('PrintDiv')">@localizer["Print"]</a>
+                                <a class="btn btn-danger" href="/product/productlist">@localizer["Cancel"]</a>
+                                </div>
+                            </div>
+                                </div>
+            </div>
+            </div>
+@code {
+    [Parameter]
+    public string id { get; set; }
+    Product master = new Product();
+    string InputText { get; set; } = "";
+    string QRCodeStr { get; set; } = "";
+    protected async override void OnInitialized()
+    {
+        master = _product.Edit(Convert.ToInt32(id));
+        GenerateQRCode();
+    }
+
+    public void GenerateQRCode()
+    {
+        QRCodeStr = "";
+        if(!string.IsNullOrEmpty(master.ProductName))
+        {
+            using(MemoryStream ms = new MemoryStream())
+            {
+                QRCodeGenerator oQRCodeGenerate = new QRCodeGenerator();
+                QRCodeData oQRCodeData = oQRCodeGenerate.CreateQrCode(master.ProductName, QRCodeGenerator.ECCLevel.Q);
+                QRCode oQRCode = new QRCode(oQRCodeData);
+                using(Bitmap oBitmap = oQRCode.GetGraphic(20))
+                {
+                    oBitmap.Save(ms,ImageFormat.Png);
+                    QRCodeStr = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+
+                }
+            }
+        }
+    }
+    void Cancel()
+    {
+        navManager.NavigateTo("/product/productlist");
+    }
+    }

@@ -1,0 +1,165 @@
+﻿@page "/setting/systemsettingedit/{id}"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@using Dreamer.Services.IService
+@inject IVoucherType _voucherType
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["System Setting"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Setting"] </a></li> 
+                <li>@localizer["System Setting"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                                <div class="card-title mb-3">@localizer["System Setting"]</div>
+<div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="firstName1">@localizer["VoucherType Name"]</label>
+                                            <input class="form-control" @bind="master.VoucherTypeName" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Start Index"]</label>
+                                            <input class="form-control" @bind="master.StartIndex" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Prefix"]</label>
+                                            <input class="form-control" @bind="master.Prefix" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Suffix"]</label>
+                                            <input class="form-control" @bind="master.Suffix" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Show Note"]</label>
+                                            <select @bind="master.ShowNote">
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Show Address"]</label>
+                                            <select @bind="master.ShowAddress">
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Show Email"]</label>
+                                            <select @bind="master.ShowEmail">
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Show Phone"]</label>
+                                            <select @bind="master.ShowPhone">
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Show Discount"]</label>
+                                            <select @bind="master.ShowDiscount">
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Show Tax"]</label>
+                                            <select @bind="master.ShowTax">
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Show Barcode"]</label>
+                                            <select @bind="master.ShowBarcode">
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button @onclick="() =>Save()" class="btn btn-primary" type="button">@localizer["Submit"]</button>
+                                        </div>
+                                    </div>
+                            </div>
+            </div> 
+            </div>
+            </div>
+            </div>
+            </div>
+
+@code {
+    [Parameter]
+    public string id { get; set; }
+    VoucherType master = new VoucherType();
+    string strMenu = "System Setting";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected async override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strEdit == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        Load();
+        StateHasChanged();
+    }
+    private void Load()
+    {
+        master = _voucherType.Edit( Convert.ToInt32(id));
+    }
+    private async void Save()
+    {
+        if(master.VoucherTypeName == string.Empty)
+        {
+            Snackbar.Add("Type VoucherName.", Severity.Info);
+        }
+        else
+        {
+            master.VoucherTypeId = Convert.ToInt32(id);
+            master.CompanyId = 1;
+            master.IsActive = true;
+            _voucherType.Update(master);
+                Snackbar.Add("Updated Successfully.", Severity.Success);
+                Load();
+                navManager.NavigateTo("setting/systemsetting");
+        }
+    }
+}

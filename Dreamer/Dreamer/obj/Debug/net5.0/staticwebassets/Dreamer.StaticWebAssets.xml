@@ -1,0 +1,6 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="/" Path="D:\CodecanonProject\Dotnet5\InventoryPos\Dreamer\Dreamer\obj\Debug\net5.0\scopedcss\bundle\" />
+  <ContentRoot BasePath="_content/BlazorInputFile" Path="C:\Users\DreamerBryan\.nuget\packages\blazorinputfile\0.2.0\build\..\staticwebassets\" />
+  <ContentRoot BasePath="_content/MudBlazor" Path="C:\Users\DreamerBryan\.nuget\packages\mudblazor\5.0.11\build\..\staticwebassets\" />
+  <ContentRoot BasePath="_content/Radzen.Blazor" Path="C:\Users\DreamerBryan\.nuget\packages\radzen.blazor\3.5.0\build\..\staticwebassets\" />
+</StaticWebAssets>

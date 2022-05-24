@@ -1,0 +1,729 @@
+﻿@page "/purchase/purchaseinvoicelist"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IPurchaseInvoice _purchaseInvoice
+@inject IPaymentSupplier _paymentSupplier
+@inject IAccountLedger _supplier
+@inject IWarehouse _warehouse
+@inject IVoucherType _voucherType
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@using NPOI.SS.UserModel
+@using NPOI.XSSF.UserModel
+@using System.IO
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Purchase"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Purchase Invoice"] </a></li> 
+                <li> @localizer["list"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="card-body">
+            <div class="vgt-wrap "> 
+            <div class="vgt-inner-wrap">
+                <div class="vgt-global-search vgt-clearfix">
+                 <div class="vgt-global-search__actions vgt-pull-right">
+                     <div class="mt-2 mb-3">
+                         <button class="btn btn-outline-success ripple m-1" @onclick="@(() => OpenDrawer(Anchor.End))"><i class="i-File-TXT"></i> @localizer["Filter"]
+        </button>
+                         <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf"><i class="i-File-TXT"></i> PDF
+        </button>
+        <button type="button" @onclick="@(async ()=> {await GenerateExcel();})" class="btn btn-outline-danger btn-icon m-1"><i class="i-File-Excel"></i> EXCEL
+        </button>
+                         <a href="/purchase/purchaseinvoiceadd" class="btn btn-outline btn-btn btn-primary btn-icon m-1"><i class="i-Add"></i>
+          @localizer["Create"]
+        </a>
+        </div>
+        </div>
+        </div>
+        <div class="vgt-responsive">
+            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<PurchaseMasterView,bool>(Search)">
+    <ToolBarContent>
+        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@localizer["Voucher No"]</MudTh>
+        <MudTh>@localizer["Date"]</MudTh>
+        <MudTh>@localizer["Supplier Name"]</MudTh>
+        @*<MudTh>VoucherType</MudTh>*@
+        <MudTh>@localizer["Amount"]</MudTh>
+         <MudTh>@localizer["Paid"]</MudTh>
+        <MudTh>@localizer["BalanceDue"]</MudTh>
+        <MudTh>@localizer["Status"]</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="">@context.VoucherNo</MudTd>
+        <MudTd DataLabel="">@context.Date</MudTd>
+        <MudTd DataLabel="">@context.LedgerName</MudTd>
+        @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
+        <MudTd DataLabel="">@context.GrandTotal</MudTd>
+        <MudTd DataLabel="">@context.PaymentAmount</MudTd>
+        <MudTd DataLabel="">@context.BalanceDue</MudTd>
+        <MudTd DataLabel="">
+            @if(context.Status == "Paid")
+            {
+             <span class="badge badge-outline-success">@context.Status</span>
+            }
+            else if(context.Status == "Partial Paid")
+            {
+             <span class="badge badge-outline-primary">@context.Status</span>
+            }
+             else
+            {
+                 <span class="badge badge-outline-success">@context.Status</span>                       
+            }
+           </MudTd>
+        <MudTd DataLabel="">
+            <div class="dropdown">
+              <button class="btn dropdown-toggle btn-link btn-lg text-decoration-none dropdown-toggle-no-caret" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             </button>
+             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 34px, 0px);">
+                 <a class="dropdown-item" href="/purchase/purchaseinvoicedetails/@context.PurchaseMasterId"><i class="nav-icon i-Eye font-weight-bold mr-2"></i>Purchase Details</a>
+                 <a class="dropdown-item" href="/purchase/purchaseinvoiceedit/@context.PurchaseMasterId"><i class="nav-icon i-Pen-2 font-weight-bold mr-2"></i>Edit Purchase</a>
+                 <a class="dropdown-item" style="cursor:pointer;" @onclick="() => ShowPaymentList(context.PurchaseMasterId)"><i class="nav-icon i-Money-Bag font-weight-bold mr-2"></i>Show Payments</a>
+             <a class="dropdown-item" style="cursor:pointer" @onclick="() => EditPayment(context)"><i class="nav-icon i-Add font-weight-bold mr-2"></i>Create Payments</a>
+             @*<a class="dropdown-item" href="#"><i class="nav-icon i-Envelope-2 font-weight-bold mr-2"></i>Send Purchase on Email</a>*@
+         <a class="dropdown-item" @onclick="() => Delete(context.PurchaseMasterId)"><i class="nav-icon i-Close-Window font-weight-bold mr-2"></i>Delete Purchase</a></div>
+                                                </div>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" />
+    </PagerContent>
+</MudTable>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        @*CreatePayment*@
+
+        @if (isPayment == true)
+{
+    <div class="modal fade" id="myModal" style="display:block" aria-modal="true" role="dialog">
+       <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <!-- Modal Header -->
+                <div class="modal-header">
+                    <h3 class="modal-title" style="float:left; margin-top: 14px;margin-left:10px;">@localizer["Create Payment"]</h3>
+                     <button class="btn btn-icon btn-danger btn-sm" type="button"style="margin:6px 4px 0px 0px;" @onclick="@ClosePayment"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                                    <span>
+                                        <fieldset class="form-group">
+                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Date"]
+                                            </legend>
+                                            <div>
+                                                <input type="date" @bind="master.Date" class="form-control"> 
+                                                </div>
+                                                </fieldset>
+                                                </span>
+                                                </div>
+                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                                    <span>
+                                        <fieldset class="form-group">
+                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Voucher No"]
+                                            </legend>
+                                            <div>
+                                                <input type="text" @bind="master.VoucherNo" class="form-control"> 
+                                                </div>
+                                                </fieldset>
+                                                </span>
+                                                </div>
+
+                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                                    <span>
+                                        <fieldset class="form-group">
+                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Payment Amount"]
+                                            </legend>
+                                            <div>
+                                                <input type="text" @bind="master.Amount" class="form-control" @onkeyup="@CalculateChange" @bind:event="oninput">
+                                                </div>
+                                                </fieldset>
+                                                </span>
+                                                </div>
+
+                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                                    <span>
+                                        <fieldset class="form-group">
+                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Total Amount To Pay"]
+                                            </legend>
+                                            <div>
+                                                @PreviousDue 
+                                                </div>
+                                                </fieldset>
+                                                </span>
+                                                </div>
+                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                                    <span>
+                                        <fieldset class="form-group">
+                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Change Amount"]
+                                            </legend>
+                                            <div>
+                                                @decChangeAmount
+                                                </div>
+                                                </fieldset>
+                                                </span>
+                                                </div>
+                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                                    <span>
+                                        <fieldset class="form-group">
+                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Payment Choise"]
+                                            </legend>
+                                            <div>
+                                                <select class="form-control" @bind="master.PaymentType">
+                                                    <option value="Cash">Cash</option>
+                                                    <option value="Credit Card">Credit Card</option>
+                                                    <option value="Cheque">Cheque</option>
+                                                    <option value="Western Union">Western Union</option>
+                                                    <option value="Bank Transfer">Bank Transfer</option>
+                                                    <option value="Other Transfer">Other</option>
+                                                </select>
+                                                </div>
+                                                </fieldset>
+                                                </span>
+                                                </div>
+
+
+
+                                                <div class="mb-3 col-sm-12 col-md-12 col-lg-12">
+                                    <span>
+                                        <fieldset class="form-group">
+                                            <legend class="bv-no-focus-ring col-form-label pt-0">Note
+                                            </legend>
+                                            <div>
+                                                <textarea type="text" @bind="master.Narration" class="form-control">
+
+                                                </textarea> 
+                                                </div>
+                                                </fieldset>
+                                                </span>
+                                                </div>
+
+
+
+                                                </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="ClosePayment" type="button">@localizer["Close"]</button>
+                    <button class="btn btn-primary" @onclick="() =>CreatePayment()" type="button">@localizer["Save"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    
+}
+
+@*PaymentList*@
+
+
+
+@if (isShowPayment == true)
+{
+    <div class="modal fade" id="myModal" style="display:block" aria-modal="true" aria-labelledby="exampleModalCenterTitle" role="dialog">
+       <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+               <!-- Modal Header -->
+                <div class="modal-header">
+                    <h3 class="modal-title" style="float:left; margin-top: 14px;margin-left:10px;">@localizer["Show Payments"]</h3>
+                    <button class="btn btn-icon btn-danger btn-sm" type="button" style="margin:6px 4px 0px 0px;" @onclick="@ClosePaymentList"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                                <div class="mb-3 col-sm-12 col-md-12 col-lg-12">
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>@localizer["Date"]</th>
+                                                <th>@localizer["Voucher No"]</th>
+                                                <th>@localizer["Amount"]</th>
+                                                <th>@localizer["Paid By"]</th>
+                                                <th>@localizer["Action"]</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        @foreach(var item in listPayment)
+                                        {
+                                        <tbody>
+                                            <tr>
+                                                <td>@item.Date</td>
+                                                <td>@item.VoucherNo</td>
+                                                <td>@item.Amount</td>
+                                                <td>@item.PaymentType</td>
+                                                <td>
+                                                    <div role="group" aria-label="Basic example" class="btn-group">
+                                                        <a href="/purchase/supplierpaymentshow/@item.PaymentMasterId"><span title="Print" class="btn btn-icon btn-info btn-sm">
+                                                            <i class="i-Billing"></i></span></a>
+                                                           @*<a @onclick="() => EditPaymentSupplier(item.PaymentMasterId)"> <span title="Edit" class="btn btn-icon btn-success btn-sm">
+                                                                <i class="i-Pen-2"></i></span></a>*@
+                                                              <a @onclick="() => DeletePayment(item.PaymentMasterId)"> <span title="Delete" class="btn btn-icon btn-danger btn-sm"><i class="i-Close"></i></span>
+                                                               </a>
+                                                           </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        }
+                                    </table>
+                                    
+                                                </div>
+                                                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    
+}
+
+
+
+@*Filter*@
+        <MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">@localizer["Filter"]</MudText>
+    </MudDrawerHeader>
+    <MudNavMenu>
+        <div class="row">
+            <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+        <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["From Date"]</legend>
+            <div>
+<input type="date" class="form-control" @bind="FromDate" style="width:236px;">
+    </div>
+    </fieldset>
+    </div>
+    <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+        <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["To Date"]</legend>
+            <div>
+<input type="date" class="form-control" @bind="ToDate" style="width:236px;">
+    </div>
+    </fieldset>
+    </div>
+            <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+        <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Supplier"]</legend>
+            <div>
+<select class="form-control" @bind="CustomerId" style="width:236px;">
+    <option value="0">Choose</option>
+                              @foreach(var item in listSupplier)
+                                {
+                                    <option value="@item.LedgerId">@item.LedgerName</option>
+                                }
+                            </select>
+    </div>
+    </fieldset>
+    </div>
+    <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+    <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Warehouse"]</legend>
+            <div>
+<select class="form-control" @bind="WarehouseId" style="width:236px;">
+                              <option value="0">Choose</option>
+                              @foreach(var item in listWarehouse)
+                                {
+                                    <option value="@item.WarehouseId">@item.Name</option>
+                                }
+                            </select>
+    </div>
+    </fieldset>
+    </div>
+
+    <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+    <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Status"]</legend>
+            <div>
+<select class="form-control" @bind="Status" style="width:236px;">
+                              <option value="All">All</option>
+                              <option value="Paid">Paid</option>
+                              <option value="Partial Paid">Partial Paid</option>
+                              <option value="Draft">Draft</option>
+                            </select>
+    </div>
+    </fieldset>
+    </div>
+    </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <button type="button" class="btn btn-primary ripple m-1 btn-sm btn-block" @onclick="() => Search()"><i class="i-Filter-2"></i>
+            @localizer["Filter"]
+          </button></div>
+          <div class="col-sm-12 col-md-6">
+              <button type="button" class="btn btn-danger ripple m-1 btn-sm btn-block" @onclick="@(() => CloseDrawer())"><i class="i-Power-2"></i>
+            @localizer["Close"]
+          </button>
+          </div>
+        </div>
+    </MudNavMenu>
+</MudDrawer>
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private string searchString1 = "";
+    private string searchString2 = "";
+    bool open;
+    Anchor anchor;
+    List<PurchaseMasterView> listModel = new List<PurchaseMasterView>();
+    PaymentMaster master = new PaymentMaster();
+    int decPaymentSupplierVoucherType = 3;
+    string strSerialNo;
+    decimal PreviousDue;
+    decimal decChangeAmount = 0;
+    //Payment
+    bool isPayment = false;
+    bool isShowPayment = false;
+    List<PaymentMaster> listPayment = new List<PaymentMaster>();
+    List<AccountLedgerView> listSupplier = new List<AccountLedgerView>();
+    List<Warehouse> listWarehouse = new List<Warehouse>();
+    DateTime FromDate = DateTime.UtcNow.AddDays(-1);
+    DateTime ToDate = DateTime.UtcNow;
+    int CustomerId = 0;
+    int WarehouseId = 0;
+    string Status = "All";
+    string strMenu = "Purchase Invoice";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected async override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strShow == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        listSupplier = _supplier.ViewAllSupplier(1); // 1 is companyid
+        listWarehouse = _warehouse.GetAll();
+        LoadData();
+        StateHasChanged();
+    }
+    private async void LoadData()
+    {
+        listModel = _purchaseInvoice.PurchaseInvoiceView(1);
+    }
+    async Task Delete(int id)
+    {
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (confirmed)
+        {
+            PurchaseMaster view = new PurchaseMaster();
+            view = _purchaseInvoice.EditPurchaseMaster(id);
+            bool isSave = false;
+            isSave = _purchaseInvoice.DeletePurchseInvoice(id , view.VoucherNo, 1 , 1);
+            if (isSave == true)
+            {
+                Snackbar.Add("Delete Successfully.", Severity.Success);
+                LoadData();
+            }
+            else
+            {
+                Snackbar.Add("Cannot be delete. already in used.", Severity.Info);
+            }
+        }
+    }
+    private bool Search(PurchaseMasterView element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString1))
+            return true;
+        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+    private async void CreatePayment()
+    {
+        if (master.LedgerId == 0)
+        {
+            Snackbar.Add("Choose Supplier.", Severity.Warning);
+        }
+        else if (master.VoucherNo == string.Empty)
+        {
+            Snackbar.Add("Type Voucherno.", Severity.Warning);
+        }
+        else if (master.Amount == 0)
+        {
+            Snackbar.Add("Type payment amount.", Severity.Warning);
+        }
+        else
+        {
+
+            var authState = await authenticationState;
+            var user = authState.User;
+            string Id = user.Identity.Name.ToString();
+            var strVoucherNo = false;
+            if(master.PaymentMasterId == 0)
+            {
+                strVoucherNo = _paymentSupplier.PaymentVoucherNoCheckExistence(1, 1, master.VoucherNo);
+                if (strVoucherNo == false)
+                {
+                    master.SerialNo = strSerialNo;
+                    master.UserId = Id;
+                    master.CompanyId = 1;
+                    master.FinancialYearId = 1;
+                    master.VoucherTypeId = decPaymentSupplierVoucherType;
+                    master.PreviousDue = PreviousDue;
+                    master.AddedDate = DateTime.UtcNow;
+                    bool isSave = _paymentSupplier.Save(master);
+                    if(isSave == true)
+                    {
+                        Snackbar.Add("Successfully Saved.", Severity.Success);
+                        isPayment = false;
+                        LoadData();
+                    }
+                    else
+                    {
+                        Snackbar.Add("Invalid Payment.", Severity.Warning);
+                    }
+                }
+                else
+                {
+                    Snackbar.Add("Voucher no already exists.", Severity.Info);
+                }
+            }
+            else
+            {
+
+            }
+
+        }
+    }
+    async Task EditPayment(PurchaseMasterView purchaseMaster)
+    {
+        isPayment = true;
+        master.LedgerId = purchaseMaster.LedgerId;
+        master.Date = DateTime.UtcNow;
+        master.Amount = 0;
+        master.PurchaseMasterId = purchaseMaster.PurchaseMasterId;
+        master.PaymentMasterId = 0;
+        master.PaymentType = "Cash";
+        master.Narration = string.Empty;
+        PreviousDue = 0;
+        var voucherType = _voucherType.Edit(decPaymentSupplierVoucherType);
+        strSerialNo = _paymentSupplier.GetVoucherNo(1, 1, decPaymentSupplierVoucherType);
+        master.VoucherNo = voucherType.Prefix + strSerialNo + voucherType.Suffix;
+        var view = _paymentSupplier.GetTotalReceiableAmount(purchaseMaster.PurchaseMasterId);
+        if (view.Amount > 0)
+        {
+            PreviousDue = purchaseMaster.BalanceDue;
+        }
+        else
+        {
+            PreviousDue = purchaseMaster.GrandTotal;
+        }
+        StateHasChanged();
+    }
+    private void CalculateChange()
+    {
+        decChangeAmount = Math.Round(PreviousDue - master.Amount , 2);
+        if(decChangeAmount >= 0)
+        {
+
+        }
+        else
+        {
+            master.Amount = 0;
+        }
+        StateHasChanged();
+    }
+    async Task EditPaymentSupplier(int PaymentMasterId)
+    {
+        isPayment = true;
+        isShowPayment = false;
+        master.PaymentMasterId = PaymentMasterId;
+        master = _paymentSupplier.EdiById(PaymentMasterId);
+        var view = _paymentSupplier.GetTotalReceiableAmount(master.PurchaseMasterId);
+        if (view.Amount > 0)
+        {
+            PreviousDue = view.Amount;
+        }
+        else
+        {
+            
+        }
+        StateHasChanged();
+    }
+    async Task DeletePayment(int id)
+    {
+            bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this?");
+            if (confirmed)
+            {
+               var view = _paymentSupplier.EditPaymentMaster(id);
+                bool isSave = false;
+                isSave = _paymentSupplier.DeletePaymentSupplier(id, view.VoucherNo, view.VoucherTypeId, view.FinancialYearId, view.CompanyId);
+                if (isSave == true)
+                {
+                    Snackbar.Add("Deleted Successfully.", Severity.Success);
+                    isShowPayment = false;
+                    LoadData();
+                }
+                else
+                {
+                    Snackbar.Add("Cannot be delete. already in used.", Severity.Success);
+                    isShowPayment = false;
+                    navManager.NavigateTo("/purchase/supplierpayslist");
+                }
+            }
+    }
+    async Task ShowPaymentList(int purchaseMasterId)
+    {
+        isShowPayment = true;
+        listPayment = _paymentSupplier.GetAllById(purchaseMasterId);
+        StateHasChanged();
+    }
+    private void ClosePayment()
+    {
+        isPayment = false;
+        master.LedgerId = 0;
+        master.Date = DateTime.UtcNow;
+        master.Amount = 0;
+        master.Narration = string.Empty;
+        PreviousDue = 0;
+        StateHasChanged();
+    }
+        private void ClosePaymentList()
+    {
+        isShowPayment = false;
+        StateHasChanged();
+    }
+    protected async Task GenerateExcel()
+    {
+        IWorkbook workbook = new XSSFWorkbook();
+        var dataFormat = workbook.CreateDataFormat();
+        var dataStyle = workbook.CreateCellStyle();
+        dataStyle.DataFormat = dataFormat.GetFormat("MM/yy/dddd HH:mm:ss");
+        ISheet worksheet = workbook.CreateSheet("Sheet1");
+
+
+
+        int rowNumber1 = 0;
+        IRow row1 = worksheet.CreateRow(rowNumber1++);
+        //TbleHeder
+        ICell cell1 = row1.CreateCell(3);
+        cell1.SetCellValue("PurchaseInvoice");
+
+        int rowNumber = 1;
+        IRow row = worksheet.CreateRow(rowNumber++);
+        //TbleHeder
+        ICell cell = row.CreateCell(0);
+        cell.SetCellValue("Voucher No");
+
+        cell = row.CreateCell(1);
+        cell.SetCellValue("Date");
+
+        cell = row.CreateCell(2);
+        cell.SetCellValue("Supplier Name");
+
+        cell = row.CreateCell(3);
+        cell.SetCellValue("Voucher Type");
+
+        cell = row.CreateCell(4);
+        cell.SetCellValue("Amount");
+
+        cell = row.CreateCell(5);
+        cell.SetCellValue("Balance Due");
+
+        cell = row.CreateCell(6);
+        cell.SetCellValue("Status");
+
+
+        //Tble Body
+        foreach (var objDue in listModel)
+    {
+            row = worksheet.CreateRow(rowNumber++);
+
+            cell = row.CreateCell(0);
+            cell.SetCellValue(objDue.VoucherNo);
+
+            cell = row.CreateCell(1);
+            cell.SetCellValue(objDue.Date.ToString());
+
+            cell = row.CreateCell(2);
+            cell.SetCellValue(objDue.LedgerName);
+
+            cell = row.CreateCell(3);
+            cell.SetCellValue(objDue.VoucherTypeName);
+
+            cell = row.CreateCell(4);
+            cell.SetCellValue(objDue.GrandTotal.ToString());
+
+            cell = row.CreateCell(5);
+            cell.SetCellValue(objDue.BalanceDue.ToString());
+
+            cell = row.CreateCell(6);
+            cell.SetCellValue(objDue.Status.ToString());
+
+        }
+        MemoryStream ms = new MemoryStream();
+        workbook.Write(ms);
+        byte[] bytes = ms.ToArray();
+        ms.Close();
+
+        await JsRuntime.SaveAsFileAsync("PurchaseInvoice", bytes, "application/vnd.ms-excel");
+    }
+    private void GeneratePdf()
+    {
+        PdfPurchase pdfExp = new PdfPurchase();
+        JsRuntime.InvokeAsync<PurchaseMasterView>(
+            "saveAsFile",
+            "PurchaseInvoice.pdf",
+            Convert.ToBase64String(pdfExp.Report(listModel))
+        );
+    }
+    private async void Search()
+    {
+        listModel = _purchaseInvoice.PurchaseReportsdetails(Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CustomerId , WarehouseId , Status);
+        StateHasChanged();
+    }
+    void OpenDrawer(Anchor anchor)
+    {
+        open = true;
+        this.anchor = anchor;
+    }
+    void CloseDrawer()
+    {
+        open = false;
+    }
+}

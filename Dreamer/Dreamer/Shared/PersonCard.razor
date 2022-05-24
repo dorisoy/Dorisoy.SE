@@ -1,0 +1,19 @@
+﻿<AuthorizeView>
+    <Authorized>
+<MudCard Elevation="0" Square="true" Class="@Class" Style="@Style">
+    <MudCardHeader>
+        <CardHeaderAvatar>
+            <MudAvatar Image="img/profile.jpg" />
+        </CardHeaderAvatar>
+        <CardHeaderContent>
+            <MudText Typo="Typo.body2">@context.User.Identity.Name</MudText>
+            <MudText Typo="Typo.caption">Online</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+</MudCard>
+</Authorized>
+</AuthorizeView>
+@code {
+    [Parameter] public string Class { get; set; }
+    [Parameter] public string Style { get; set; }
+}

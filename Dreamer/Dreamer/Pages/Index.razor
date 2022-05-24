@@ -1,0 +1,188 @@
+﻿@page "/dashboard"
+@inject IInventoryReport reportRepository
+@inject IStringLocalizer<NavMenu> localizer
+@using Radzen
+@using System.Globalization
+<div class="main-content pt-4">
+    <div class="separator-breadcrumb border-top"></div>
+
+
+
+    <div class="row">
+                    <!-- ICON BG-->
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                            <div class="card-body text-center"><i class="i-Full-Cart"></i>
+                                <div class="content">
+                                    <p class="text-muted mt-2 mb-0">@localizer["Sales"]</p>
+                                    <p class="text-primary text-24 line-height-1 mb-2">@totalSales</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                            <div class="card-body text-center"><i class="i-Add-Cart"></i>
+                                <div class="content">
+                                    <p class="text-muted mt-2 mb-0">@localizer["Purchase"]</p>
+                                    <p class="text-primary text-24 line-height-1 mb-2">@totalPurchase</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                            <div class="card-body text-center"><i class="i-Checkout-Basket"></i>
+                                <div class="content">
+                                    <p class="text-muted mt-2 mb-0">@localizer["Sales Return"]</p>
+                                    <p class="text-primary text-24 line-height-1 mb-2">@totalSalesReturn</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                            <div class="card-body text-center"><i class="i-Money-2"></i>
+                                <div class="content">
+                                    <p class="text-muted mt-2 mb-0">@localizer["Purchase Return"]</p>
+                                    <p class="text-primary text-24 line-height-1 mb-2">@totalPurchaseReturn</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-lg-8 col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="card-title">@localizer["This Week Sales & Purchases"]</div>
+                                <div id="echartBar" style="height: 300px;">
+                                    <Radzen.Blazor.RadzenChart>
+                    <Radzen.Blazor.RadzenColumnSeries Data="@saleslist" CategoryProperty="Date" Title="Sales" LineType="Radzen.Blazor.LineType.Dashed" ValueProperty="GrandTotal" />
+                    <Radzen.Blazor.RadzenColumnSeries Data="@purchaselist" CategoryProperty="Date" Title="Purchase" ValueProperty="GrandTotal" />
+                    <Radzen.Blazor.RadzenColumnOptions Radius="5" />
+                    <Radzen.Blazor.RadzenValueAxis Formatter="@FormatAsUSD">
+                        <Radzen.Blazor.RadzenGridLines Visible="true" />
+                        <RRadzen.Blazor.adzenAxisTitle Text="Sales & Purchase" />
+                    </Radzen.Blazor.RadzenValueAxis>
+                </Radzen.Blazor.RadzenChart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="card-title">@localizer["Top 10 Selling Products"]</div>
+                                <div id="echartPie" style="height: 300px;">
+                                    <Radzen.Blazor.RadzenChart>
+                    <Radzen.Blazor.RadzenPieSeries Data="@topProduct" Title="Qty" CategoryProperty="ProductName" ValueProperty="qty" />
+                </Radzen.Blazor.RadzenChart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-lg-8 col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="card-title">@localizer["Payment Sent & Received"]</div>
+                                <div id="echartBar" style="height: 300px;">
+                                    <Radzen.Blazor.RadzenChart>
+                    <Radzen.Blazor.RadzenLineSeries Data="@paymentList" CategoryProperty="Date" Title="Payment" LineType="Radzen.Blazor.LineType.Dashed" ValueProperty="Amount">
+                        <Radzen.Blazor.RadzenMarkers MarkerType="Radzen.Blazor.MarkerType.Square" />
+                    </Radzen.Blazor.RadzenLineSeries>
+                    <Radzen.Blazor.RadzenLineSeries Data="@receiveList" CategoryProperty="Date" Title="Receive" ValueProperty="Amount">
+                        <Radzen.Blazor.RadzenMarkers MarkerType="Radzen.Blazor.MarkerType.Circle" />
+                    </Radzen.Blazor.RadzenLineSeries>
+                    <Radzen.Blazor.RadzenCategoryAxis Padding="20" FormatString="{0:MMM}" />
+                    <Radzen.Blazor.RadzenValueAxis Formatter="@FormatAsUSD">
+                        <Radzen.Blazor.RadzenGridLines Visible="true" />
+                        <Radzen.Blazor.RadzenAxisTitle Text="" />
+                    </Radzen.Blazor.RadzenValueAxis>
+                </Radzen.Blazor.RadzenChart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="card-title">@localizer["Top 10 Customers"]</div>
+                                <div id="echartPie" style="height: 300px;">
+                                    <Radzen.Blazor.RadzenChart>
+                    <Radzen.Blazor.RadzenPieSeries Data="@toprecible" Title="Customer" CategoryProperty="LedgerName" ValueProperty="debit" />
+                </Radzen.Blazor.RadzenChart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</div>
+@code
+{
+    decimal totalSales = 0;
+    decimal totalPurchase = 0;
+    decimal totalSalesReturn = 0;
+    decimal totalPurchaseReturn = 0;
+
+
+    //ReminderStock
+    List<FinancialReport> toprecible { get; set; }
+    List<FinancialReport> toppyble { get; set; }
+    List<FinancialReport> topProduct { get; set; }
+    List<SalesMasterView> saleslist;
+    List<PurchaseMasterView> purchaselist;
+
+    //PaymentReceive
+    List<PaymentReceiveView> paymentList;
+    List<PaymentReceiveView> receiveList;
+    DateTime FromDate = DateTime.UtcNow.AddDays(-7);
+    DateTime ToDate = DateTime.UtcNow;
+    protected override void OnInitialized()
+    {
+        LoadData();
+        StateHasChanged();
+
+    }
+    protected async void LoadData()
+    {
+        //salesgraph
+        saleslist = reportRepository.SalesInvoiceViewGraph(1, 1 , FromDate , ToDate);
+        //purchasegraph
+        purchaselist = reportRepository.ViewAllPurchseInvoiceGraph(1, 1 , FromDate , ToDate);
+
+        var resultSlesPurchse = reportRepository.SalesTotal(1); //TotalSales
+        totalSales = resultSlesPurchse.GrandTotal;
+        //TotalPurchase
+        var returnTotalPurchase = reportRepository.PurchaseTotal(1);
+        totalPurchase = returnTotalPurchase.GrandTotal;
+
+        //TotalSalesReturn
+        var returnSalesReturn = reportRepository.SalesReturnTotal(1);
+        totalSalesReturn = returnSalesReturn.GrandTotal;
+
+        //TotalPurchaseReturn
+        var returnPurchaseReturn = reportRepository.PurchaseReturnTotal(1);
+        totalPurchaseReturn = returnPurchaseReturn.GrandTotal;
+
+        toprecible = reportRepository.TopReceive(1); //GetTopTenReceiable
+        topProduct = reportRepository.GettopProduct(1); //GetTopTenProduct
+
+        //salesgraph
+        paymentList = reportRepository.PaymentSent(1);
+        //purchasegraph
+        receiveList = reportRepository.PaymentReceive(1);
+    }
+    string FormatAsUSD(object value)
+    {
+        return ((double)value).ToString("C0", CultureInfo.CreateSpecificCulture("en-US"));
+    }
+}
