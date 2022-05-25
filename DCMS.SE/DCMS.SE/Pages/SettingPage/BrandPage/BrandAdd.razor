@@ -1,0 +1,147 @@
+﻿@page "/setting/brandadd"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@using DCMS.SE.Services.IService
+@inject IBrand _brand
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+@inject IFileUpload FileUpload
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1>@localizer["Brand"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Setting"] </a></li> 
+                <li> @localizer["Brand"] / @localizer["Add"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="card-body">
+            <div class="vgt-wrap "> 
+            <div class="vgt-inner-wrap">
+                <div class="vgt-global-search vgt-clearfix">
+                 
+        </div>
+        <div class="vgt-responsive">
+                                <div class="form-group">
+<input type="hidden" @bind="master.BrandId">
+                            <label class="col-form-label" for="recipient-name-1">@localizer["Image"]</label>
+                        <div class="row">
+                            
+                            @if(master.Image == null)
+                                {
+												<img src="img/logo.jpg" alt="">
+                                }
+								else
+								{
+                                    <img src="@master.Image" width="60" height="60">
+								}
+											@*<ValidationMessage For="@(() => master.Image)" />*@
+													<InputFile OnChange="OnFileChange" />
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="recipient-name-1">@localizer["Brand"]</label>
+                            <input class="form-control" @bind="master.Name" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-secondary" @onclick="CloseModel" type="button">@localizer["Close"]</button>
+                    <button class="btn btn-primary" @onclick="() =>Save()" type="button">@localizer["Save"]</button>
+                        </div>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+@code {
+    Brand master = new Brand();
+    string strMenu = "Brand";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected  override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strAdd == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        LoadData();
+        StateHasChanged();
+    }
+    private  void LoadData()
+    {
+        master.Name = string.Empty;
+        StateHasChanged();
+    }
+    private  void Save()
+    {
+            if (master.Name == string.Empty)
+            {
+                Snackbar.Add("Type Brand.", Severity.Info);
+            }
+            else
+            {
+                var isCheck = _brand.CheckName(master.Name);
+                if (isCheck == true)
+                {
+                    Snackbar.Add("Already Exists.", Severity.Success);
+                }
+                else
+                {
+                master.CompanyId = 1;
+                master.AddedDate = DateTime.UtcNow;
+                _brand.Save(master);
+               navManager.NavigateTo("/setting/brandlist");
+                Snackbar.Add("Saved Successfully.", Severity.Success);
+            }
+        }
+    }
+    async Task OnFileChange(InputFileChangeEventArgs e)
+	{
+		var format = "image/png";
+		var resizedImage = await e.File.RequestImageFileAsync(format, 300, 300);
+		var buffer = new byte[resizedImage.Size];
+		await resizedImage.OpenReadStream().ReadAsync(buffer);
+		var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+		if (imageData == null)
+		{
+			master.Image = string.Empty;
+		}
+		else
+		{
+			master.Image = imageData;
+		}
+	}
+    private void CloseModel()
+    {
+        navManager.NavigateTo("/setting/brandlist");
+    }
+}

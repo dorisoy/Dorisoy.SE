@@ -1,0 +1,208 @@
+﻿@page "/setting/companylist"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@using DCMS.SE.Services.IService
+@inject ICompany _company
+@inject IVoucherType _voucherType
+@inject IWarehouse _warehouse
+@inject ICurrency _currency
+@inject IAccountLedger _accountLedger
+@inject IFileUpload FileUpload
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1>@localizer["Company"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Setting"] </a></li> 
+                <li> @localizer["Company Setting"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                                <div class="card-title mb-3">@localizer["Company"]</div>
+<div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label class="col-form-label" for="recipient-name-1">@localizer["Image"]</label>
+                        <div class="row">
+                            
+                            @if(master.Logo == null)
+                                {
+												<img src="img/logo.jpg" alt="">
+                                }
+								else
+								{
+                                    <img src="@master.Logo" width="60" height="60">
+								}
+											@*<ValidationMessage For="@(() => master.Logo)" />*@
+													<InputFile OnChange="OnFileChange" />
+                        </div>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="firstName1">@localizer["Company Name"]</label>
+                                            <input class="form-control" @bind="master.CompanyName" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Address"]</label>
+                                            <input class="form-control" @bind="master.Address" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Phone No"]</label>
+                                            <input class="form-control" @bind="master.PhoneNo" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Mobile"]</label>
+                                            <input class="form-control" @bind="master.MobileNo" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Website"]</label>
+                                            <input class="form-control" @bind="master.Website" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["PanNo"]</label>
+                                            <input class="form-control" @bind="master.PanNo" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["No of Decimal"]</label>
+                                            <input class="form-control" @bind="master.NoofDecimal" type="text">
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Default Currency"]</label>
+                                            <select class="form-control" @bind="master.CurrencyId">
+                                                <option value="0">Default Currency</option>
+                                                @foreach(var item in listCurrency)
+                                    {
+                                        <option  value="@item.CurrencyId">@item.CurrencyName</option>
+                                    }
+                                </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Default Warehouse"]</label>
+                                            <select class="form-control" @bind="master.WarehouseId">
+                                                <option value="0">Default Warehouse</option>
+                                                @foreach(var item in listWarehouse)
+                                    {
+                                        <option  value="@item.WarehouseId">@item.Name</option>
+                                    }
+                                </select>
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="lastName1">@localizer["Default Customer"]</label>
+                                            <select class="form-control" @bind="master.LedgerId">
+                                                <option value="0">Default Customer</option>
+                                                @foreach(var item in listCustomer)
+                                    {
+                                        <option  value="@item.LedgerId">@item.LedgerName</option>
+                                    }
+                                </select>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button @onclick="() =>SaveCompany()" class="btn btn-primary" type="button">@localizer["Submit"]</button>
+                                        </div>
+                                    </div>
+                            </div>
+            </div> 
+            </div>
+            </div>
+            </div>
+            </div>
+
+@code {
+    Company master = new Company();
+    VoucherType voucherType = new VoucherType();
+    List<Currency> listCurrency = new List<Currency>();
+    List<Warehouse> listWarehouse = new List<Warehouse>();
+    List<VoucherType> listVoucherype = new List<VoucherType>();
+    List<AccountLedgerView> listCustomer = new List<AccountLedgerView>();
+    string strMenu = "Company";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected  override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strShow == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        LoadCompany();
+        StateHasChanged();
+    }
+    private void LoadCompany()
+    {
+        master = _company.Edit(1); //1 is companyid
+
+        listCurrency = _currency.GetAll();
+        listWarehouse = _warehouse.GetAll();
+        listVoucherype = _voucherType.GetAll();
+        listCustomer = _accountLedger.ViewAllCustomer(1);
+        StateHasChanged();
+    }
+    private  void SaveCompany()
+    {
+        if(master.CurrencyId == 0)
+        {
+            Snackbar.Add("Choose Default Currency.", Severity.Info);
+        }
+        else if(master.WarehouseId == 0)
+        {
+            Snackbar.Add("Choose Default Warehouse.", Severity.Info);
+        }
+        else
+        {
+            master.ModifyDate = DateTime.UtcNow;
+            master.CountryId = 1;
+            master.FinancialYearId = 1;
+            master.BusinessType = "Shop";
+            _company.Update(master);
+                Snackbar.Add("Updated Successfully.", Severity.Success);
+                LoadCompany();
+        }
+    }
+    async Task OnFileChange(InputFileChangeEventArgs e)
+	{
+		var format = "image/png";
+		var resizedImage = await e.File.RequestImageFileAsync(format, 300, 300);
+		var buffer = new byte[resizedImage.Size];
+		await resizedImage.OpenReadStream().ReadAsync(buffer);
+		var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+		if (imageData == null)
+		{
+			master.Logo = string.Empty;
+		}
+		else
+		{
+			master.Logo = imageData;
+		}
+	}
+}

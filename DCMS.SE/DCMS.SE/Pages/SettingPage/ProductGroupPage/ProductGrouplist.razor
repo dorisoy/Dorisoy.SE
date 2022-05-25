@@ -1,0 +1,166 @@
+﻿@page "/product/productgrouplist"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IProductGroup _productGroup
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb">
+            <h1> 商品类别</h1>
+            <ul>
+                <li> @localizer["Product"] / @localizer["类别"] </li>
+            </ul>
+        </div>
+        <div class="separator-breadcrumb border-top">
+        </div>
+    </div>
+    <div class="card wrapper">
+        <div class="card-body">
+            <div class="vgt-wrap ">
+                <div class="vgt-inner-wrap">
+                    <div class="vgt-global-search vgt-clearfix">
+                        <div class="vgt-global-search__actions vgt-pull-right">
+                            <div class="mt-2 mb-3">
+                              @*  <a href="/product/productgroupadd" class="btn btn-rounded btn-btn btn-primary btn-icon m-1">
+                                    <i class="i-Add"></i>
+                                    @localizer["Create"]
+                                </a>*@
+                                <MudButton Link="/product/productgroupadd" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add">添加</MudButton>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vgt-responsive">
+                        <MudTable Items="@listModel" 
+                            Dense="@dense" 
+                             MultiSelection="true"
+                            Hover="@hover" 
+                            Bordered="@bordered" Striped="@striped" 
+                            Filter="new Func<ProductGroup,bool>(Search)">
+                               <ColGroup>
+                                <col style="width: 60px;text-align:center" />
+                                <col />
+                                <col style="width:200px;text-align:center" />
+                            </ColGroup>
+
+
+                            <ToolBarContent>
+                                <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>名称</MudTh>
+                                <MudTh>操作</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="">@context.GroupName</MudTd>
+                                <MudTd DataLabel="">
+                          @*          <center>
+                                        <a href="/setting/productgroupedit/@context.GroupId">
+                                            <i class="i-Edit text-25 text-success"></i>
+                                        </a>
+                                        <a style="cursor:pointer;" @onclick="() => Delete(context.GroupId)">
+                                            <i class="i-Close-Window text-25 text-danger"></i>
+                                        </a>
+
+                                    </center>*@
+
+                                    
+                                       <MudButton Link="@("/product/productgroupedit/"+context.GroupId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
+
+                                        <MudButton  @onclick="() => Delete(context.GroupId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
+
+                                </MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数" />
+                            </PagerContent>
+                        </MudTable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private string searchString1 = "";
+    private string searchString2 = "";
+    List<ProductGroup> listModel;
+    string strMenu = "Product Group";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strShow == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        LoadData();
+        StateHasChanged();
+    }
+    private void LoadData()
+    {
+        listModel = _productGroup.GetAll();
+        StateHasChanged();
+    }
+    async Task Delete(int id)
+    {
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (confirmed)
+        {
+            if (id != 1)
+            {
+                bool isSave = false;
+                isSave = _productGroup.Delete(id);
+                if (isSave == true)
+                {
+                    Snackbar.Add("Delete Successfully.", Severity.Success);
+                    LoadData();
+                }
+                else
+                {
+                    Snackbar.Add("Cannot be delete. already in used.", Severity.Info);
+                }
+            }
+            else
+            {
+                Snackbar.Add("Default data cannot be delete.", Severity.Info);
+            }
+        }
+    }
+    private bool Search(ProductGroup element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString1))
+            return true;
+        if (element.GroupName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+}

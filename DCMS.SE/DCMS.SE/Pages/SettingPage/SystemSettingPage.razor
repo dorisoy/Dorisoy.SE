@@ -1,0 +1,119 @@
+﻿@page "/setting/systemsetting"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IVoucherType _voucherType
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["System Setting"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Setting"] </a></li> 
+                <li> @localizer["System Setting"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="card-body">
+            <div class="vgt-wrap "> 
+            <div class="vgt-inner-wrap">
+        <div class="vgt-responsive">
+            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<VoucherType,bool>(Search)">
+    <ToolBarContent>
+        <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@localizer["VoucherType Name"]</MudTh>
+        <MudTh>@localizer["Prefix"]</MudTh>
+        <MudTh>@localizer["Suffix"]</MudTh>
+        <MudTh>@localizer["Show Email"]</MudTh>
+        <MudTh>@localizer["Show Phone"]</MudTh>
+        <MudTh>@localizer["Show Discount"]</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        
+        <MudTd DataLabel="">@context.VoucherTypeName</MudTd>
+        <MudTd DataLabel="">@context.Prefix</MudTd>
+        <MudTd DataLabel="">@context.Suffix</MudTd>
+        <MudTd DataLabel="">@context.ShowEmail</MudTd>
+        <MudTd DataLabel="">@context.ShowPhone</MudTd>
+        <MudTd DataLabel="">@context.ShowDiscount</MudTd>
+        <MudTd DataLabel="">
+            <center>
+                                     <a style="cursor:pointer;" href="/setting/systemsettingedit/@context.VoucherTypeId">
+                                         <i class="i-Edit text-25 text-success"></i>
+                                         </a>
+                                    </center>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数"/>
+    </PagerContent>
+</MudTable>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+@code {
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private string searchString1 = "";
+    private string searchString2 = "";
+    List<VoucherType> listModel;
+    string strMenu = "System Setting";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected  override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strShow == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        LoadData();
+        StateHasChanged();
+    }
+    private  void LoadData()
+    {
+        listModel = _voucherType.GetAll();
+    }
+    private bool Search(VoucherType element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString1))
+            return true;
+        if (element.VoucherTypeName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+}

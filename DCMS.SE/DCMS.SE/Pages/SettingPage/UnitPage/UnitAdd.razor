@@ -1,0 +1,120 @@
+﻿@page "/setting/unitadd"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IUnit _unit
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Unit"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Setting"] </a></li> 
+                <li> @localizer["Add"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="card-body">
+            <div class="vgt-wrap "> 
+            <div class="vgt-inner-wrap">
+                <div class="vgt-global-search vgt-clearfix">
+        </div>
+        <div class="vgt-responsive">
+            <div class="form-group">
+                        <input type="hidden" @bind="master.UnitId">
+                    </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="recipient-name-1">@localizer["Unit Name"]</label>
+                            <input class="form-control" @bind="master.UnitName" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="recipient-name-1">@localizer["No of Decimal"]</label>
+                            <input class="form-control" @bind="master.NoOfDecimalplaces" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-secondary" @onclick="CloseModel" type="button">@localizer["Close"]</button>
+                    <button class="btn btn-primary" @onclick="() =>Save()" type="button">@localizer["Save"]</button>
+                        </div>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+
+
+@code {
+    Unit master = new Unit();
+    string strMenu = "Unit";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected  override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strShow == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        LoadData();
+        StateHasChanged();
+    }
+    private  void LoadData()
+    {
+        master.UnitName = string.Empty;
+    }
+    private  void Save()
+    {
+
+        if (master.UnitName == string.Empty)
+        {
+            Snackbar.Add("Type UnitName.", Severity.Info);
+        }
+        else
+        {
+            var isCheck = _unit.CheckName(master.UnitName);
+            if (isCheck == true)
+            {
+                Snackbar.Add("Already Exists.", Severity.Success);
+            }
+            else
+            {
+                master.CompanyId = 1;
+                master.AddedDate = DateTime.UtcNow;
+                _unit.Save(master);
+                Snackbar.Add("Saved Successfully.", Severity.Success);
+                navManager.NavigateTo("/setting/unitlist");
+            }
+        }
+    }
+    private void CloseModel()
+    {
+        navManager.NavigateTo("/setting/unitlist");
+    }
+}

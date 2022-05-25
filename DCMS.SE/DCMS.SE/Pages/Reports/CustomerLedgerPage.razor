@@ -1,0 +1,346 @@
+﻿@page "/report/customerledger"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IInventoryReport report
+@inject IAccountLedger _customer
+@inject ICompany _company
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@using System.Data;
+@using NPOI.SS.UserModel
+@using NPOI.XSSF.UserModel
+@using System.IO
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Customer Ledger"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Customer Ledger"] </a></li> 
+                <li> @localizer["Report"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="card-body">
+            <div class="vgt-wrap "> 
+            <div class="vgt-inner-wrap">
+                <div class="vgt-global-search vgt-clearfix">
+                 <div class="vgt-global-search__actions vgt-pull-right">
+                     <div class="mt-2 mb-3">
+                          <button class="btn btn-outline-success ripple m-1" @onclick="@(() => OpenDrawer(Anchor.End))"><i class="i-File-TXT"></i> Filter
+        </button>
+        <button onclick="printDiv('PrintDiv')" class="btn btn-warning btn-icon ripple btn-sm"><i class="i-Billing"></i>
+          Print
+        </button>
+        </div>
+        </div>
+        </div>
+        <div class="vgt-responsive">
+             <div id="PrintDiv" class="invoice mt-5">
+                 <table class="print-table" width="100%">
+                
+                <tbody><tr>
+                    <td align="left" class="print-table-tr">
+                        <img src="@company.Logo" class="companyimg" />
+                    </td>
+                    <td align="center" class="print-cominfo">
+                        <span class="company-txt" style="font-size:16px;">
+                            @company.CompanyName                  
+                        </span><br>
+                        @company.Address                        <br>
+                         @company.PhoneNo
+                    </td>
+                   
+                     <td align="right" class="print-table-tr">
+                        <date>
+                        @DateTime.Now
+                    </date>
+                    </td>
+                </tr>            
+                                   
+                                </tbody></table>
+            @((MarkupString)myMarkup)
+            </div>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        @*Filter*@
+        <MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">Filter</MudText>
+    </MudDrawerHeader>
+    <MudNavMenu>
+        <div class="row">
+            <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+        <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["From Date"]</legend>
+            <div>
+<input type="date" class="form-control" @bind="FromDate" />
+    </div>
+    </fieldset>
+    </div>
+    <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+        <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["To Date"]</legend>
+            <div>
+<input type="date" class="form-control" @bind="ToDate" />
+    </div>
+    </fieldset>
+    </div>
+            <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+        <fieldset class="form-group">
+            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Customer"]</legend>
+            <div>
+<select class="form-control" @bind="CustomerId" style="width:238px;">
+    <option value="0">选择</option>
+                              @foreach(var item in listCustomer)
+                                {
+                                    <option value="@item.LedgerId">@item.LedgerName</option>
+                                }
+                            </select>
+    </div>
+    </fieldset>
+    </div>
+    </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <button type="button" class="btn btn-primary ripple m-1 btn-sm btn-block" @onclick="() => Search()"><i class="i-Filter-2"></i>
+            @localizer["Filter"]
+          </button></div>
+          <div class="col-sm-12 col-md-6">
+              <button type="button" class="btn btn-danger ripple m-1 btn-sm btn-block" @onclick="@(() => CloseDrawer())"><i class="i-Power-2"></i>
+            @localizer["Close"]
+          </button>
+          </div>
+        </div>
+    </MudNavMenu>
+</MudDrawer>
+@code {
+    bool open;
+    Anchor anchor;
+    List<SalesMasterView> listModel = new List<SalesMasterView>();
+    List<AccountLedgerView> listCustomer = new List<AccountLedgerView>();
+    DateTime FromDate = DateTime.UtcNow.AddDays(-1);
+    DateTime ToDate = DateTime.UtcNow;
+    Company company = new Company();
+    int CustomerId = 0;
+    string myMarkup;
+    string strMenu = "Customer Ledger";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected  override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strShow == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        listCustomer = _customer.ViewAllCustomer(1); // 1 is companyid
+        company = _company.Edit(1);
+        Search();
+        StateHasChanged();
+    }
+     protected void Search()
+    {
+        string values = @"<table class='table table-striped'>
+                <tr>
+                    <th style='display:none;'>SN</th>
+                    <th>Date</th>
+                    <th>Voucher No</th>
+                    <th>Particular</th>
+                    <th>Dr.Amount / Receive</th>
+                    <th>Cr.Amount / Sales</th>
+                    <th>Balance</th>
+                </tr> ";
+
+            //OpeningBlnce
+            DataTable dtblsubOpening = new DataTable();
+            DataSet dsetOpening = new DataSet();
+            dsetOpening = report.CustomerLedgerOpening(Convert.ToDateTime(FromDate), CustomerId, 1);
+            int counter1 = 0;
+            dtblsubOpening = dsetOpening.Tables[0];
+            decimal decDebit = 0;
+            decimal decCredit = 0;
+            decimal totlDebit = 0;
+            decimal totlCredit = 0;
+            if (dtblsubOpening.Rows.Count > 0)
+            {
+                for (int i = 0; i < dtblsubOpening.Rows.Count; i++)
+                {
+                    decDebit = Convert.ToDecimal(dtblsubOpening.Rows[i]["Debit"].ToString());
+                    decCredit = Convert.ToDecimal(dtblsubOpening.Rows[i]["Credit"].ToString());
+                    counter1++;
+                    values += @"<tr>
+            <td style='display:none;'>" + counter1.ToString() + @"</td>
+            <td>" + @FromDate + @"</td>
+            <td>" + "" + @"</td>
+            <td style='font-style:bold; color:red; font-size:16px;'>" + "Opening Amount" + @"</td>
+            <td>" + dtblsubOpening.Rows[i]["Debit"].ToString() + @"</td>
+            <td>" + dtblsubOpening.Rows[i]["Credit"].ToString() + @"</td>
+            <td>" + "" + @"</td>
+        </tr>";
+
+
+                }
+            }
+
+            DataTable dtblsub = new DataTable();
+            DataSet dset = new DataSet();
+            dset = report.CustomerLedger(Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CustomerId, 1);
+            int counter = 0;
+            dtblsub = dset.Tables[0];
+            string strBalance = string.Empty;
+
+
+            if (dtblsub.Rows.Count > 0)
+            {
+                for (int i = 0; i < dtblsub.Rows.Count; i++)
+                {
+                    counter++;
+                    if (counter == 1)
+                    {
+                        strBalance = CalculateBalance(i, decDebit + decimal.Parse(dtblsub.Rows[i]["Debit"].ToString()), decimal.Parse(dtblsub.Rows[i]["Credit"].ToString()) + decCredit, strBalance);
+                    }
+                    else
+                    {
+                        strBalance = CalculateBalance(i, decimal.Parse(dtblsub.Rows[i]["Debit"].ToString()), decimal.Parse(dtblsub.Rows[i]["Credit"].ToString()), strBalance);
+                    }
+                    long decVoucherTypeId = Convert.ToInt64(dtblsub.Rows[i]["VoucherTypeId"].ToString());
+                    totlDebit = totlDebit + decimal.Parse(dtblsub.Rows[i]["Debit"].ToString());
+                    totlCredit = totlCredit + decimal.Parse(dtblsub.Rows[i]["Credit"].ToString());
+                    if (decVoucherTypeId == 8) //SalesInvoice
+                    {
+                        values += @"<tr>
+            <td style='display:none;'>" + counter.ToString() + @"</td>
+            <td>" + dtblsub.Rows[i]["Date"].ToString() + @"</td>
+            <td>" + dtblsub.Rows[i]["VoucherNo"].ToString() + @" </td>
+            <td style='font-style:bold; color:black; font-size:16px;'>" + dtblsub.Rows[i]["Particular"].ToString() + @"</td>
+            <td> " + dtblsub.Rows[i]["Debit"].ToString() + @"</td>
+            <td> " + dtblsub.Rows[i]["Credit"].ToString() + @"</td>
+            <td>" + strBalance.ToString() + @"</td>
+        </tr>";
+                    }
+                    else if (decVoucherTypeId == 9) //SalesReturn
+                    {
+                        values += @"<tr>
+            <td style='display:none;'>" + counter.ToString() + @"</td>
+            <td>" + dtblsub.Rows[i]["Date"].ToString() + @"</td>
+            <td>" + dtblsub.Rows[i]["VoucherNo"].ToString() + @" </td>
+            <td style='font-style:bold; color:black; font-size:16px;'>" + dtblsub.Rows[i]["Particular"].ToString() + @"</td>
+            <td> " + dtblsub.Rows[i]["Debit"].ToString() + @"</td>
+            <td> " + dtblsub.Rows[i]["Credit"].ToString() + @"</td>
+            <td>" + strBalance.ToString() + @"</td>
+        </tr>";
+                    }
+                    else if (decVoucherTypeId == 4) //Receive
+                    {
+                        values += @"<tr>
+            <td style='display:none;'>" + counter.ToString() + @"</td>
+            <td>" + dtblsub.Rows[i]["Date"].ToString() + @"</td>
+            <td>" + dtblsub.Rows[i]["VoucherNo"].ToString() + @" </td>
+            <td style='font-style:bold; color:black; font-size:16px;'>" + dtblsub.Rows[i]["particular"].ToString() + @"</td>
+            <td> " + dtblsub.Rows[i]["Debit"].ToString() + @"</td>
+            <td> " + dtblsub.Rows[i]["Credit"].ToString() + @"</td>
+            <td>" + strBalance.ToString() + @"</td>
+        </tr>";
+                    }
+
+                }
+            }
+            decimal decTotlDebitss = totlDebit + decDebit;
+            decimal decTotlCreditss = totlCredit + decCredit;
+            decimal decBlnce = decTotlDebitss - decTotlCreditss;
+            values += @"<tr>
+<td style='display:none;'></td>
+<td></td>
+<td style='font-style:bold; color:black; font-size:16px;'>Total</td>
+<td>" + "" + @"</td>
+<td style='font-style:bold; color:black; font-size:16px;'>" + decTotlDebitss + @"</td>
+<td style='font-style:bold; color:black; font-size:16px;'>" + decTotlCreditss + @"</td>
+<td>" + decBlnce + @"</td>
+</tr>";
+            values += "</table>";
+            myMarkup = values;
+    }
+    private string CalculateBalance(int index, decimal decDebit, decimal decCredit, string strPreviousBalance)
+    {
+        string strCurrentBalance = string.Empty;
+        string strCrOrDr = string.Empty;
+        decimal decRowBalance = 0;
+        try
+        {
+            if (index > 0)
+            {
+                string[] strLastBalance = strPreviousBalance.Split(' ');
+                if (strLastBalance.Length >= 2)
+                {
+                    if ((strLastBalance[1] == null ? "" : strLastBalance[1]) != string.Empty)
+                    {
+                        if (strLastBalance[1] == "Dr")
+                        {
+                            decDebit = decimal.Parse(strLastBalance[0]) + decDebit;
+                        }
+                        if (strLastBalance[1] == "Cr")
+                        {
+                            decCredit = decimal.Parse(strLastBalance[0]) + decCredit;
+                        }
+                    }
+                }
+            }
+            decRowBalance = decDebit - decCredit;
+            if (decRowBalance > 0)
+                strCrOrDr = " Dr";
+            else if (decRowBalance < 0)
+            {
+                decRowBalance = decRowBalance * (-1);
+                strCrOrDr = " Cr";
+            }
+            else
+                strCrOrDr = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return strCurrentBalance = Convert.ToString(decRowBalance) + strCrOrDr;
+    }
+    void OpenDrawer(Anchor anchor)
+    {
+        open = true;
+        this.anchor = anchor;
+    }
+    void CloseDrawer()
+    {
+        open = false;
+    }
+}

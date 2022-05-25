@@ -1,0 +1,137 @@
+﻿@page "/product/ProductGroupEdit/{id}"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IProductGroup _productGroup
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["商品类别"]</h1>
+            <ul>
+             <li> @localizer["Product"] / @localizer["类别"] / 编辑 </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card"><div class="card-body">
+                        <div class="row">
+                            <EditForm Model="@master" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                                <div class="col-md-12 form-group mb-3">
+                                    <span>
+                                        <div class="form-group">
+                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Product Group"]</legend>
+                                            <div>
+                                                <input type="text" class="form-control" @bind="master.GroupName" placeholder="Product Group">
+                                    <ValidationMessage For="@(() => master.GroupName)" />
+                                                </div>
+                                                </div>
+                                                </span>
+                                                </div>
+                                                <div class="col-md-12 form-group mb-3">
+                                    <span>
+                                        <div class="form-group">
+                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Group Under"]</legend>
+                                            <div>
+                                                <select class="form-control" @bind="master.GroupUnder">
+                                          @foreach(var item in listProductgorup)
+                                    {
+                                    <option value="@item.GroupId"> @item.GroupName</option>
+
+                                    }
+                                        </select>
+                                                </div>
+                                                </div>
+                                                </span>
+                                                </div>
+                                                <div class="col-md-12 form-group mb-3">
+                                    <span>
+                                        <div class="form-group">
+                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Narration"]</legend>
+                                            <div>
+                                                <input type="text" class="form-control" @bind="master.Narration" placeholder="Narration">
+                                    <ValidationMessage For="@(() => master.Narration)" />
+                                                </div>
+                                                </div>
+                                                </span>
+                                                </div>
+                                                <div class="mt-3 col-md-12">
+                                                    <button type="submit" class="btn btn-primary">@localizer["Submit"]</button>
+                                                    <button type="button" class="btn btn-danger" @onclick="@Cancel">返回</button>
+                                                    </div>
+                                                </EditForm>
+            </div>
+            </div>
+            </div> 
+            </div>
+            </div>
+            </div>
+            </div>
+@code {
+    [Parameter]
+    public string id { get; set; }
+    ProductGroup master = new ProductGroup();
+    List<ProductGroup> listProductgorup;
+    string strMenu = "Product Group";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected async override void OnInitialized()
+    {
+        RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strEdit == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        master = _productGroup.Edit(Convert.ToInt32(id));
+        listProductgorup = _productGroup.GetAll();
+        StateHasChanged();
+    }
+    public void HandleValidSubmit()
+    {
+        var isCheck = _productGroup.CheckNameId(master.GroupName);
+        if (isCheck == master.GroupId || isCheck == 0)
+        {
+            master.CompanyId = 1;
+            master.ModifyDate = DateTime.Now;
+            _productGroup.Update(master);
+            Snackbar.Add("Updated Successfully.", Severity.Success);
+            navManager.NavigateTo("/product/productgrouplist");
+        }
+        else
+        {
+             Snackbar.Add("Already Exists.", Severity.Info);
+        }
+    }
+    void Cancel()
+    {
+        navManager.NavigateTo("/product/productgrouplist");
+    }
+    }

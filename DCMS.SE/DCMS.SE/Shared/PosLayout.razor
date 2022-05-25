@@ -1,0 +1,128 @@
+﻿@inherits LayoutComponentBase
+@inject IStringLocalizer<App> Localizer
+@inject ILocalStorageService sessionStorage
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.ExtraSmall" />
+<AuthorizeView>
+    <Authorized>
+
+        <MudLayout RightToLeft="@_rightToLeft">
+            <div class="app-admin-wrap layout-sidebar-vertical sidebar-full">
+                <MudAppBar Elevation="25">
+                    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Primary" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+                    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                            <MudButton Variant="Variant.Filled" Link="/sales/SalesInvoiceAdd" Color="Color.Primary">专业模式</MudButton>
+                    </MudHidden>
+                    <MudSpacer />
+
+                    <MudSpacer />
+                    <LoginDisplay></LoginDisplay>
+                    <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                        <MudMenu Icon="@Icons.Filled.Settings" Color="Color.Inherit" Dense="true" Direction="Direction.Right" OffsetY="true">
+                            <div class="px-2">
+                                <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@((e) => DarkMode())" />
+                                <MudIconButton Icon="@Icons.Material.Filled.FormatTextdirectionRToL" Color="Color.Inherit" OnClick="@((e) => RightToLeftToggle())" />
+                            </div>
+                        </MudMenu>
+                    </MudHidden>
+                </MudAppBar>
+
+                <MudDrawer @bind-Open=_drawerOpen Elevation="25" Class="mudblazor-appbar-band">
+                    <MudDrawerHeader Class="mudblazor-brand" LinkToIndex="true">
+
+                        @* <img src="img/logo.jpg" style="margin-top:-20px;" width="80" height="80" />*@
+                        <MudText style="margin:4px auto;font-size:22px">DCMS.SE</MudText>
+
+                    </MudDrawerHeader>
+                    <div class="sidebar-panel bg-white">
+                        <NavMenu />
+                    </div>
+                </MudDrawer>
+                <MudMainContent Class="mudblazor-main-content">
+                    <MudContainer MaxWidth="MaxWidth.Large">
+                        @Body
+                    </MudContainer>
+
+                    <MudScrollToTop TopOffset="400">
+                        <MudFab Icon="@Icons.Material.Filled.KeyboardArrowUp" Color="Color.Primary" />
+                    </MudScrollToTop>
+                </MudMainContent>
+            </div>
+        </MudLayout>
+    </Authorized>
+    <NotAuthorized>
+        <LoginDisplay />
+    </NotAuthorized>
+</AuthorizeView>
+
+@code { string name;
+    private bool _drawerOpen = false;
+    private bool _rightToLeft = false;
+    private string searchValue = string.Empty;
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private void RightToLeftToggle()
+    {
+        _rightToLeft = !_rightToLeft;
+    }
+    protected override void OnInitialized()
+    {
+        StateHasChanged();
+    }
+
+
+
+    private void DarkMode()
+    {
+        if (_currentTheme == _defaultTheme)
+        {
+            _currentTheme = _darkTheme;
+        }
+        else
+        {
+            _currentTheme = _defaultTheme;
+        }
+    }
+
+    private MudTheme _currentTheme = new MudTheme();
+    private readonly MudTheme _defaultTheme =
+        new MudTheme()
+            {
+                Palette = new Palette()
+                {
+                    Black = "#272c34"
+                }
+            };
+    private readonly MudTheme _darkTheme =
+        new MudTheme()
+            {
+                Palette = new Palette()
+                {
+                    Black = "#27272f",
+                    Background = "#32333d",
+                    BackgroundGrey = "#27272f",
+                    Surface = "#373740",
+                    DrawerBackground = "#27272f",
+                    DrawerText = "rgba(255,255,255, 0.50)",
+                    AppbarBackground = "#27272f",
+                    AppbarText = "rgba(255,255,255, 0.70)",
+                    TextPrimary = "rgba(255,255,255, 0.70)",
+                    TextSecondary = "rgba(255,255,255, 0.50)",
+                    ActionDefault = "#adadb1",
+                    ActionDisabled = "rgba(255,255,255, 0.26)",
+                    ActionDisabledBackground = "rgba(255,255,255, 0.12)",
+                    DrawerIcon = "rgba(255,255,255, 0.50)"
+                }
+            };
+}

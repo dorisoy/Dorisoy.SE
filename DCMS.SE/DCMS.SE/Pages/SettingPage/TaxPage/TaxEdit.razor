@@ -1,0 +1,120 @@
+﻿@page "/setting/taxedit/{id}"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject ITax _tax
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Tax"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Setting"] </a></li> 
+                <li> @localizer["Edit"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="card-body">
+            <div class="vgt-wrap "> 
+            <div class="vgt-inner-wrap">
+        <div class="vgt-responsive">
+            <div class="form-group">
+                            <label class="col-form-label" for="recipient-name-1">@localizer["Tax Name"]</label>
+                            <input class="form-control" @bind="master.TaxName" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="recipient-name-1">@localizer["Rate"]</label>
+                            <input class="form-control" @bind="master.Rate" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="recipient-name-1">@localizer["Is Active"]</label>
+                            <input class="form-control" @bind="master.IsActive" type="checkbox" />
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-secondary" @onclick="CloseModel" type="button">@localizer["Close"]</button>
+                    <button class="btn btn-primary" @onclick="() =>Save()" type="button">@localizer["Save"]</button>
+                        </div>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+
+
+@code {
+    [Parameter]
+    public string id { get; set; }
+    Tax master = new Tax();
+    string strMenu = "Tax";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+    protected  override void OnInitialized()
+    {
+        //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
+        //CheckPriviliage
+        privi = _role.PriviliageCheck(strMenu, RoleId, 1);
+        if (privi != null)
+        {
+            strAdd = privi.AddAction;
+            strEdit = privi.EditAction;
+            strDelete = privi.DeleteAction;
+            strShow = privi.ShowAction;
+            if (strEdit == false)
+            {
+                Snackbar.Add("You dont have to privilege.", Severity.Success);
+                navManager.NavigateTo("dashboard");
+            }
+        }
+        else
+        {
+            strAdd = true;
+            strEdit = true;
+            strDelete = true;
+            strShow = true;
+        }
+        LoadData();
+        StateHasChanged();
+    }
+    private  void LoadData()
+    {
+        master = _tax.Edit( Convert.ToInt32(id));
+    }
+    private  void Save()
+    {
+        if (master.TaxName == string.Empty)
+            {
+                Snackbar.Add("Type Tax.", Severity.Info);
+            }
+            else
+            {
+                var isCheck = _tax.CheckNameId(master.TaxName);
+                if (isCheck == master.TaxId || isCheck == 0)
+                {
+                    master.CompanyId = 1;
+                    master.ModifyDate = DateTime.UtcNow;
+                    _tax.Update(master);
+                    Snackbar.Add("Saved Successfully.", Severity.Success);
+                    navManager.NavigateTo("/setting/taxlist");
+                }
+                else
+                {
+                    Snackbar.Add("Already Exists.", Severity.Info);
+                }
+            }
+    }
+    private void CloseModel()
+    {
+        navManager.NavigateTo("/setting/taxlist");
+    }
+}

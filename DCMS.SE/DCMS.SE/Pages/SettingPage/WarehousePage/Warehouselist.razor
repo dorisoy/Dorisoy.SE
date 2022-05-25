@@ -1,0 +1,134 @@
+﻿@page "/setting/warehouselist"
+@inject IStringLocalizer<App> localizer
+@inject ILocalStorageService sessionStorage
+@inject IRole _role
+@inject IWarehouse accountLedger
+@inject IJSRuntime JsRuntime
+@inject NavigationManager navManager
+@inject ISnackbar Snackbar
+<div class="main-content pt-4">
+    <div>
+        <div class="breadcrumb"><h1> @localizer["Warehouse"]</h1>
+            <ul>
+                <li><a href=""> @localizer["Setting"] </a></li> 
+                <li> @localizer["Warehouse"] </li>
+            </ul>
+            </div>
+            <div class="separator-breadcrumb border-top">
+
+            </div>
+            </div>
+            <div class="card wrapper">
+            <div class="card-body">
+            <div class="vgt-wrap "> 
+            <div class="vgt-inner-wrap">
+                <div class="vgt-global-search vgt-clearfix">
+                 <div class="vgt-global-search__actions vgt-pull-right">
+                     <div class="mt-2 mb-3">
+                         <a href="/setting/warehouseadd" class="btn btn-rounded btn-btn btn-primary btn-icon m-1"><i class="i-Add"></i>
+          @localizer["Create"]
+        </a>
+        </div>
+        </div>
+        </div>
+        <div class="vgt-responsive">
+            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<Warehouse,bool>(Search)">
+    <ToolBarContent>
+        <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@localizer["Warehouse Name"]</MudTh>
+        <MudTh>@localizer["Mobile"]</MudTh>
+        <MudTh>@localizer["Email"]</MudTh>
+        <MudTh>@localizer["Country"]</MudTh>
+        <MudTh>@localizer["City"]</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        
+        <MudTd DataLabel="">@context.Name</MudTd>
+        <MudTd DataLabel="">@context.Mobile</MudTd>
+        <MudTd DataLabel="">@context.Email</MudTd>
+        <MudTd DataLabel="">@context.Country</MudTd>
+        <MudTd DataLabel="">@context.City</MudTd>
+        <MudTd DataLabel="">
+            <center>
+                                     <a style="cursor:pointer;" href="/setting/warehouseedit/@context.WarehouseId">
+                                         <i class="i-Edit text-25 text-success"></i>
+                                         </a>
+                                          <a style="cursor:pointer;" @onclick="() => Delete(context.WarehouseId)">
+                                              <i class="i-Close-Window text-25 text-danger"></i></a>
+                                                                                
+                                    </center>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数"/>
+    </PagerContent>
+</MudTable>
+                </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+@code {
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private string searchString1 = "";
+    private string searchString2 = "";
+    List<Warehouse> listModel;
+    string strMenu = "Warehouse";
+    bool strAdd = true;
+    bool strEdit = true;
+    bool strDelete = true;
+    bool strShow = true;
+    int RoleId = 1;
+    Privilege privi = new Privilege();
+	protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        LoadData();
+        StateHasChanged();
+    }
+    private  void LoadData()
+    {
+        listModel = accountLedger.GetAll();
+        StateHasChanged();
+    }
+    async Task Delete(int id)
+    {
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (confirmed)
+        {
+            if (id != 1)
+            {
+                bool isSave = false;
+                isSave = accountLedger.Delete(id);
+                if (isSave == true)
+                {
+                    Snackbar.Add("Delete Successfully.", Severity.Success);
+                    LoadData();
+                }
+                else
+                {
+                    Snackbar.Add("Cannot be delete. already in used.", Severity.Info);
+                }
+            }
+            else
+            {
+                Snackbar.Add("Default data cannot be delete.", Severity.Info);
+            }
+        }
+    }
+    private bool Search(Warehouse element)
+    {
+        if (string.IsNullOrWhiteSpace(searchString1))
+            return true;
+        if (element.Name.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+}

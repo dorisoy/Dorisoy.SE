@@ -1,0 +1,144 @@
+﻿@inject NavigationManager NavigationManager
+@using System.Data;
+@inject IInventoryReport report
+@inject ILocalStorageService sessionStorage
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<AuthorizeView>
+    <Authorized>
+
+        @*<MudMenu Icon="@Icons.Material.Outlined.Translate" Color="Color.Inherit" Direction="Direction.Bottom" OffsetY="true" Dense="true">
+            <MudMenuItem>English</MudMenuItem>
+            <MudMenuItem>Swedish</MudMenuItem>
+            <MudMenuItem>Old Norse</MudMenuItem>
+        </MudMenu>*@
+        <div class="dropdown" style="cursor:pointer;">
+                    <div class="badge-top-container" role="button" id="dropdownNotification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="badge badge-primary"></span>
+                        <i class="i-Bell text-muted header-icon"></i>
+                    </div>
+                    <!-- Notification dropdown -->
+                    <div class="dropdown-menu dropdown-menu-right notification-dropdown rtl-ps-none ps" aria-labelledby="dropdownNotification" data-perfect-scrollbar="" data-suppress-scroll-x="true" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(40px, 36px, 0px);">
+                        <div class="dropdown-item d-flex">
+                            <div class="notification-icon">
+                                <i class="i-Speach-Bubble-6 text-primary mr-1"></i>
+                            </div>
+                            <div class="notification-details flex-grow-1">
+                                <p class="m-0 d-flex align-items-center">
+                                    <span>@NegativeStkreminder</span>
+                                    @*<span class="badge badge-pill badge-primary ml-1 mr-1">new</span>
+                                    <span class="flex-grow-1"></span>
+                                    <span class="text-small text-muted ml-auto">10 sec ago</span>*@
+                                </p>
+                                @*<p class="text-small text-muted m-0">James: Hey! are you busy?</p>*@
+                            </div>
+                        </div>
+                        <div class="dropdown-item d-flex">
+                            <div class="notification-icon">
+                                <i class="i-Receipt-3 text-success mr-1"></i>
+                            </div>
+                            <div class="notification-details flex-grow-1">
+                                <p class="m-0 d-flex align-items-center">
+                                    <span>@MinStkreminder</span>
+                                    @*<span class="badge badge-pill badge-success ml-1 mr-1">new</span>
+                                    <span class="flex-grow-1"></span>
+                                    <span class="text-small text-muted ml-auto">2 hours ago</span>*@
+                                </p>
+                                @*<p class="text-small text-muted m-0">1 Headphone, 3 iPhone x</p>*@
+                            </div>
+                        </div>
+                        <div class="dropdown-item d-flex">
+                            <div class="notification-icon">
+                                <i class="i-Empty-Box text-danger mr-1"></i>
+                            </div>
+                            <div class="notification-details flex-grow-1">
+                                <p class="m-0 d-flex align-items-center">
+                                    <span>@MaxStkreminder</span>
+                                    @*<span class="badge badge-pill badge-danger ml-1 mr-1">3</span>
+                                    <span class="flex-grow-1"></span>
+                                    <span class="text-small text-muted ml-auto">10 hours ago</span>*@
+                                </p>
+                                @*<p class="text-small text-muted m-0">Headphone E67, R98, XL90, Q77</p>*@
+                            </div>
+                        </div>
+                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+                </div>
+        <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
+
+            <ActivatorContent>
+                <MudAvatar Image="img/profile.jpg" />
+            </ActivatorContent>
+            <ChildContent>
+                <PersonCard Class="mt-n2" />
+                <MudDivider Class="mb-2" />
+
+                <a style="cursor:pointer; margin-right:10px; float:right;" @onclick="Logout">Logout</a>
+            </ChildContent>
+        </MudMenu>
+
+        @*Hello, @context.User.Identity.Name
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+</MudMenu>
+ <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+    <a style="text-decoration: initial;" id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+</MudMenu>*@
+    </Authorized>
+    <NotAuthorized>
+        <div class="inner-button" style="margin: 0 auto;width: 260px;margin-top: 174px;">
+             <a class="btn btn-primary" href="/">Login</a>
+                        </div>
+        @*<a href="Identity/Account/Register">Register</a>*@
+        @*@*<a href="Identity/Account/Login">Login</a>*@
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+    string NegativeStkreminder = string.Empty;
+    string MinStkreminder = string.Empty;
+    string MaxStkreminder = string.Empty;
+    string ReordrStkreminder = string.Empty;
+    string ShortExpiryReminder = string.Empty;
+    protected override void OnInitialized()
+    {
+        LoadData();
+        StateHasChanged();
+
+    }
+    protected  void LoadData()
+    {
+        DataTable dtbl = new DataTable();
+        DataSet dtset = new DataSet();
+
+        dtbl = report.StockSearch(0, 0, "Negative Stock", 1);
+        if (dtbl.Rows.Count > 0)
+        {
+            if (dtbl.Rows.Count == 1)
+                NegativeStkreminder = NegativeStkreminder + "1 Negative stock product \n\n";
+            else
+                NegativeStkreminder = NegativeStkreminder + dtbl.Rows.Count + " Negative stock products\n\n";
+        }
+
+        dtbl = report.StockSearch(0, 0, "Minimum Level", 1);
+        if (dtbl.Rows.Count > 0)
+        {
+            if (dtbl.Rows.Count == 1)
+                MinStkreminder = MinStkreminder + "1 Minimum stock product \n\n";
+            else
+                MinStkreminder = MinStkreminder + dtbl.Rows.Count + "  Minimum stock products \n\n";
+        }
+
+        dtbl = report.StockSearch(0, 0, "Maximum Level", 1);
+        if (dtbl.Rows.Count > 0)
+        {
+            if (dtbl.Rows.Count == 1)
+                MaxStkreminder = MaxStkreminder + "1 Maximum stock product \n\n";
+            else
+                MaxStkreminder = MaxStkreminder + dtbl.Rows.Count + "  Maximum stock products \n\n";
+        }
+        StateHasChanged();
+    }
+    public async Task Logout()
+    {
+        await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedOut();
+        await sessionStorage.ClearAsync();
+        NavigationManager.NavigateTo("");
+    }
+}

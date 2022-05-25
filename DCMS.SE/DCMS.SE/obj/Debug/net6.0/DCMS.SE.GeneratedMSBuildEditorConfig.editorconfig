@@ -1,0 +1,356 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = DCMS.SE
+build_property.RootNamespace = DCMS.SE
+build_property.ProjectDir = D:\Git\Dorisoy.Pos\DCMS.SE\DCMS.SE\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\Git\Dorisoy.Pos\DCMS.SE\DCMS.SE
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ExpensesPage/ExpenseAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZW5zZXNQYWdlXEV4cGVuc2VBZGQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ExpensesPage/ExpenseCategoryPage/ExpenseCategoryAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZW5zZXNQYWdlXEV4cGVuc2VDYXRlZ29yeVBhZ2VcRXhwZW5zZUNhdGVnb3J5QWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ExpensesPage/ExpenseCategoryPage/ExpenseCategoryEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZW5zZXNQYWdlXEV4cGVuc2VDYXRlZ29yeVBhZ2VcRXhwZW5zZUNhdGVnb3J5RWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ExpensesPage/ExpenseCategoryPage/Expenseslist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZW5zZXNQYWdlXEV4cGVuc2VDYXRlZ29yeVBhZ2VcRXhwZW5zZXNsaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ExpensesPage/ExpenseEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZW5zZXNQYWdlXEV4cGVuc2VFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ExpensesPage/Expenseslist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZW5zZXNQYWdlXEV4cGVuc2VzbGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/FetchData.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/LoginPages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5QYWdlc1xMb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PopupCard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUG9wdXBDYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PosInvoice/PosInvoicePage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUG9zSW52b2ljZVxQb3NJbnZvaWNlUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ProductPage/BarcodeCode.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFBhZ2VcQmFyY29kZUNvZGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ProductPage/ProductAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFBhZ2VcUHJvZHVjdEFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ProductPage/ProductEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFBhZ2VcUHJvZHVjdEVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ProductPage/Productlist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFBhZ2VcUHJvZHVjdGxpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/ProductPage/QrCode.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdFBhZ2VcUXJDb2RlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseInvoicePage/PurchaseInvoice/PaymentSupplier.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VJbnZvaWNlUGFnZVxQdXJjaGFzZUludm9pY2VcUGF5bWVudFN1cHBsaWVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseInvoicePage/PurchaseInvoice/PurchaseInvoiceAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VJbnZvaWNlUGFnZVxQdXJjaGFzZUludm9pY2VcUHVyY2hhc2VJbnZvaWNlQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseInvoicePage/PurchaseInvoice/PurchaseInvoiceDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VJbnZvaWNlUGFnZVxQdXJjaGFzZUludm9pY2VcUHVyY2hhc2VJbnZvaWNlRGV0YWlscy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseInvoicePage/PurchaseInvoice/PurchaseInvoiceEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VJbnZvaWNlUGFnZVxQdXJjaGFzZUludm9pY2VcUHVyY2hhc2VJbnZvaWNlRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseInvoicePage/PurchaseInvoice/PurchaseInvoicelist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VJbnZvaWNlUGFnZVxQdXJjaGFzZUludm9pY2VcUHVyY2hhc2VJbnZvaWNlbGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseInvoicePage/PurchaseInvoice/SupplierPaymentShow.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VJbnZvaWNlUGFnZVxQdXJjaGFzZUludm9pY2VcU3VwcGxpZXJQYXltZW50U2hvdy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseInvoicePage/SupplierPage/SupplierAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VJbnZvaWNlUGFnZVxTdXBwbGllclBhZ2VcU3VwcGxpZXJBZGQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseInvoicePage/SupplierPage/SupplierEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VJbnZvaWNlUGFnZVxTdXBwbGllclBhZ2VcU3VwcGxpZXJFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseInvoicePage/SupplierPage/Supplierlist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VJbnZvaWNlUGFnZVxTdXBwbGllclBhZ2VcU3VwcGxpZXJsaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseReturnPage/PurchaseReturnInvoiceAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VSZXR1cm5QYWdlXFB1cmNoYXNlUmV0dXJuSW52b2ljZUFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseReturnPage/PurchaseReturnInvoiceDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VSZXR1cm5QYWdlXFB1cmNoYXNlUmV0dXJuSW52b2ljZURldGFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseReturnPage/PurchaseReturnInvoiceEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VSZXR1cm5QYWdlXFB1cmNoYXNlUmV0dXJuSW52b2ljZUVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/PurchaseReturnPage/PurchasereturnInvoicelist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHVyY2hhc2VSZXR1cm5QYWdlXFB1cmNoYXNlcmV0dXJuSW52b2ljZWxpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Reports/CustomerLedgerPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xDdXN0b21lckxlZGdlclBhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Reports/PurcgaseReportsPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xQdXJjZ2FzZVJlcG9ydHNQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Reports/PurchasePaymentPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xQdXJjaGFzZVBheW1lbnRQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Reports/SalesReceivePage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xTYWxlc1JlY2VpdmVQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Reports/SalesReportsPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xTYWxlc1JlcG9ydHNQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Reports/StockReport.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xTdG9ja1JlcG9ydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Reports/SupplierLedgerPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xTdXBwbGllckxlZGdlclBhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Reports/WarehouseReportsPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xXYXJlaG91c2VSZXBvcnRzUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesInvoicePage/CustomerPage/CustomerAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNJbnZvaWNlUGFnZVxDdXN0b21lclBhZ2VcQ3VzdG9tZXJBZGQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesInvoicePage/CustomerPage/CustomerEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNJbnZvaWNlUGFnZVxDdXN0b21lclBhZ2VcQ3VzdG9tZXJFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesInvoicePage/CustomerPage/Customerlist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNJbnZvaWNlUGFnZVxDdXN0b21lclBhZ2VcQ3VzdG9tZXJsaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesInvoicePage/SalesInvoice/ReceiveCustomerShow.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNJbnZvaWNlUGFnZVxTYWxlc0ludm9pY2VcUmVjZWl2ZUN1c3RvbWVyU2hvdy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesInvoicePage/SalesInvoice/SalesInvoiceAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNJbnZvaWNlUGFnZVxTYWxlc0ludm9pY2VcU2FsZXNJbnZvaWNlQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesInvoicePage/SalesInvoice/SalesInvoiceDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNJbnZvaWNlUGFnZVxTYWxlc0ludm9pY2VcU2FsZXNJbnZvaWNlRGV0YWlscy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesInvoicePage/SalesInvoice/SalesInvoiceEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNJbnZvaWNlUGFnZVxTYWxlc0ludm9pY2VcU2FsZXNJbnZvaWNlRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesInvoicePage/SalesInvoice/SalesInvoicelist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNJbnZvaWNlUGFnZVxTYWxlc0ludm9pY2VcU2FsZXNJbnZvaWNlbGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesReturnPage/SalesreturnInvoiceAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNSZXR1cm5QYWdlXFNhbGVzcmV0dXJuSW52b2ljZUFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesReturnPage/SalesReturnInvoiceDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNSZXR1cm5QYWdlXFNhbGVzUmV0dXJuSW52b2ljZURldGFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesReturnPage/SalesReturnInvoiceEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNSZXR1cm5QYWdlXFNhbGVzUmV0dXJuSW52b2ljZUVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SalesReturnPage/SalesreturnInvoicelist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNSZXR1cm5QYWdlXFNhbGVzcmV0dXJuSW52b2ljZWxpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/BrandPage/BrandAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcQnJhbmRQYWdlXEJyYW5kQWRkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/BrandPage/BrandEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcQnJhbmRQYWdlXEJyYW5kRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/BrandPage/Brandlist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcQnJhbmRQYWdlXEJyYW5kbGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/CompanyPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcQ29tcGFueVBhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/CurrencyPage/CurrencyList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcQ3VycmVuY3lQYWdlXEN1cnJlbmN5TGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/PermissionPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcUGVybWlzc2lvblBhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/ProductGroupPage/ProductGroupAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcUHJvZHVjdEdyb3VwUGFnZVxQcm9kdWN0R3JvdXBBZGQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/ProductGroupPage/ProductGroupEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcUHJvZHVjdEdyb3VwUGFnZVxQcm9kdWN0R3JvdXBFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/ProductGroupPage/ProductGrouplist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcUHJvZHVjdEdyb3VwUGFnZVxQcm9kdWN0R3JvdXBsaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/RoleList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcUm9sZUxpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/SystemSettingEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcU3lzdGVtU2V0dGluZ0VkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/SystemSettingPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcU3lzdGVtU2V0dGluZ1BhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/TaxPage/TaxAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcVGF4UGFnZVxUYXhBZGQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/TaxPage/TaxEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcVGF4UGFnZVxUYXhFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/TaxPage/Taxlist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcVGF4UGFnZVxUYXhsaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/UnitPage/UnitAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcVW5pdFBhZ2VcVW5pdEFkZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/UnitPage/UnitEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcVW5pdFBhZ2VcVW5pdEVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/UnitPage/Unitlist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcVW5pdFBhZ2VcVW5pdGxpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/UserPage/Userlist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcVXNlclBhZ2VcVXNlcmxpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/WarehousePage/WarehouseAdd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcV2FyZWhvdXNlUGFnZVxXYXJlaG91c2VBZGQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/WarehousePage/WarehouseEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcV2FyZWhvdXNlUGFnZVxXYXJlaG91c2VFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/SettingPage/WarehousePage/Warehouselist.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2V0dGluZ1BhZ2VcV2FyZWhvdXNlUGFnZVxXYXJlaG91c2VsaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Shared/BlankLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEJsYW5rTGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Shared/ChooseLanguage.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENob29zZUxhbmd1YWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Shared/LoginDisplay.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luRGlzcGxheS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Shared/LoginLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luTGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Shared/PersonCard.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFBlcnNvbkNhcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Shared/PosLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFBvc0xheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-e3hckr2b00
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-yxh6jo65sm
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Git/Dorisoy.Pos/DCMS.SE/DCMS.SE/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

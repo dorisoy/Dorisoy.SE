@@ -1,0 +1,173 @@
+﻿@inject ILogin _login
+@inject IStringLocalizer<NavMenu> localizer
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <div class="scroll-nav ps" data-perfect-scrollbar="data-perfect-scrollbar" data-suppress-scroll-x="true">
+        <div class="side-nav">
+            <div class="main-menu">
+                <ul class="metismenu" id="menu" style="margin-top:20px;">
+                    <li class="Ul_li--hover">
+                        <a class="" href="/dashboard"><i class="i-Bar-Chart text-20 mr-2 text-muted"></i><span class="item-name text-15 text-muted">控制面板</span></a>
+                    </li>
+                    <li class="Ul_li--hover">
+                        <a class="has-arrow" @onclick="()=>expandSubMenu= !expandSubMenu">
+                            <i data-v-7074f502="" class="nav-icon i-Files"></i>
+                            <span data-v-7074f502="" class="item-name text-15 text-muted">商品</span>
+                        </a>
+                        @if (expandSubMenu)
+                        {
+                            <ul class="">
+                                <li class="item-name"><a href="/product/productadd"><i data-v-7074f502="" class="nav-icon i-Add-File"></i><span class="item-name">添加商品</span></a></li>
+                                <li class="item-name"></li>
+                                <li class="nav-item"><a href="/product/productlist"><i data-v-7074f502="" class="nav-icon i-Files"></i><span class="item-name">商品管理</span></a></li>
+                                <li class="item-name"><a href="/product/productgrouplist"><i data-v-7074f502="" class="nav-icon i-Files"></i><span class="item-name">商品类别</span></a></li>
+                            </ul>
+                        }
+                    </li>
+
+                    <li class="Ul_li--hover">
+                        <a class="has-arrow" @onclick="()=>expandSubMenu1= !expandSubMenu1"><i data-v-7074f502="" class="nav-icon i-Receipt"></i><span class="item-name text-15 text-muted">采购</span></a>
+                        @if (expandSubMenu1)
+                        {
+                            <ul class="">
+                                <li class="item-name"><a href="/purchase/purchaseinvoiceadd"><i data-v-7074f502="" class="nav-icon i-Add-File"></i><span class="item-name">创建采购单</span></a></li>
+                                <li class="item-name"><a href="/purchase/purchaseinvoicelist"><i data-v-7074f502="" class="nav-icon i-Files"></i><span class="item-name">采购单</span></a></li>
+                                <li class="item-name"><a href="/purchase/purchasereturnadd"><i data-v-7074f502="" class="nav-icon i-Add-File"></i><span class="item-name">创建采购退货单</span></a></li>
+                                <li class="item-name"><a href="/purchase/purchasereturnlist"><i data-v-7074f502="" class="nav-icon i-Files"></i><span class="item-name">采购退货</span></a></li>
+                                <li class="item-name"><a href="/purchase/supplierlist"><i data-v-7074f502="" class="nav-icon i-Add-File"></i><span class="item-name">供应商</span></a></li>
+                            </ul>
+                        }
+                    </li>
+                    @if (users.RoleId == 2)
+                    {
+
+                    }
+                    else
+                    {
+                        <li class="Ul_li--hover">
+                            <a class="has-arrow" @onclick="()=>expandSubMenu2= !expandSubMenu2"><i data-v-7074f502="" class="nav-icon i-Full-Cart"></i><span class="item-name text-15 text-muted">销售</span></a>
+                            @if (expandSubMenu2)
+                            {
+                                <ul class="">
+                                    <li class="item-name"><a href="/sales/salesinvoiceadd"><i data-v-7074f502="" class="nav-icon i-Add-File"></i><span class="item-name">创建销售单</span></a></li>
+                                    <li class="item-name"><a href="/sales/salesinvoicelist"><i data-v-7074f502="" class="nav-icon i-Files"></i><span class="item-name">销售单</span></a></li>
+                                    <li class="item-name"><a href="/sales/salesreturninvoiceadd"><i data-v-7074f502="" class="nav-icon i-Add-File"></i><span class="item-name">创建销售退货</span></a></li>
+                                    <li class="item-name"><a href="/sales/salesreturninvoicelist"><i data-v-7074f502="" class="nav-icon i-Files"></i><span class="item-name">销售退货</span></a></li>
+                                    <li class="item-name"><a href="/sales/customerlist"><i data-v-7074f502="" class="nav-icon i-Add-File"></i><span class="item-name">终端客户</span></a></li>
+                                </ul>
+                            }
+                        </li>
+                    }
+                    <li class="Ul_li--hover">
+                        <a class="has-arrow" @onclick="()=>expandSubMenu3= !expandSubMenu3"><i data-v-7074f502="" class="nav-icon i-Wallet"></i><span class="item-name text-15 text-muted">费用</span></a>
+                        @if (expandSubMenu3)
+                        {
+                            <ul class="">
+                                <li class="item-name"><a href="/expenses/expensesadd"><i data-v-7074f502="" class="nav-icon i-Add-File"></i><span class="item-name">创建费用单</span></a></li>
+                                <li class="item-name"></li>
+                                <li class="nav-item"><a href="/expenses/expenseslist"><i data-v-7074f502="" class="nav-icon i-Files"></i><span class="item-name">费用管理</span></a></li>
+                                <li class="item-name"><a href="/expenses/expensescategory"><i data-v-7074f502="" class="nav-icon i-Files"></i><span class="item-name">费用类别</span></a></li>
+                            </ul>
+                        }
+                    </li>
+                    <!--  <p class="main-menu-title text-muted ml-3 font-weight-700 text-13 mt-4 mb-2">UI Elements</p> -->
+                    <li class="Ul_li--hover">
+                        <a class="has-arrow" @onclick="()=>expandSubMenu5= !expandSubMenu5"><i data-v-7074f502="" class="nav-icon i-Data-Settings"></i><span class="item-name text-15 text-muted">仓库</span></a>
+                        @if (expandSubMenu5)
+                        {
+                            <ul class="">
+                                <li class="item-name"><a href="/setting/warehouselist"><i class="nav-icon i-Files"></i><span class="item-name">仓库管理</span></a></li>
+                                <li class="item-name"><a href="/setting/unitlist"><i class="nav-icon i-Files"></i><span class="item-name">单位</span></a></li>
+                                <li class="item-name"><a href="/setting/brandlist"><i class="nav-icon i-Files"></i><span class="item-name">品牌</span></a></li>
+                                <li class="item-name"><a href="/setting/taxlist"><i class="nav-icon i-Files"></i><span class="item-name">税率</span></a></li>
+                                <li class="item-name"><a href="/setting/currencylist"><i class="nav-icon i-Files"></i><span class="item-name">货币</span></a></li>
+                            </ul>
+                        }
+                    </li>
+
+                    <li class="Ul_li--hover">
+                        <a class="has-arrow" @onclick="()=>expandSubMenu8= !expandSubMenu8"><i data-v-7074f502="" class="nav-icon i-Data-Settings"></i><span class="item-name text-15 text-muted">配置</span></a>
+                        @if (expandSubMenu8)
+                        {
+                            <ul class="">
+                                <li class="item-name"><a href="/setting/companylist"><i class="nav-icon i-Files"></i><span class="item-name">公司设置</span></a></li>
+                                <li class="item-name"><a href="/setting/systemsetting"><i class="nav-icon i-Files"></i><span class="item-name">设置</span></a></li>
+                                <li class="item-name"><a href="/setting/rolelist"><i class="nav-icon i-Files"></i><span class="item-name">权限</span></a></li>
+                                <li class="item-name"><a href="/setting/userlist"><i class="nav-icon i-Files"></i><span class="item-name">用户</span></a></li>
+                            </ul>
+                        }
+                    </li>
+                    <li class="Ul_li--hover">
+                        <a class="has-arrow" @onclick="()=>expandSubMenu6= !expandSubMenu6"><i data-v-7074f502="" class="nav-icon i-Line-Chart"></i><span class="item-name text-15 text-muted">报表</span></a>
+                        @if (expandSubMenu6)
+                        {
+                            <ul class="">
+                                <li class="item-name"><a href="/report/stockreport"><i class="nav-icon i-File-Clipboard-Text--Image"></i><span class="item-name">库存报表</span></a></li>
+                                <li class="item-name"><a href="/report/warehousereport"><i class="nav-icon i-File-Clipboard-Text--Image"></i><span class="item-name">仓库报表</span></a></li>
+                                <li class="item-name"><a href="/report/salesreport"><i class="nav-icon i-File-Clipboard-Text--Image"></i><span class="item-name">销售报表</span></a></li>
+                                <li class="item-name"><a href="/report/customerledger"><i class="nav-icon i-File-Clipboard-Text--Image"></i><span class="item-name">客户往来账</span></a></li>
+                                <li class="item-name"><a href="/report/salesreceive"><i class="nav-icon i-File-Clipboard-Text--Image"></i><span class="item-name">销售收款</span></a></li>
+                                <li class="item-name"><a href="/report/supplierledger"><i class="nav-icon i-File-Clipboard-Text--Image"></i><span class="item-name">供应商往来账</span></a></li>
+                                <li class="item-name"><a href="/report/purchasepayment"><i class="nav-icon i-File-Clipboard-Text--Image"></i><span class="item-name">采购付款</span></a></li>
+                                <li class="item-name"><a href="/report/purchasereport"><i class="nav-icon i-File-Clipboard-Text--Image"></i><span class="item-name">采购报表</span></a></li>
+                            </ul>
+                        }
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; height: 404px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 325px;"></div>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; height: 404px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 325px;"></div>
+        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div><div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+        </div><div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+        </div>
+    </div>
+</div>
+@code {
+    private bool collapseNavMenu = true;
+    private bool expandSubMenu;//add
+    private bool expandSubMenu1;//add
+    private bool expandSubMenu2;//add
+    private bool expandSubMenu3;//add
+    private bool expandSubMenu4;//add
+    private bool expandSubMenu5;//add
+    private bool expandSubMenu6;//add
+    private bool expandSubMenu7;//add
+    private bool expandSubMenu8;//add
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    string roleId;
+    Users users = new Users();
+    protected async override void OnInitialized()
+    {
+        var authState = await authenticationState;
+        var user = authState.User;
+        string Id = user.Identity.Name.ToString();
+        users = _login.ViewEmail(Id);
+        StateHasChanged();
+    }
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
