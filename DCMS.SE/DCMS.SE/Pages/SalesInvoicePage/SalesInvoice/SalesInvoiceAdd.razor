@@ -15,10 +15,10 @@
 @using Radzen
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1>@localizer["Sales Invoice"]</h1>
+       <div class="breadcrumb"><h1> @localizer["销售"]</h1>
             <ul>
-                <li><a href=""> @localizer["Sales Invoice"] </a></li> 
-                <li>Add </li>
+                <li><a href=""> @localizer["销售单"] </a></li> 
+                <li> @localizer["添加"] </li>
             </ul>
             </div>
             <div class="separator-breadcrumb border-top">
@@ -57,7 +57,7 @@
                                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
                                     <span>
                                         <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Warehouse"]
+                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["仓库"]
 
                                             </legend>
                                             <div>
@@ -88,7 +88,7 @@
                                                 </div>
 
                                                 <div class="mb-5 col-md-12">
-                                                    <h6>Product</h6>
+                                                    <h6>商品</h6>
                                                     <div id="autocomplete" class="autocomplete">
                                                         <Radzen.Blazor.RadzenAutoComplete Data=@listProduct TextProperty="ProductName" Change=@(args => OnChange(args, "AutoComplete")) Style="width: 100%;" placeholder="@localizer["根据商品名称或者编码搜索商品"]" />
                                                         </div>
@@ -364,7 +364,7 @@ else
         }
         var voucherType = _voucherType.Edit(decSalesInvoiceVoucherType);
         strSerialNo = _salesInvoice.GetVoucherNo(1, 1, decSalesInvoiceVoucherType);
-        master.VoucherNo = voucherType.Prefix + strSerialNo + voucherType.Suffix;
+        master.VoucherNo = CommonHelper.GetBillNumber(voucherType.Prefix, 130);
         listAccountledger = _accountLedger.ViewAllCustomer(1);
         listWarehouse = _warehouse.GetAll();
         listProduct = _product.ViewAllProduct(1);

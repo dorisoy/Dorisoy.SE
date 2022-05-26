@@ -9,10 +9,10 @@
 @inject ISnackbar Snackbar
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1> @localizer["Sales Details"]</h1>
+        <div class="breadcrumb"><h1> @localizer["销售"]</h1>
             <ul>
-                <li><a href=""> @localizer["Sales List"] </a></li> 
-                <li>@localizer["Sales Details"] </li>
+                <li><a href=""> @localizer["销售单"] </a></li> 
+                <li> @localizer["明细"] </li>
             </ul>
             </div>
             <div class="separator-breadcrumb border-top">
@@ -25,7 +25,7 @@
                     <div class="card">
                         <div class="card-body">
 <div class="row">
-    <div class="mb-2 col-md-12"><a href="/sales/salesinvoiceedit/@id" class="btn btn-success btn-icon ripple btn-sm" title="Edit"><i class="i-Edit"></i> <span>Edit Purchase</span></a>
+    <div class="mb-2 col-md-12"><a href="/sales/salesinvoiceedit/@id" class="btn btn-success btn-icon ripple btn-sm" title="Edit"><i class="i-Edit"></i> <span>编辑</span></a>
 @*        <button class="btn btn-info btn-icon ripple btn-sm"><i class="i-Envelope-2"></i>
           Email
         </button>*@ 
@@ -35,9 +35,9 @@
         @*<button class="btn btn-primary btn-icon ripple btn-sm"><i class="i-File-TXT"></i> PDF
         </button>*@
         <button onclick="printDiv('PrintDiv')" class="btn btn-warning btn-icon ripple btn-sm"><i class="i-Billing"></i>
-          Print
+          打印
         </button> <button class="btn btn-danger btn-icon ripple btn-sm"><i class="i-Close-Window"></i>
-          Delete
+          删除
         </button>
         </div>
         </div>
@@ -47,34 +47,34 @@
         <div id="PrintDiv" class="invoice mt-5">
             <div class="invoice-print">
                 <div class="row justify-content-md-center">
-                    <h4 class="font-weight-bold">@localizer["Sales Detail"] : @master.VoucherNo</h4>
+                    <h4 class="font-weight-bold">@localizer["销售明细"] : @master.VoucherNo</h4>
                     </div> <hr> <div class="row mt-5">
                         <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
-                            <h5 class="font-weight-bold">Customer Info</h5> 
+                            <h5 class="font-weight-bold">客户信息</h5> 
                             <div>@master.LedgerName</div> 
                             <div>@master.Email</div> 
                             <div>@master.Phone</div> 
                             <div>@master.Address</div>
                         </div> 
                         <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
-                            <h5 class="font-weight-bold">@localizer["Company Info"]</h5> 
+                            <h5 class="font-weight-bold">@localizer["公司信息"]</h5> 
                             <div>@company.CompanyName</div> 
                             <div>@company.Address</div> 
                             <div>@company.PhoneNo</div>
                             </div>
                             <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
-                                <h5 class="font-weight-bold">@localizer["Sales Info"]</h5> 
-                                <div>Voucher No : @master.VoucherNo</div> 
-              <div>Warehouse : @master.WarehouseName</div> <div>
-              @localizer["Payment Status"] :
+                                <h5 class="font-weight-bold">@localizer["销售信息"]</h5> 
+                                <div>单号 : @master.VoucherNo</div> 
+              <div>仓库 : @master.WarehouseName</div> <div>
+              @localizer["付款状态"] :
               <span class="badge badge-outline-success">@master.Status</span></div>
               </div>
               </div> <div class="row mt-3"><div class="col-md-12">
-                  <h5 class="font-weight-bold">@localizer["Order Summary"]</h5> 
+                  <h5 class="font-weight-bold">@localizer["单据汇总"]</h5> 
                   <div class="table-responsive"><table class="table table-hover table-md">
                       <thead class="bg-gray-300">
                           <tr><th scope="col">@localizer["Product"]</th> 
-                              <th scope="col">@localizer["Quantity"]</th> 
+                              <th scope="col">@localizer["数量"]</th> 
                               <th scope="col">@localizer["Rate"]</th> 
                               <th scope="col">@localizer["Unit"]</th> 
                               <th scope="col">@localizer["Discount"]</th> 

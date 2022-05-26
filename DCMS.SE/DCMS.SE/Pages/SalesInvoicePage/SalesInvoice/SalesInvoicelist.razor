@@ -16,207 +16,220 @@
 @using System.IO
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1> @localizer["Sales"]</h1>
+        <div class="breadcrumb">
+            <h1> @localizer["销售"]</h1>
             <ul>
-                <li><a href=""> @localizer["Sales Invoice"] </a></li> 
-                <li> @localizer["list"] </li>
+                <li><a href=""> @localizer["销售单"] </a></li>
+                <li> @localizer["列表"] </li>
             </ul>
-            </div>
-            <div class="separator-breadcrumb border-top">
-
-            </div>
-            </div>
-            <div class="card wrapper">
-            <div class="card-body">
-            <div class="vgt-wrap "> 
-            <div class="vgt-inner-wrap">
-                <div class="vgt-global-search vgt-clearfix">
-                 <div class="vgt-global-search__actions vgt-pull-right">
-                     <div class="mt-2 mb-3">
-                         <button class="btn btn-outline-success ripple m-1" @onclick="@(() => OpenDrawer(Anchor.End))"><i class="i-File-TXT"></i> @localizer["Filter"]
-        </button>
-                         <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf"><i class="i-File-TXT"></i> PDF
-        </button>
-        <button type="button" @onclick="@(async ()=> {await GenerateExcel();})" class="btn btn-outline-danger btn-icon m-1"><i class="i-File-Excel"></i> EXCEL
-        </button>
-                         <a href="/sales/salesinvoiceadd" class="btn btn-outline btn-btn btn-primary btn-icon m-1"><i class="i-Add"></i>
-          @localizer["Create"]
-        </a>
         </div>
+        <div class="separator-breadcrumb border-top">
         </div>
-        </div>
-        <div class="vgt-responsive">
-            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<SalesMasterView,bool>(Search)">
-    <ToolBarContent>
-        <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>@localizer["Voucher No"]</MudTh>
-        <MudTh>@localizer["Date"]</MudTh>
-        <MudTh>@localizer["Cusomer Name"]</MudTh>
-        @*<MudTh>VoucherType</MudTh>*@
-        <MudTh>@localizer["Amount"]</MudTh>
-        <MudTh>@localizer["Paid"]</MudTh>
-        <MudTh>@localizer["BalanceDue"]</MudTh>
-        <MudTh>@localizer["Status"]</MudTh>
-        <MudTh></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="">@context.VoucherNo</MudTd>
-        <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.LedgerName</MudTd>
-        @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
-        <MudTd DataLabel="">@context.GrandTotal</MudTd>
-        <MudTd DataLabel="">@context.PaymentAmount</MudTd>
-        <MudTd DataLabel="">@context.BalanceDue</MudTd>
-        <MudTd DataLabel="">
-            @if(context.Status == "Paid")
-            {
-             <span class="badge badge-outline-success">@context.Status</span>
-            }
-            else if(context.Status == "部分支付")
-            {
-             <span class="badge badge-outline-primary">@context.Status</span>
-            }
-             else
-            {
-                 <span class="badge badge-outline-success">@context.Status</span>                       
-            }
-           </MudTd>
-        <MudTd DataLabel="">
-            <div class="dropdown">
-              <button class="btn dropdown-toggle btn-link btn-lg text-decoration-none dropdown-toggle-no-caret" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-             </button>
-             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 34px, 0px);">
-                 <a class="dropdown-item" href="/sales/salesinvoicedetails/@context.SalesMasterId"><i class="nav-icon i-Eye font-weight-bold mr-2"></i>Sales Details</a>
-                 <a class="dropdown-item" href="/sales/salesinvoiceedit/@context.SalesMasterId"><i class="nav-icon i-Pen-2 font-weight-bold mr-2"></i>Edit Sales</a>
-                 <a class="dropdown-item" style="cursor:pointer;" @onclick="() => ShowPaymentList(context.SalesMasterId)"><i class="nav-icon i-Money-Bag font-weight-bold mr-2"></i>Show Payments</a>
-             <a class="dropdown-item" style="cursor:pointer" @onclick="() => EditPayment(context)"><i class="nav-icon i-Add font-weight-bold mr-2"></i>Create Payments</a>
-             @*<a class="dropdown-item" href="#"><i class="nav-icon i-Envelope-2 font-weight-bold mr-2"></i>Send Purchase on Email</a>*@
-         <a class="dropdown-item" @onclick="() => Delete(context.SalesMasterId)"><i class="nav-icon i-Close-Window font-weight-bold mr-2"></i>Delete Sales</a></div>
-                                                </div>
-        </MudTd>
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数"/>
-    </PagerContent>
-</MudTable>
+    </div>
+    <div class="card wrapper">
+        <div class="card-body">
+            <div class="vgt-wrap ">
+                <div class="vgt-inner-wrap">
+                    <div class="vgt-global-search vgt-clearfix">
+                        <div class="vgt-global-search__actions vgt-pull-right">
+                            <div class="mt-2 mb-3">
+                                <button class="btn btn-outline-success ripple m-1" @onclick="@(() => OpenDrawer(Anchor.End))">
+                                    <i class="i-File-TXT"></i> @localizer["Filter"]
+                                </button>
+                                <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf">
+                                    <i class="i-File-TXT"></i> PDF
+                                </button>
+                                <button type="button" @onclick="@(async ()=> {await GenerateExcel();})" class="btn btn-outline-danger btn-icon m-1">
+                                    <i class="i-File-Excel"></i> EXCEL
+                                </button>
+                                <a href="/sales/salesinvoiceadd" class="btn btn-outline btn-btn btn-primary btn-icon m-1">
+                                    <i class="i-Add"></i>
+                                    @localizer["Create"]
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vgt-responsive">
+                        <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<SalesMasterView,bool>(Search)">
+                            <ToolBarContent>
+                                <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>@localizer["Voucher No"]</MudTh>
+                                <MudTh>@localizer["Date"]</MudTh>
+                                <MudTh>@localizer["Cusomer Name"]</MudTh>
+                                @*<MudTh>VoucherType</MudTh>*@
+                                <MudTh>@localizer["Amount"]</MudTh>
+                                <MudTh>@localizer["Paid"]</MudTh>
+                                <MudTh>@localizer["BalanceDue"]</MudTh>
+                                <MudTh>@localizer["Status"]</MudTh>
+                                <MudTh></MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="">@context.VoucherNo</MudTd>
+                                <MudTd DataLabel="">@context.Date</MudTd>
+                                <MudTd DataLabel="">@context.LedgerName</MudTd>
+                                @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
+                                <MudTd DataLabel="">@context.GrandTotal</MudTd>
+                                <MudTd DataLabel="">@context.PaymentAmount</MudTd>
+                                <MudTd DataLabel="">@context.BalanceDue</MudTd>
+                                <MudTd DataLabel="">
+                                    @if (context.Status == "Paid")
+                                    {
+                                        <span class="badge badge-outline-success">@context.Status</span>
+                                    }
+                                    else if (context.Status == "部分支付")
+                                    {
+                                        <span class="badge badge-outline-primary">@context.Status</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-outline-success">@context.Status</span>
+                                    }
+                                </MudTd>
+                                <MudTd DataLabel="">
+                                    <div class="dropdown">
+                                        <button class="btn dropdown-toggle btn-link btn-lg text-decoration-none dropdown-toggle-no-caret" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 34px, 0px);">
+                                            <a class="dropdown-item" href="/sales/salesinvoicedetails/@context.SalesMasterId"><i class="nav-icon i-Eye font-weight-bold mr-2"></i>查看</a>
+                                            <a class="dropdown-item" href="/sales/salesinvoiceedit/@context.SalesMasterId"><i class="nav-icon i-Pen-2 font-weight-bold mr-2"></i>编辑</a>
+                                            <a class="dropdown-item" style="cursor:pointer;" @onclick="() => ShowPaymentList(context.SalesMasterId)"><i class="nav-icon i-Money-Bag font-weight-bold mr-2"></i>收款清单</a>
+                                            <a class="dropdown-item" style="cursor:pointer" @onclick="() => EditPayment(context)"><i class="nav-icon i-Add font-weight-bold mr-2"></i>收款</a>
+                                            @*<a class="dropdown-item" href="#"><i class="nav-icon i-Envelope-2 font-weight-bold mr-2"></i>Send Purchase on Email</a>*@
+                                            <a class="dropdown-item" @onclick="() => Delete(context.SalesMasterId)"><i class="nav-icon i-Close-Window font-weight-bold mr-2"></i>删除</a>
+                                        </div>
+                                    </div>
+                                </MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数" />
+                            </PagerContent>
+                        </MudTable>
+                    </div>
                 </div>
+            </div>
         </div>
-        </div>
-        </div>
-        </div>
-        </div>
+    </div>
+</div>
 
-        @*CreatePayment*@
+@*CreatePayment*@
 
-        @if (isPayment == true)
+@if (isPayment == true)
 {
     <div class="modal fade" id="myModal" style="display:block" aria-modal="true" role="dialog">
-       <div class="modal-dialog" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-               <!-- Modal Header -->
+                <!-- Modal Header -->
                 <div class="modal-header">
-                    <h3 class="modal-title" style="float:left; margin-top: 14px;margin-left:10px;">Create Payment</h3>
-                    <button class="btn btn-icon btn-danger btn-sm" type="button"style="margin:6px 4px 0px 0px;" @onclick="@ClosePayment"><span aria-hidden="true">×</span></button>
+                    <h3 class="modal-title" style="float:left; margin-top: 14px;margin-left:10px;">添加收款</h3>
+                    <button class="btn btn-icon btn-danger btn-sm" type="button" style="margin:6px 4px 0px 0px;" @onclick="@ClosePayment"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Date"]
-                                            </legend>
-                                            <div>
-                                                <input type="date" @bind="master.Date" class="form-control"> 
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
-                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Voucher No"]
-                                            </legend>
-                                            <div>
-                                                <input type="text" @bind="master.VoucherNo" class="form-control"> 
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
+                        <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                            <span>
+                                <fieldset class="form-group">
+                                    <legend class="bv-no-focus-ring col-form-label pt-0">
+                                        @localizer["Date"]
+                                    </legend>
+                                    <div>
+                                        <input type="date" @bind="master.Date" class="form-control">
+                                    </div>
+                                </fieldset>
+                            </span>
+                        </div>
+                        <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                            <span>
+                                <fieldset class="form-group">
+                                    <legend class="bv-no-focus-ring col-form-label pt-0">
+                                        @localizer["Voucher No"]
+                                    </legend>
+                                    <div>
+                                        <input type="text" @bind="master.VoucherNo" class="form-control">
+                                    </div>
+                                </fieldset>
+                            </span>
+                        </div>
 
-                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Receive Amount"]
-                                            </legend>
-                                            <div>
-                                                <input type="text" @bind="master.Amount" class="form-control" @onkeyup="@CalculateChange" @bind:event="oninput">
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
+                        <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                            <span>
+                                <fieldset class="form-group">
+                                    <legend class="bv-no-focus-ring col-form-label pt-0">
+                                        @localizer["收款金额"]
+                                    </legend>
+                                    <div>
+                                        <input type="text" @bind="master.Amount" class="form-control" @onkeyup="@CalculateChange" @bind:event="oninput">
+                                    </div>
+                                </fieldset>
+                            </span>
+                        </div>
 
-                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Total Amount To Receive"]
-                                            </legend>
-                                            <div>
-                                                @PreviousDue 
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
-                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Change Amount"]
-                                            </legend>
-                                            <div>
-                                                @decChangeAmount
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
-                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Payment Choise"]
-                                            </legend>
-                                            <div>
-                                                <select class="form-control" @bind="master.PaymentType">
-                                                    <option value="Cash">Cash</option>
-                                                    <option value="Credit Card">Credit Card</option>
-                                                    <option value="Cheque">Cheque</option>
-                                                    <option value="Western Union">Western Union</option>
-                                                    <option value="Bank Transfer">Bank Transfer</option>
-                                                    <option value="Other Transfer">Other</option>
-                                                </select>
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
-
-
-
-                                                <div class="mb-3 col-sm-12 col-md-12 col-lg-12">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Note"]
-                                            </legend>
-                                            <div>
-                                                <textarea type="text" @bind="master.Narration" class="form-control">
-
-                                                </textarea> 
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
+                        <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                            <span>
+                                <fieldset class="form-group">
+                                    <legend class="bv-no-focus-ring col-form-label pt-0">
+                                        @localizer["总金额"]
+                                    </legend>
+                                    <div>
+                                        @PreviousDue
+                                    </div>
+                                </fieldset>
+                            </span>
+                        </div>
+                        <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                            <span>
+                                <fieldset class="form-group">
+                                    <legend class="bv-no-focus-ring col-form-label pt-0">
+                                        @localizer["欠款"]
+                                    </legend>
+                                    <div>
+                                        @decChangeAmount
+                                    </div>
+                                </fieldset>
+                            </span>
+                        </div>
+                        <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
+                            <span>
+                                <fieldset class="form-group">
+                                    <legend class="bv-no-focus-ring col-form-label pt-0">
+                                        @localizer["收款方式"]
+                                    </legend>
+                                    <div>
+                                        <select class="form-control" @bind="master.PaymentType">
+                                            <option value="Cash">现金</option>
+                                            <option value="Credit Card">信用卡</option>
+                                            <option value="Cheque">支票</option>
+                                            <option value="WeixinPay">微信</option>
+                                            <option value="AliPay">支付宝</option>
+                                            <option value="Bank Transfer">银行转账</option>
+                                            <option value="Other Transfer">其它</option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                            </span>
+                        </div>
 
 
 
-                                                </div>
+                        <div class="mb-3 col-sm-12 col-md-12 col-lg-12">
+                            <span>
+                                <fieldset class="form-group">
+                                    <legend class="bv-no-focus-ring col-form-label pt-0">
+                                        @localizer["备注"]
+                                    </legend>
+                                    <div>
+                                        <textarea type="text" @bind="master.Narration" class="form-control">
+
+                                                    </textarea>
+                                    </div>
+                                </fieldset>
+                            </span>
+                        </div>
+
+
+
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" @onclick="ClosePayment" type="button">@localizer["Close"]</button>
@@ -228,7 +241,7 @@
 }
 else
 {
-    
+
 }
 
 @*PaymentList*@
@@ -238,52 +251,56 @@ else
 @if (isShowPayment == true)
 {
     <div class="modal fade" id="myModal" style="display:block" aria-modal="true" aria-labelledby="exampleModalCenterTitle" role="dialog">
-       <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-               <!-- Modal Header -->
+                <!-- Modal Header -->
                 <div class="modal-header">
-                    <h3 class="modal-title" style="float:left; margin-top: 14px;margin-left:10px;">Show Payments</h3>
+                    <h3 class="modal-title" style="float:left; margin-top: 14px;margin-left:10px;">收款记录</h3>
                     <button class="btn btn-icon btn-danger btn-sm" type="button" style="margin:6px 4px 0px 0px;" @onclick="@ClosePaymentList"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                                <div class="mb-3 col-sm-12 col-md-12 col-lg-12">
-                                    <table class="table text-center">
-                                        <thead>
-                                            <tr>
-                                                <th>@localizer["Date"]</th>
-                                                <th>@localizer["Voucher No"]</th>
-                                                <th>@localizer["Amount"]</th>
-                                                <th>@localizer["Paid By"]</th>
-                                                <th>@localizer["Action"]</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        @foreach(var item in listPayment)
-                                        {
-                                        <tbody>
-                                            <tr>
-                                                <td>@item.Date</td>
-                                                <td>@item.VoucherNo</td>
-                                                <td>@item.Amount</td>
-                                                <td>@item.PaymentType</td>
-                                                <td>
-                                                    <div role="group" aria-label="Basic example" class="btn-group">
-                                                        <a href="/sales/receivecustomershow/@item.ReceiptMasterId"><span title="Print" class="btn btn-icon btn-info btn-sm">
-                                                            <i class="i-Billing"></i></span></a>
-                                                           @*<a @onclick="() => EditPaymentSupplier(item.PaymentMasterId)"> <span title="Edit" class="btn btn-icon btn-success btn-sm">
-                                                                <i class="i-Pen-2"></i></span></a>*@
-                                                              <a @onclick="() => DeletePayment(item.ReceiptMasterId)"> <span title="Delete" class="btn btn-icon btn-danger btn-sm"><i class="i-Close"></i></span>
-                                                               </a>
-                                                           </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                        }
-                                    </table>
-                                    
+                        <div class="mb-3 col-sm-12 col-md-12 col-lg-12">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th>@localizer["Date"]</th>
+                                        <th>@localizer["Voucher No"]</th>
+                                        <th>@localizer["Amount"]</th>
+                                        <th>@localizer["收款方式"]</th>
+                                        <th>@localizer["操作"]</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in listPayment)
+                                {
+                                    <tbody>
+                                        <tr>
+                                            <td>@item.Date</td>
+                                            <td>@item.VoucherNo</td>
+                                            <td>@item.Amount</td>
+                                            <td>@item.PaymentType</td>
+                                            <td>
+                                                <div role="group" aria-label="Basic example" class="btn-group">
+                                                    <a href="/sales/receivecustomershow/@item.ReceiptMasterId">
+                                                        <span title="Print" class="btn btn-icon btn-info btn-sm">
+                                                            <i class="i-Billing"></i>
+                                                        </span>
+                                                    </a>
+                                                    @*<a @onclick="() => EditPaymentSupplier(item.PaymentMasterId)"> <span title="Edit" class="btn btn-icon btn-success btn-sm">
+                                            <i class="i-Pen-2"></i></span></a>*@
+                                                    <a @onclick="() => DeletePayment(item.ReceiptMasterId)">
+                                                        <span title="Delete" class="btn btn-icon btn-danger btn-sm"><i class="i-Close"></i></span>
+                                                    </a>
                                                 </div>
-                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                }
+                            </table>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -291,84 +308,87 @@ else
 }
 else
 {
-    
+
 }
 @*Filter*@
-        <MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
+<MudDrawer @bind-Open="@open" Anchor="@anchor" Elevation="1" Variant="@DrawerVariant.Temporary">
     <MudDrawerHeader>
         <MudText Typo="Typo.h6">Filter</MudText>
     </MudDrawerHeader>
     <MudNavMenu>
         <div class="row">
             <div class="col-sm-12 col-md-12" style="margin-left:2px;">
-        <fieldset class="form-group">
-            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["From Date"]</legend>
-            <div>
-<input type="date" class="form-control" @bind="FromDate" />
-    </div>
-    </fieldset>
-    </div>
-    <div class="col-sm-12 col-md-12" style="margin-left:2px;">
-        <fieldset class="form-group">
-            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["To Date"]</legend>
-            <div>
-<input type="date" class="form-control" @bind="ToDate" />
-    </div>
-    </fieldset>
-    </div>
+                <fieldset class="form-group">
+                    <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["From Date"]</legend>
+                    <div>
+                        <input type="date" class="form-control" @bind="FromDate" />
+                    </div>
+                </fieldset>
+            </div>
             <div class="col-sm-12 col-md-12" style="margin-left:2px;">
-        <fieldset class="form-group">
-            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Customer"]</legend>
-            <div>
-<select class="form-control" @bind="CustomerId" style="width:238px;">
-    <option value="0">选择</option>
-                              @foreach(var item in listCustomer)
-                                {
-                                    <option value="@item.LedgerId">@item.LedgerName</option>
-                                }
-                            </select>
-    </div>
-    </fieldset>
-    </div>
-    <div class="col-sm-12 col-md-12" style="margin-left:2px;">
-    <fieldset class="form-group">
-            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Warehouse"]</legend>
-            <div>
-<select class="form-control" @bind="WarehouseId" style="width:238px;">
-                              <option value="0">选择</option>
-                              @foreach(var item in listWarehouse)
-                                {
-                                    <option value="@item.WarehouseId">@item.Name</option>
-                                }
-                            </select>
-    </div>
-    </fieldset>
-    </div>
+                <fieldset class="form-group">
+                    <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["To Date"]</legend>
+                    <div>
+                        <input type="date" class="form-control" @bind="ToDate" />
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+                <fieldset class="form-group">
+                    <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Customer"]</legend>
+                    <div>
+                        <select class="form-control" @bind="CustomerId" style="width:238px;">
+                            <option value="0">选择</option>
+                            @foreach (var item in listCustomer)
+                            {
+                                <option value="@item.LedgerId">@item.LedgerName</option>
+                            }
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+                <fieldset class="form-group">
+                    <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Warehouse"]</legend>
+                    <div>
+                        <select class="form-control" @bind="WarehouseId" style="width:238px;">
+                            <option value="0">选择</option>
+                            @foreach (var item in listWarehouse)
+                            {
+                                <option value="@item.WarehouseId">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
 
-    <div class="col-sm-12 col-md-12" style="margin-left:2px;">
-    <fieldset class="form-group">
-            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Status"]</legend>
-            <div>
-<select class="form-control" @bind="Status" style="width:238px;">
-                              <option value="All">All</option>
-                              <option value="Paid">Paid</option>
-                              <option value="部分支付">Partial Paid</option>
-                              <option value="草稿">Draft</option>
-                            </select>
-    </div>
-    </fieldset>
-    </div>
-    </div>
+            <div class="col-sm-12 col-md-12" style="margin-left:2px;">
+                <fieldset class="form-group">
+                    <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Status"]</legend>
+                    <div>
+                        <select class="form-control" @bind="Status" style="width:238px;">
+                            <option value="All">全部</option>
+                            <option value="Paid">已付</option>
+                            <option value="PartialPaid">部分付</option>
+                            <option value="Draft">草稿</option>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-12 col-md-6">
-                <button type="button" class="btn btn-primary ripple m-1 btn-sm btn-block" @onclick="() => Search()"><i class="i-Filter-2"></i>
-            @localizer["Filter"]
-          </button></div>
-          <div class="col-sm-12 col-md-6">
-              <button type="button" class="btn btn-danger ripple m-1 btn-sm btn-block" @onclick="@(() => CloseDrawer())"><i class="i-Power-2"></i>
-            @localizer["Close"]
-          </button>
-          </div>
+                <button type="button" class="btn btn-primary ripple m-1 btn-sm btn-block" @onclick="() => Search()">
+                    <i class="i-Filter-2"></i>
+                    @localizer["Filter"]
+                </button>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <button type="button" class="btn btn-danger ripple m-1 btn-sm btn-block" @onclick="@(() => CloseDrawer())">
+                    <i class="i-Power-2"></i>
+                    @localizer["Close"]
+                </button>
+            </div>
         </div>
     </MudNavMenu>
 </MudDrawer>
@@ -408,7 +428,7 @@ else
     bool strShow = true;
     int RoleId = 1;
     Privilege privi = new Privilege();
-    protected  override void OnInitialized()
+    protected override void OnInitialized()
     {
         //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
         //CheckPriviliage
@@ -437,7 +457,7 @@ else
         LoadData();
         StateHasChanged();
     }
-    private  void LoadData()
+    private void LoadData()
     {
         listModel = _salesInvoice.SalesInvoiceView(1);
     }
@@ -449,7 +469,7 @@ else
             SalesMaster view = new SalesMaster();
             view = _salesInvoice.EditSalesMaster(id);
             bool isSave = false;
-            isSave = _salesInvoice.DeleteSalesInvoice(id , view.VoucherNo, 1 , 1);
+            isSave = _salesInvoice.DeleteSalesInvoice(id, view.VoucherNo, 1, 1);
             if (isSave == true)
             {
                 Snackbar.Add("Delete Successfully.", Severity.Success);
@@ -492,7 +512,7 @@ else
             var user = authState.User;
             string Id = user.Identity.Name.ToString();
             var strVoucherNo = false;
-            if(master.ReceiptMasterId == 0)
+            if (master.ReceiptMasterId == 0)
             {
                 strVoucherNo = _receiveCustomer.ReceiveVoucherNoCheckExistence(1, 1, master.VoucherNo);
                 if (strVoucherNo == false)
@@ -506,7 +526,7 @@ else
                     master.AddedDate = DateTime.UtcNow;
                     master.POS = false;
                     bool isSave = _receiveCustomer.Save(master);
-                    if(isSave == true)
+                    if (isSave == true)
                     {
                         Snackbar.Add("Successfully Saved.", Severity.Success);
                         isPayment = false;
@@ -529,7 +549,7 @@ else
 
         }
     }
-   void EditPayment(SalesMasterView salesMaster)
+    void EditPayment(SalesMasterView salesMaster)
     {
         isPayment = true;
         master.LedgerId = salesMaster.LedgerId;
@@ -542,7 +562,7 @@ else
         PreviousDue = 0;
         var voucherType = _voucherType.Edit(decPaymentSupplierVoucherType);
         strSerialNo = _receiveCustomer.GetVoucherNo(1, 1, decPaymentSupplierVoucherType);
-        master.VoucherNo = voucherType.Prefix + strSerialNo + voucherType.Suffix;
+        master.VoucherNo = CommonHelper.GetBillNumber(voucherType.Prefix, 130);
         var view = _receiveCustomer.GetTotalReceiableAmount(salesMaster.SalesMasterId);
         if (view.Amount > 0)
         {
@@ -556,8 +576,8 @@ else
     }
     private void CalculateChange()
     {
-        decChangeAmount = Math.Round(PreviousDue - master.Amount , 2);
-        if(decChangeAmount >= 0)
+        decChangeAmount = Math.Round(PreviousDue - master.Amount, 2);
+        if (decChangeAmount >= 0)
         {
 
         }
@@ -591,7 +611,7 @@ else
         {
             var view = _receiveCustomer.EditReceiveMaster(id);
             bool isSave = false;
-            isSave = _receiveCustomer.DeleteReceiveCustomer( id, view.VoucherNo, view.VoucherTypeId, view.FinancialYearId, view.CompanyId);
+            isSave = _receiveCustomer.DeleteReceiveCustomer(id, view.VoucherNo, view.VoucherTypeId, view.FinancialYearId, view.CompanyId);
             if (isSave == true)
             {
                 Snackbar.Add("Deleted Successfully.", Severity.Success);
@@ -670,7 +690,7 @@ else
 
         //Tble Body
         foreach (var objDue in listModel)
-    {
+        {
             row = worksheet.CreateRow(rowNumber++);
 
             cell = row.CreateCell(0);
@@ -711,9 +731,9 @@ else
             Convert.ToBase64String(pdfExp.Report(listModel))
         );
     }
-    private  void Search()
+    private void Search()
     {
-        listModel = _salesInvoice.SaleReportsdetails(Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CustomerId , WarehouseId , Status);
+        listModel = _salesInvoice.SaleReportsdetails(Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CustomerId, WarehouseId, Status);
         StateHasChanged();
     }
     void OpenDrawer(Anchor anchor)

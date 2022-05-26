@@ -133,7 +133,7 @@
     <value>余额</value>
   </data>
   <data name="BalanceDue" xml:space="preserve">
-    <value>到期余额</value>
+    <value>应付金额</value>
   </data>
   <data name="Brand" xml:space="preserve">
     <value>品牌</value>
@@ -412,7 +412,7 @@
     <value>用户</value>
   </data>
   <data name="Voucher No" xml:space="preserve">
-    <value>凭证号</value>
+    <value>单号</value>
   </data>
   <data name="VoucherType Name" xml:space="preserve">
     <value>凭证类型</value>

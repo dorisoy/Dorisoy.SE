@@ -9,122 +9,126 @@
 
 
     <div class="row">
-                    <!-- ICON BG-->
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                            <div class="card-body text-center"><i class="i-Full-Cart"></i>
-                                <div class="content">
-                                    <p class="text-muted mt-2 mb-0">@localizer["Sales"]</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">@totalSales</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                            <div class="card-body text-center"><i class="i-Add-Cart"></i>
-                                <div class="content">
-                                    <p class="text-muted mt-2 mb-0">@localizer["Purchase"]</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">@totalPurchase</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                            <div class="card-body text-center"><i class="i-Checkout-Basket"></i>
-                                <div class="content">
-                                    <p class="text-muted mt-2 mb-0">@localizer["Sales Return"]</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">@totalSalesReturn</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
-                            <div class="card-body text-center"><i class="i-Money-2"></i>
-                                <div class="content">
-                                    <p class="text-muted mt-2 mb-0">@localizer["Purchase Return"]</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">@totalPurchaseReturn</p>
-                                </div>
-                            </div>
-                        </div>
+        <!-- ICON BG-->
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Full-Cart"></i>
+                    <div class="content">
+                        <p class="text-muted mt-2 mb-0">@localizer["Sales"]</p>
+                        <p class="text-primary text-24 line-height-1 mb-2">@totalSales</p>
                     </div>
                 </div>
-
-
-
-                <div class="row">
-                    <div class="col-lg-8 col-md-12">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="card-title">@localizer["This Week Sales & Purchases"]</div>
-                                <div id="echartBar" style="height: 300px;">
-                                    <Radzen.Blazor.RadzenChart>
-                    <Radzen.Blazor.RadzenColumnSeries Data="@saleslist" CategoryProperty="Date" Title="Sales" LineType="Radzen.Blazor.LineType.Dashed" ValueProperty="GrandTotal" />
-                    <Radzen.Blazor.RadzenColumnSeries Data="@purchaselist" CategoryProperty="Date" Title="Purchase" ValueProperty="GrandTotal" />
-                    <Radzen.Blazor.RadzenColumnOptions Radius="5" />
-                    <Radzen.Blazor.RadzenValueAxis Formatter="@FormatAsUSD">
-                        <Radzen.Blazor.RadzenGridLines Visible="true" />
-                   @*     <RRadzen.Blazor.adzenAxisTitle Text="Sales & Purchase" />*@
-                    </Radzen.Blazor.RadzenValueAxis>
-                </Radzen.Blazor.RadzenChart>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-12">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="card-title">@localizer["Top 10 Selling Products"]</div>
-                                <div id="echartPie" style="height: 300px;">
-                                    <Radzen.Blazor.RadzenChart>
-                    <Radzen.Blazor.RadzenPieSeries Data="@topProduct" Title="Qty" CategoryProperty="ProductName" ValueProperty="qty" />
-                </Radzen.Blazor.RadzenChart>
-                                </div>
-                            </div>
-                        </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Add-Cart"></i>
+                    <div class="content">
+                        <p class="text-muted mt-2 mb-0">@localizer["Purchase"]</p>
+                        <p class="text-primary text-24 line-height-1 mb-2">@totalPurchase</p>
                     </div>
                 </div>
-
-
-
-                <div class="row">
-                    <div class="col-lg-8 col-md-12">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="card-title">@localizer["Payment Sent & Received"]</div>
-                                <div id="echartBar" style="height: 300px;">
-                                    <Radzen.Blazor.RadzenChart>
-                    <Radzen.Blazor.RadzenLineSeries Data="@paymentList" CategoryProperty="Date" Title="Payment" LineType="Radzen.Blazor.LineType.Dashed" ValueProperty="Amount">
-                        <Radzen.Blazor.RadzenMarkers MarkerType="Radzen.Blazor.MarkerType.Square" />
-                    </Radzen.Blazor.RadzenLineSeries>
-                    <Radzen.Blazor.RadzenLineSeries Data="@receiveList" CategoryProperty="Date" Title="Receive" ValueProperty="Amount">
-                        <Radzen.Blazor.RadzenMarkers MarkerType="Radzen.Blazor.MarkerType.Circle" />
-                    </Radzen.Blazor.RadzenLineSeries>
-                    <Radzen.Blazor.RadzenCategoryAxis Padding="20" FormatString="{0:MMM}" />
-                    <Radzen.Blazor.RadzenValueAxis Formatter="@FormatAsUSD">
-                        <Radzen.Blazor.RadzenGridLines Visible="true" />
-                        <Radzen.Blazor.RadzenAxisTitle Text="" />
-                    </Radzen.Blazor.RadzenValueAxis>
-                </Radzen.Blazor.RadzenChart>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-12">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="card-title">@localizer["Top 10 Customers"]</div>
-                                <div id="echartPie" style="height: 300px;">
-                                    <Radzen.Blazor.RadzenChart>
-                    <Radzen.Blazor.RadzenPieSeries Data="@toprecible" Title="Customer" CategoryProperty="LedgerName" ValueProperty="debit" />
-                </Radzen.Blazor.RadzenChart>
-                                </div>
-                            </div>
-                        </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Checkout-Basket"></i>
+                    <div class="content">
+                        <p class="text-muted mt-2 mb-0">@localizer["Sales Return"]</p>
+                        <p class="text-primary text-24 line-height-1 mb-2">@totalSalesReturn</p>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Money-2"></i>
+                    <div class="content">
+                        <p class="text-muted mt-2 mb-0">@localizer["Purchase Return"]</p>
+                        <p class="text-primary text-24 line-height-1 mb-2">@totalPurchaseReturn</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-8 col-md-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="card-title">@localizer["本周销售与采购"]</div>
+                    <div id="echartBar" style="height: 300px;">
+                        <Radzen.Blazor.RadzenChart>
+                            <Radzen.Blazor.RadzenColumnSeries Data="@saleslist" CategoryProperty="Date" Title="销售" LineType="Radzen.Blazor.LineType.Dashed" ValueProperty="GrandTotal" />
+                            <Radzen.Blazor.RadzenColumnSeries Data="@purchaselist" CategoryProperty="Date" Title="采购" ValueProperty="GrandTotal" />
+                            <Radzen.Blazor.RadzenColumnOptions Radius="5" />
+                            <Radzen.Blazor.RadzenValueAxis Formatter="@FormatAsUSD">
+                                <Radzen.Blazor.RadzenGridLines Visible="true" />
+                                @*     <RRadzen.Blazor.adzenAxisTitle Text="Sales & Purchase" />*@
+                            </Radzen.Blazor.RadzenValueAxis>
+                        </Radzen.Blazor.RadzenChart>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="card-title">@localizer["热销排行"]</div>
+                    <div id="echartPie" style="height: 300px;">
+                        <Radzen.Blazor.RadzenChart>
+                            <Radzen.Blazor.RadzenPieSeries Data="@topProduct" Title="Qty" CategoryProperty="ProductName" ValueProperty="qty" />
+                        </Radzen.Blazor.RadzenChart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-8 col-md-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="card-title">@localizer["Payment Sent & Received"]</div>
+                    <div id="echartBar" style="height: 300px;">
+                        <Radzen.Blazor.RadzenChart>
+                            <Radzen.Blazor.RadzenLineSeries Data="@paymentList" CategoryProperty="Date" Title="付款" LineType="Radzen.Blazor.LineType.Dashed" ValueProperty="Amount">
+                                <Radzen.Blazor.RadzenMarkers MarkerType="Radzen.Blazor.MarkerType.Square" />
+                            </Radzen.Blazor.RadzenLineSeries>
+                            <Radzen.Blazor.RadzenLineSeries Data="@receiveList" CategoryProperty="Date" Title="收款" ValueProperty="Amount">
+                                <Radzen.Blazor.RadzenMarkers MarkerType="Radzen.Blazor.MarkerType.Circle" />
+                            </Radzen.Blazor.RadzenLineSeries>
+                            <Radzen.Blazor.RadzenCategoryAxis Padding="20" FormatString="{0:MMM}" />
+                            <Radzen.Blazor.RadzenValueAxis Formatter="@FormatAsUSD">
+                                <Radzen.Blazor.RadzenGridLines Visible="true" />
+                                <Radzen.Blazor.RadzenAxisTitle Text="" />
+                            </Radzen.Blazor.RadzenValueAxis>
+                        </Radzen.Blazor.RadzenChart>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="card-title">@localizer["客户排行"]</div>
+                    <div id="echartPie" style="height: 300px;">
+                        <Radzen.Blazor.RadzenChart>
+                            <Radzen.Blazor.RadzenPieSeries Data="@toprecible" Title="Customer" CategoryProperty="LedgerName" ValueProperty="debit" />
+                        </Radzen.Blazor.RadzenChart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @code
 {
@@ -152,12 +156,12 @@
         StateHasChanged();
 
     }
-    protected  void LoadData()
+    protected void LoadData()
     {
         //salesgraph
-        saleslist = reportRepository.SalesInvoiceViewGraph(1, 1 , FromDate , ToDate);
+        saleslist = reportRepository.SalesInvoiceViewGraph(1, 1, FromDate, ToDate);
         //purchasegraph
-        purchaselist = reportRepository.ViewAllPurchseInvoiceGraph(1, 1 , FromDate , ToDate);
+        purchaselist = reportRepository.ViewAllPurchseInvoiceGraph(1, 1, FromDate, ToDate);
 
         var resultSlesPurchse = reportRepository.SalesTotal(1); //TotalSales
         totalSales = resultSlesPurchse.GrandTotal;

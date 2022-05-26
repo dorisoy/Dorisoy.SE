@@ -34,17 +34,17 @@
                             <div class="card-title mb-3">@localizer["Product"]</div>
                             <div class="row">
                                 <div class="col-md-6 form-group mb-3">
-                                    <label for="firstName1">@localizer["Product Name"]</label>
+                                    <label for="firstName1">@localizer["商品名称"]</label>
                                     <input class="form-control" @bind="master.ProductName" type="text" placeholder="Enter you product name">
                                     <ValidationMessage For="@(() => master.ProductName)" />
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
-                                    <label for="lastName1">@localizer["Product Code"]</label>
+                                    <label for="lastName1">@localizer["商品编码"]</label>
                                     <input class="form-control" @bind="master.ProductCode" readonly type="text" placeholder="Enter your product code">
                                     <ValidationMessage For="@(() => master.ProductCode)" />
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
-                                    <label for="exampleInputEmail1">@localizer["Product Group"]</label>
+                                    <label for="exampleInputEmail1">@localizer["商品类别"]</label>
                                     <select class="form-control" @bind="master.GroupId">
                                         <option value="0">选择</option>
                                         @foreach (var item in listProductGroup)
@@ -74,15 +74,15 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
-                                    <label for="website">@localizer["Purchase Rate"]</label>
+                                    <label for="website">@localizer["采购价"]</label>
                                     <input class="form-control" @bind="master.PurchaseRate" type="number">
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
-                                    <label for="picker2">@localizer["Sales Rate"]</label>
+                                    <label for="picker2">@localizer["售价"]</label>
                                     <input class="form-control" @bind="master.SalesRate" type="number">
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
-                                    <label for="picker2">@localizer["Mrp"]</label>
+                                    <label for="picker2">@localizer["Mrp价"]</label>
                                     <input class="form-control" @bind="master.Mrp" type="number">
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
@@ -96,15 +96,15 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
-                                    <label for="picker2">@localizer["Minimum Stock"]</label>
+                                    <label for="picker2">@localizer["最小库存"]</label>
                                     <input class="form-control" @bind="master.MinimumStock" type="number">
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
-                                    <label for="picker2">@localizer["Maximum Stock"]</label>
+                                    <label for="picker2">@localizer["最大库存"]</label>
                                     <input class="form-control" @bind="master.MaximumStock" type="number">
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
-                                    <label for="picker2">@localizer["Description"]</label>
+                                    <label for="picker2">@localizer["描述"]</label>
                                     <input class="form-control" @bind="master.Narration" type="text">
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
@@ -131,28 +131,37 @@
                                         <div id="my-strictly-unique-vue-upload-multiple-image" class="d-flex justify-content-center">
                                             <div class="row">
 
-                                                 @if (master.Image == null)
-                                                {
-                                                    <img src="img/logo.jpg" alt="">
-                                                }
-                                                else
-                                                {
-                                                    <img src="@master.Image" width="60" height="60">
-                                                }
-                                                <ValidationMessage For="@(() => master.Image)" />
-                                               @*
-                                                <InputFile OnChange="OnFileChange" />*@
+                                                <div class="col-md-12">
+                                                    @if (master.Image == null)
+                                                    {
+                                                        <img src="img/logo.jpg" alt="">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@master.Image" width="60" height="60">
+                                                    }
 
-                                                
-                                                <InputFile id="fileInput112" OnChange="OnFileChange" hidden multiple accept=".jpg, .jpeg, .png" />
 
-<MudButton HtmlTag="label"
-           Variant="Variant.Filled"
-           Color="Color.Primary"
-           StartIcon="@Icons.Filled.CloudUpload"
-           for="fileInput112">
-    上传图片
-</MudButton>
+                                                    <ValidationMessage For="@(() => master.Image)" />
+
+
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <InputFile id="fileInput112" OnChange="OnFileChange" hidden multiple accept=".jpg, .jpeg, .png" />
+
+                                                    <MudButton HtmlTag="label"
+                                                               Variant="Variant.Filled"
+                                                               Color="Color.Primary"
+                                                               StartIcon="@Icons.Filled.CloudUpload"
+                                                               for="fileInput112">
+                                                        上传图片
+                                                    </MudButton>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -213,7 +222,7 @@
     }
 
 
-     private void UploadFiles(InputFileChangeEventArgs e)
+    private void UploadFiles(InputFileChangeEventArgs e)
     {
         var entries = e.GetMultipleFiles();
         //Do your validations here
@@ -274,4 +283,4 @@
     {
         navManager.NavigateTo("/product/productlist");
     }
-    }
+}

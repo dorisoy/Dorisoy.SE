@@ -368,7 +368,7 @@ else
         }
         var voucherType = _voucherType.Edit(decSalesInvoiceVoucherType);
         strSerialNo = _salesInvoice.GetVoucherNo(1, 1, decSalesInvoiceVoucherType);
-        master.VoucherNo = voucherType.Prefix + strSerialNo + voucherType.Suffix;
+        master.VoucherNo = CommonHelper.GetBillNumber(voucherType.Prefix, 130);
         listAccountledger = _accountLedger.ViewAllCustomer(1);
         listWarehouse = _warehouse.GetAll();
         listProduct = _product.ViewAllProduct(1);

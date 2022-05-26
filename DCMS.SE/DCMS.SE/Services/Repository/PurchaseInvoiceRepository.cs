@@ -119,6 +119,7 @@ namespace DCMS.SE.Services.Repository
                 para.Add("@CompanyId", CompanyId);
                 para.Add("@FinancialYearId", FinancialYearId);
                 para.Add("@VoucherTypeId", VoucherTypeId);
+
                 return val = sqlcon.Query<string>("SELECT ISNULL( MAX(SerialNo+1),1) FROM PurchaseMaster where CompanyId=@CompanyId AND FinancialYearId=@FinancialYearId AND VoucherTypeId=@VoucherTypeId", para, null, true, 0, commandType: CommandType.Text).FirstOrDefault();
             }
         }

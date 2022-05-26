@@ -9,10 +9,11 @@
 @using Net.ConnectCode.Barcode;
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1>@localizer["Barcode Code"]</h1>
+        <div class="breadcrumb">
+            <h1>@localizer["商品"]</h1>
             <ul>
-                <li><a href=""> @localizer["Product"] </a></li> 
-                <li> @localizer["Barcode Code"] </li>
+                <li><a href=""> @localizer["Product"] </a></li>
+                <li> @localizer["条码"] </li>
             </ul>
             </div>
             <div class="separator-breadcrumb border-top">
@@ -20,41 +21,33 @@
             </div>
             </div>
             <div class="card wrapper">
-            <div class="row">
-                            <div class="col-sm-12">
-                                <div class="table-responsive">
-                                                            <div id="PrintDiv">
-                                     <div class="paddin5ps">
-                                        @if(master == null)
-                                        {
-                                            
-                                        }
-                                        else
-                                        {
-                                        <table class="table-bordered barcode-collaps">
-                                                                                                                                  <tbody><tr><td class="barcode-toptd">  
-                                                    <div class="barcode-inner barcode-innerdiv">
-                                                        <div id="barcode">@master.ProductCode</div>
-<div id="barcode_text">@master.ProductName</div>
-                                                    </div>
-                                                </td>
-                                                                                                                                                                           
-                                            </tr>
-                                            </tbody>
-                                            </table>
-                                            }
-                                </div>
-                                </div>
-                                                        </div>
-                                
-                                </div>
-                                <div class="text-center">
-                                <a class="btn btn-info" style="cursor:pointer; color:#ffffff;" onclick="printDiv('PrintDiv')">@localizer["Print"]</a>
-                                <a class="btn btn-danger" href="/product/productlist">@localizer["Cancel"]</a>
-                            </div>
-                                </div>
+        <div class="row">
+            <div class="col-sm-12">
+
+
+
+                <MudCard Outlined="true">
+                    <MudCardContent>
+                        <div class="barcode-inner barcode-innerdiv">
+                            <div id="barcode">@master.ProductCode</div>
+                            <div id="barcode_text">@master.ProductName</div>
+                        </div>
+                    </MudCardContent>
+                    <MudCardActions Class="gap-2">
+                        <MudButton StartIcon="@Icons.Material.Filled.Print" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">打印</MudButton>
+                        <MudButton StartIcon="@Icons.Material.Filled.Undo" Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Link="/product/productlist">取消</MudButton>
+                    </MudCardActions>
+                </MudCard>
+
+
+
             </div>
-            </div>
+
+
+
+        </div>
+    </div>
+</div>
 @code {
     [Parameter]
     public string id { get; set; }

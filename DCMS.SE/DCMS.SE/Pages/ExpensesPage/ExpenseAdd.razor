@@ -123,7 +123,7 @@
         }
         var voucherType = _voucherType.Edit(decExpenseVoucherType);
         strSerialNo = _expenseMaster.GetVoucherNo(1, 1, decExpenseVoucherType);
-        master.VoucherNo = voucherType.Prefix + strSerialNo + voucherType.Suffix;
+        master.VoucherNo = CommonHelper.GetBillNumber(voucherType.Prefix, 130);
         listExpensesCategory = accountLedger.ViewAllExpensesCategory(1);
         master.Date = DateTime.Now;
         listWarehouse = _warehouse.GetAll();

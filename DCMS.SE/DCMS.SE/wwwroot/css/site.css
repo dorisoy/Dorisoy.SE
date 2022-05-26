@@ -3,6 +3,7 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
     body:not(.rz-default-scrollbars)::-webkit-scrollbar {
         background-color: #ffffff;
         width: 8px;
@@ -41,7 +42,6 @@ a, .btn-link {
 }
 
 .btn-primary {
-
 }
 
 .content {
@@ -78,6 +78,7 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
 .spinner {
     border: 16px solid silver;
     border-top: 16px solid #337AB7;
@@ -99,8 +100,14 @@ a, .btn-link {
         transform: rotate(360deg)
     }
 }
-.nav-item a {font-size:12px;}
-.card-title {font-size:14px;}
+
+.nav-item a {
+    font-size: 12px;
+}
+
+.card-title {
+    font-size: 16px;
+}
 
 @font-face {
     font-family: CCode39;
@@ -124,28 +131,35 @@ a, .btn-link {
     text-align: center;
     font-size: 24px
 }
+
 .breadcrumb {
     background: transparent;
     align-items: center;
     margin: 0 0 1.25rem;
     padding: 0;
 }
+
 span {
-    font-size:12px;
+    font-size: 12px;
 }
+
 .mud-toolbar.mud-toolbar-appbar {
     height: 50px;
     background: #ffffff !important;
 }
+
 .mud-drawer.mud-drawer-temporary.mud-drawer-pos-right.mud-drawer--open {
     width: 246px;
 }
+
 .mud-drawer .mud-drawer-content {
     width: 234px;
 }
+
 .mud-ripple {
     color: #47404f;
 }
+
 .mud-drawer-header {
     height: 62px;
 }

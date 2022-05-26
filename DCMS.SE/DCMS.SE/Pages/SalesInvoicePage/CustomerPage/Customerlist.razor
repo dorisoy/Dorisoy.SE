@@ -8,11 +8,10 @@
 @inject ISnackbar Snackbar
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb">
-            <h1> @localizer["Customer"]</h1>
+           <div class="breadcrumb"><h1> @localizer["客户"]</h1>
             <ul>
-                <li><a href=""> @localizer["Sales"] </a></li>
-                <li> @localizer["Customer"] </li>
+                <li><a href=""> @localizer["销售"] </a></li> 
+                <li> @localizer["客户"] / @localizer["列表"] </li>
             </ul>
         </div>
         <div class="separator-breadcrumb border-top">
@@ -35,6 +34,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="vgt-responsive">
                         <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<AccountLedgerView,bool>(Search)">
                             <ToolBarContent>
@@ -50,11 +50,10 @@
                                 <MudTh></MudTh>
                             </HeaderContent>
                             <RowTemplate>
-
                                 <MudTd DataLabel="">@context.LedgerName</MudTd>
                                 <MudTd DataLabel="">@context.LedgerCode</MudTd>
                                 <MudTd DataLabel="">@context.Phone</MudTd>
-                        @*        <MudTd DataLabel="">@context.Email</MudTd>*@
+                                @*<MudTd DataLabel="">@context.Email</MudTd>*@
                                 <MudTd DataLabel="">@context.Country</MudTd>
                                 <MudTd DataLabel="">@context.City</MudTd>
                                 <MudTd DataLabel="">

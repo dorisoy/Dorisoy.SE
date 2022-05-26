@@ -13,12 +13,13 @@
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
 @using Radzen
+
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1> @localizer["Sales Invoice"]</h1>
+         <div class="breadcrumb"><h1> @localizer["销售"]</h1>
             <ul>
-                <li><a href=""> @localizer["Sales Invoice"] </a></li> 
-                <li>Edit </li>
+                <li><a href=""> @localizer["销售单"] </a></li> 
+                <li> @localizer["编辑"] </li>
             </ul>
             </div>
             <div class="separator-breadcrumb border-top">
@@ -57,7 +58,7 @@
                                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
                                     <span>
                                         <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Warehouse"]
+                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["仓库"]
 
                                             </legend>
                                             <div>
@@ -267,9 +268,7 @@
             </div>
             </div>
 
-
-
-            @if (isShow == true)
+@if (isShow == true)
 {
     <div class="modal fade" id="myModal" style="display:block" aria-modal="true" role="dialog">
        <div class="modal-dialog" role="document">
