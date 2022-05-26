@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IWarehouse accountLedger
+@inject IWarehouse accountTerminal
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -95,7 +95,7 @@
     }
     private  void LoadData()
     {
-        listModel = accountLedger.GetAll();
+        listModel = accountTerminal.GetAll();
         StateHasChanged();
     }
     async Task Delete(int id)
@@ -106,7 +106,7 @@
             if (id != 1)
             {
                 bool isSave = false;
-                isSave = accountLedger.Delete(id);
+                isSave = accountTerminal.Delete(id);
                 if (isSave == true)
                 {
                     Snackbar.Add("Delete Successfully.", Severity.Success);

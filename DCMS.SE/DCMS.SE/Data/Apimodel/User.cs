@@ -18,7 +18,7 @@ namespace DCMS.SE.Data.Apimodel
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public int RoleId { get; set; }
-        public long CompanyId { get; set; }
+        public long StoreId { get; set; }
         public DateTime? HireDate { get; set; }
 
         public virtual Role Role { get; set; }

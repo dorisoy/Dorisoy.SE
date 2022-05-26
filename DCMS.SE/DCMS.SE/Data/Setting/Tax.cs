@@ -14,7 +14,7 @@ namespace DCMS.SE.Data.Setting
         public string TaxName { get; set; }
         public Decimal Rate { get; set; }
         public bool IsActive { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public DateTime? AddedDate { get; set; }
         public DateTime? ModifyDate { get; set; }
     }

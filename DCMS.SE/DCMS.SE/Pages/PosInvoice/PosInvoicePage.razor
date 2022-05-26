@@ -5,10 +5,10 @@
 @layout PosLayout
 @inject IProduct _product
 @inject IBrand _brand
-@inject IProductGroup _group
+@inject ICatagory _group
 @inject IReceiveCustomer _receiveCustomer
 @inject IWarehouse _warehouse
-@inject IAccountLedger _accountLedger
+@inject ITerminal _accountTerminal
 @inject ICartSalesService CartService
 @inject IVoucherType _voucherType
 @inject ISalesInvoice _salesInvoice
@@ -28,11 +28,11 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12"><span>
                             <div role="group" class="input-group input-customer">
-                                <select class="form-control" @bind="master.LedgerId">
+                                <select class="form-control" @bind="master.TerminalId">
                                     <option value="0">Choose Customer</option>
                                     @foreach(var item in listAccountledger)
                                                 {
-                                                    <option value="@item.LedgerId">@item.LedgerName</option>
+                                                    <option value="@item.TerminalId">@item.TerminalName</option>
                                                 }
                                             </select>
                             </div></span></div>
@@ -194,8 +194,8 @@
                         <div class="row">
                             <div class="col-md-6">
                             <select class="form-control" @bind="GroupId" @onclick="() =>CategoryClicked()">
-                                    <option value="0">Choose ProductGroup</option>
-                                    @foreach(var item in listProductGroup)
+                                    <option value="0">Choose Catagory</option>
+                                    @foreach(var item in listCatagory)
                                                 {
                                                     <option value="@item.GroupId">@item.GroupName</option>
                                                 }
@@ -318,10 +318,10 @@ else
     SalesMaster master = new SalesMaster();
     CartItem productDetails = new CartItem();
     IEnumerable<ProductView> listProduct;
-    List<AccountLedgerView> listAccountledger;
+    List<TerminalView> listAccountledger;
     List<Tax> listTax;
     List<Warehouse> listWarehouse;
-    List<ProductGroup> listProductGroup = new List<ProductGroup>();
+    List<Catagory> listCatagory = new List<Catagory>();
     List<Brand> listBrand = new List<Brand>();
     ProductView product = new ProductView();
     //TodoTask
@@ -369,10 +369,10 @@ else
         var voucherType = _voucherType.Edit(decSalesInvoiceVoucherType);
         strSerialNo = _salesInvoice.GetVoucherNo(1, 1, decSalesInvoiceVoucherType);
         master.VoucherNo = CommonHelper.GetBillNumber(voucherType.Prefix, 130);
-        listAccountledger = _accountLedger.ViewAllCustomer(1);
+        listAccountledger = _accountTerminal.ViewAllCustomer(1);
         listWarehouse = _warehouse.GetAll();
         listProduct = _product.ViewAllProduct(1);
-        listProductGroup = _group.GetAll();
+        listCatagory = _group.GetAll();
         //listBrand = _brand.GetAll();
         master.Date = DateTime.UtcNow;
         listTax = _tax.GetAll();
@@ -395,7 +395,7 @@ else
         {
             Snackbar.Add("Choose Warehouse.", Severity.Warning);
         }
-        else if (master.LedgerId == 0)
+        else if (master.TerminalId == 0)
         {
             Snackbar.Add("Choose Customer.", Severity.Warning);
         }
@@ -420,7 +420,7 @@ else
                 master.POS = true;
                 master.SerialNo = strSerialNo;
                 master.UserId = Id;
-                master.CompanyId = 1;
+                master.StoreId = 1;
                 master.FinancialYearId = 1;
                 master.VoucherTypeId = decSalesInvoiceVoucherType;
                 master.PreviousDue = 0;
@@ -479,10 +479,10 @@ else
                     //payment.Amount = master.PayAmount;
                     //payment.SerialNo = strSerialNo;
                     //payment.UserId = Id;
-                    //payment.LedgerId = master.LedgerId;
+                    //payment.TerminalId = master.TerminalId;
                     //payment.Narration = string.Empty;
                     //payment.PaymentType = "Cash";
-                    //payment.CompanyId = 1;
+                    //payment.StoreId = 1;
                     //payment.FinancialYearId = 1;
                     //payment.VoucherTypeId = decPaymentSupplierVoucherType;
                     //payment.PreviousDue = 0;
@@ -513,11 +513,11 @@ else
             }
         }
         }
-    protected  void LedgerClicked()
+    protected  void TerminalClicked()
     {
-        if (master.LedgerId > 0)
+        if (master.TerminalId > 0)
         {
-            //var view = salesInvoiceRepository.CustomerSalesDue(master.LedgerId);
+            //var view = salesInvoiceRepository.CustomerSalesDue(master.TerminalId);
             //master.PreviousDue = view.DueBalance;
         }
         else

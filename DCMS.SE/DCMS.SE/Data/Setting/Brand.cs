@@ -12,7 +12,7 @@ namespace DCMS.SE.Data.Setting
         [Required]
         public string Name { get; set; }
         public string Image { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public DateTime? AddedDate { get; set; }
         public DateTime? ModifyDate { get; set; }
         [NotMapped]

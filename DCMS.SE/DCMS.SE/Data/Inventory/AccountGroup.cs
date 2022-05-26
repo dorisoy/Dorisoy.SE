@@ -10,7 +10,7 @@ namespace DCMS.SE.Data.Inventory
         [Required]
         public string AccountGroupName { get; set; }
         public int GroupUnder { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public string Narration { get; set; }
         public bool IsDefault { get; set; }
         public string Nature { get; set; }

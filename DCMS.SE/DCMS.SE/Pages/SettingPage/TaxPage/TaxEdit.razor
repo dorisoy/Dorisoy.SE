@@ -101,7 +101,7 @@
                 var isCheck = _tax.CheckNameId(master.TaxName);
                 if (isCheck == master.TaxId || isCheck == 0)
                 {
-                    master.CompanyId = 1;
+                    master.StoreId = 1;
                     master.ModifyDate = DateTime.UtcNow;
                     _tax.Update(master);
                     Snackbar.Add("Saved Successfully.", Severity.Success);

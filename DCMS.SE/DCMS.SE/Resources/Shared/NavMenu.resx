@@ -120,7 +120,7 @@
   <data name="Brand" xml:space="preserve">
     <value>品牌</value>
   </data>
-  <data name="Company" xml:space="preserve">
+  <data name="Store" xml:space="preserve">
     <value>公司</value>
   </data>
   <data name="Create Expens" xml:space="preserve">
@@ -147,7 +147,7 @@
   <data name="Customer" xml:space="preserve">
     <value>客户</value>
   </data>
-  <data name="Customer Ledger" xml:space="preserve">
+  <data name="Customer Terminal" xml:space="preserve">
     <value>客户分类账</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
@@ -231,7 +231,7 @@
   <data name="Supplier" xml:space="preserve">
     <value>供应商</value>
   </data>
-  <data name="Supplier Ledger" xml:space="preserve">
+  <data name="Supplier Terminal" xml:space="preserve">
     <value>供应商分类账</value>
   </data>
   <data name="Tax" xml:space="preserve">

@@ -16,7 +16,7 @@ namespace DCMS.SE.Data.Inventory
         public int WarehouseId { get; set; }
         public int VoucherTypeId { get; set; }
         public DateTime Date { get; set; }
-        public int LedgerId { get; set; }
+        public int TerminalId { get; set; }
         public string Narration { get; set; }
         public int PurchaseOrderMasterId { get; set; }
         public decimal TotalTax { get; set; }
@@ -35,7 +35,7 @@ namespace DCMS.SE.Data.Inventory
         public string PaymentId { get; set; }
         public string UserId { get; set; }
         public int FinancialYearId { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public DateTime? AddedDate { get; set; }
         public DateTime? ModifyDate { get; set; }
         [NotMapped]

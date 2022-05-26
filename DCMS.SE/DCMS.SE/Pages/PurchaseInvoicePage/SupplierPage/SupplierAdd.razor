@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IAccountLedger accountLedger
+@inject IManufacturer accountManufacturer
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -29,13 +29,13 @@
                                     <div class="row">
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="firstName1">@localizer["Supplier Name"]</label>
-                                            <input class="form-control" @bind="master.LedgerName" type="text">
-                                        <ValidationMessage For="@(() => master.LedgerName)" />
+                                            <input class="form-control" @bind="master.ManufacturerName" type="text">
+                                        <ValidationMessage For="@(() => master.ManufacturerName)" />
                                         </div>
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="lastName1">@localizer["Code"]</label>
-                                            <input class="form-control" @bind="master.LedgerCode" readonly type="text">
-                                        <ValidationMessage For="@(() => master.LedgerCode)" />
+                                            <input class="form-control" @bind="master.ManufacturerCode" readonly type="text">
+                                        <ValidationMessage For="@(() => master.ManufacturerCode)" />
                                         </div>
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="lastName1">@localizer["Phone"]</label>
@@ -77,7 +77,7 @@
             </div>
             </div>
 @code {
-    AccountLedger master = new AccountLedger();
+    Manufacturer master = new Manufacturer();
     string strMenu = "Supplier";
     bool strAdd = true;
     bool strEdit = true;
@@ -109,8 +109,8 @@
             strDelete = true;
             strShow = true;
         }
-        var strSerialNo = accountLedger.SerialNoCode(1);
-        master.LedgerCode = strSerialNo;
+        var strSerialNo = accountManufacturer.SerialNoCode(1);
+        master.ManufacturerCode = strSerialNo;
         StateHasChanged();
     }
     public void HandleValidSubmit()
@@ -121,15 +121,15 @@
             master.IsDefault = false;
             master.CrOrDr = "Dr";
             master.AddedDate = DateTime.UtcNow;
-            master.CompanyId = 1;
-            var isCheck = accountLedger.CheckName(master.LedgerCode);
+            master.StoreId = 1;
+            var isCheck = accountManufacturer.CheckName(master.ManufacturerCode);
             if (isCheck == true)
             {
                 Snackbar.Add("Code Already Exists.", Severity.Info);
             }
             else
             {
-                int intProductId = accountLedger.Save(master);
+                int intProductId = accountManufacturer.Save(master);
                 Snackbar.Add("Saved Successfully.", Severity.Success);
                 navManager.NavigateTo("/purchase/supplierlist");
             }

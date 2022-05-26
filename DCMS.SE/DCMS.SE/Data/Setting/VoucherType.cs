@@ -11,7 +11,7 @@ namespace DCMS.SE.Data.Setting
         public int StartIndex { get; set; }
         public string Prefix { get; set; }
         public string Suffix { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public string ShowNote { get; set; }
         public string ShowAddress { get; set; }
         public string ShowEmail { get; set; }

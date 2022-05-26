@@ -7,37 +7,37 @@ namespace DCMS.SE.Services.Interface
 {
     public interface IInventoryReport
     {
-        DataSet CustomerLedgerOpening(DateTime fromDate, int LedgerId, int CompanyId);
-        DataSet CustomerLedger(DateTime fromDate, DateTime toDate, int LedgerId, int CompanyId);
-        DataSet CustomerLedgerDue(DateTime fromDate, DateTime toDate, int LedgerId);
-        DataSet CustomerLedgerDueSingle(DateTime fromDate, DateTime toDate, int LedgerId);
-        List<PurchaseSales> CustomerCountSales(DateTime fromDate, DateTime toDate, int LedgerId, int VoucherTypeId);
-        List<PurchaseSales> SaleReports(DateTime fromDate, DateTime toDate, int LedgerId, int VoucherTypeId);
+        DataSet CustomerTerminalOpening(DateTime fromDate, int TerminalId, int StoreId);
+        DataSet CustomerTerminal(DateTime fromDate, DateTime toDate, int TerminalId, int StoreId);
+        DataSet CustomerTerminalDue(DateTime fromDate, DateTime toDate, int TerminalId);
+        DataSet CustomerTerminalDueSingle(DateTime fromDate, DateTime toDate, int TerminalId);
+        List<PurchaseSales> CustomerCountSales(DateTime fromDate, DateTime toDate, int TerminalId, int VoucherTypeId);
+        List<PurchaseSales> SaleReports(DateTime fromDate, DateTime toDate, int TerminalId, int VoucherTypeId);
         //Supplier
-        DataSet SuppllierLedgerDue(DateTime fromDate, DateTime toDate, int ledgerId);
-        DataSet SupplierLedgerDueSingle(DateTime fromDate, DateTime toDate, int ledgerId);
-        List<PurchaseSales> SupplierCountPurchase(DateTime fromDate, DateTime toDate, int LedgerId, int VoucherTypeId);
-        List<PurchaseSales> PurchaseRepports(DateTime fromDate, DateTime toDate, int LedgerId, int VoucherTypeId);
-        public List<InventoryViewFinal> StockReport(int GroupId, int ProductId, int CompanyId);
-        DataSet DayBook(DateTime fromDate, DateTime toDate, int VoucherTypeId, int LedgerId);
-        DataSet LedgercountReport(DateTime fromDate, DateTime toDate, int LedgerId, string LedgerName, int CompanyId);
+        DataSet SuppllierTerminalDue(DateTime fromDate, DateTime toDate, int TerminalId);
+        DataSet SupplierTerminalDueSingle(DateTime fromDate, DateTime toDate, int TerminalId);
+        List<PurchaseSales> SupplierCountPurchase(DateTime fromDate, DateTime toDate, int TerminalId, int VoucherTypeId);
+        List<PurchaseSales> PurchaseRepports(DateTime fromDate, DateTime toDate, int TerminalId, int VoucherTypeId);
+        public List<InventoryViewFinal> StockReport(int GroupId, int ProductId, int StoreId);
+        DataSet DayBook(DateTime fromDate, DateTime toDate, int VoucherTypeId, int TerminalId);
+        DataSet TerminalcountReport(DateTime fromDate, DateTime toDate, int TerminalId, string TerminalName, int StoreId);
         //Dashboard
-        DashboardView SalesTotal(int CompanyId);
-        DashboardView SalesTotalwarehouse(int CompanyId);
-        DashboardView PurchaseTotal(int CompanyId);
-        DashboardView PurchaseTotalwarehouse(int CompanyId);
-        DashboardView PurchaseReturnTotal(int CompanyId);
-        DashboardView PurchaseReturnTotalwarehouse(int CompanyId);
-        DashboardView SalesReturnTotal(int CompanyId);
-        DashboardView SalesReturnTotalwarehouse(int CompanyId);
-        List<FinancialReport> TopReceive(int CompanyId);
-        List<SalesMasterView> SalesInvoiceViewGraph(int CompanyId, int FinancialYearId , DateTime FromDate , DateTime ToDate);
-        List<PurchaseMasterView> ViewAllPurchseInvoiceGraph(int CompanyId, int FinancialYearId ,DateTime FromDate, DateTime ToDate);
-        List<FinancialReport> GettopProduct(int CompanyId);
+        DashboardView SalesTotal(int StoreId);
+        DashboardView SalesTotalwarehouse(int StoreId);
+        DashboardView PurchaseTotal(int StoreId);
+        DashboardView PurchaseTotalwarehouse(int StoreId);
+        DashboardView PurchaseReturnTotal(int StoreId);
+        DashboardView PurchaseReturnTotalwarehouse(int StoreId);
+        DashboardView SalesReturnTotal(int StoreId);
+        DashboardView SalesReturnTotalwarehouse(int StoreId);
+        List<FinancialReport> TopReceive(int StoreId);
+        List<SalesMasterView> SalesInvoiceViewGraph(int StoreId, int FinancialYearId , DateTime FromDate , DateTime ToDate);
+        List<PurchaseMasterView> ViewAllPurchseInvoiceGraph(int StoreId, int FinancialYearId ,DateTime FromDate, DateTime ToDate);
+        List<FinancialReport> GettopProduct(int StoreId);
 
-        List<PaymentReceiveView> PaymentSent(int CompanyId);
-        List<PaymentReceiveView> PaymentReceive(int CompanyId);
+        List<PaymentReceiveView> PaymentSent(int StoreId);
+        List<PaymentReceiveView> PaymentReceive(int StoreId);
 
-        DataTable StockSearch(int groupId, int productId, string criteria, int companyId);
+        DataTable StockSearch(int groupId, int productId, string criteria, int StoreId);
     }
 }

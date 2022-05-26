@@ -21,7 +21,7 @@ namespace DCMS.SE.Data
         [StringLength(50)]
         public string Password { get; set; }
         public byte[] Image { get; set; }
-        public long CompanyId { get; set; }
+        public long StoreId { get; set; }
         public bool IsActive { get; set; }
 
 

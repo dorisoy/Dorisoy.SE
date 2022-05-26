@@ -13,18 +13,18 @@ using System.Linq;
 
 namespace DCMS.SE.Services.Repository
 {
-    public class ProductGroupRepository : IProductGroup
+    public class CatagoryRepository : ICatagory
     {
         private readonly ApplicationDbContext _context;
         private readonly DatabaseConnection _conn;
-        public ProductGroupRepository(ApplicationDbContext context, DatabaseConnection conn)
+        public CatagoryRepository(ApplicationDbContext context, DatabaseConnection conn)
         {
             _context = context;
             _conn = conn;
         }
         public bool CheckName(string name)
         {
-            var checkResult = (from progm in _context.ProductGroup
+            var checkResult = (from progm in _context.Catagory
                                      where progm.GroupName == name
                                select progm.GroupId).Count();
             if (checkResult > 0)
@@ -39,13 +39,13 @@ namespace DCMS.SE.Services.Repository
 
         public int CheckNameId(string name)
         {
-            var checkResult = (from progm in _context.ProductGroup
+            var checkResult = (from progm in _context.Catagory
                                where progm.GroupName == name
                                select progm.GroupId).Count();
             if (checkResult > 0)
             {
 
-                var checkAccount = (from progm in _context.ProductGroup
+                var checkAccount = (from progm in _context.Catagory
                                     where progm.GroupName == name
                                     select progm.GroupId).FirstOrDefault();
                 return checkAccount;
@@ -65,7 +65,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("IF NOT EXISTS (SELECT GroupId from Product where GroupId=@GroupId) DELETE FROM ProductGroup where GroupId=@GroupId", sqlcon);
+                SqlCommand cmd = new SqlCommand("IF NOT EXISTS (SELECT GroupId from Product where GroupId=@GroupId) DELETE FROM Catagory where GroupId=@GroupId", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@GroupId", SqlDbType.Int);
@@ -89,41 +89,41 @@ namespace DCMS.SE.Services.Repository
                 sqlcon.Close();
             }
         }
-        public List<ProductGroupView> ViewAllProductGroup()
+        public List<CatagoryView> ViewAllCatagory()
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
-                var ListofPlan = sqlcon.Query<ProductGroupView>("ProductGroupViewForGridFill", null, null, true, 0, commandType: CommandType.StoredProcedure).ToList();
+                var ListofPlan = sqlcon.Query<CatagoryView>("CatagoryViewForGridFill", null, null, true, 0, commandType: CommandType.StoredProcedure).ToList();
                 return ListofPlan;
             }
         }
-        public ProductGroup Edit(int id)
+        public Catagory Edit(int id)
         {
-            ProductGroup returnView = _context.ProductGroup.Find(id);
+            Catagory returnView = _context.Catagory.Find(id);
             return returnView;
         }
 
-        public List<ProductGroup> GetAll()
+        public List<Catagory> GetAll()
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
                 var param = new DynamicParameters();
-                var ListofPlan = sqlcon.Query<ProductGroup>("SELECT *FROM ProductGroup", null, null, true, 0, commandType: CommandType.Text).ToList();
+                var ListofPlan = sqlcon.Query<Catagory>("SELECT *FROM Catagory", null, null, true, 0, commandType: CommandType.Text).ToList();
                 return ListofPlan;
             }
         }
 
-        public int Save(ProductGroup model)
+        public int Save(Catagory model)
         {
-            _context.ProductGroup.Add(model);
+            _context.Catagory.Add(model);
             _context.SaveChanges();
             int id = model.GroupId;
             return id;
         }
 
-        public void Update(ProductGroup model)
+        public void Update(Catagory model)
         {
-            _context.ProductGroup.Update(model);
+            _context.Catagory.Update(model);
             _context.SaveChanges();
         }
     }

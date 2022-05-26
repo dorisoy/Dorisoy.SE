@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject ICompany _company
+@inject IStore _Store
 @inject ISalesReturnInvoice _salesInvoice
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
@@ -51,16 +51,16 @@
                     </div> <hr> <div class="row mt-5">
                         <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
                             <h5 class="font-weight-bold">@localizer["Customer Info"]</h5> 
-                            <div>@master.LedgerName</div> 
+                            <div>@master.TerminalName</div> 
                             <div>@master.Email</div> 
                             <div>@master.Phone</div> 
                             <div>@master.Address</div>
                         </div> 
                         <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
-                            <h5 class="font-weight-bold">@localizer["Company Info"]</h5> 
-                            <div>@company.CompanyName</div> 
-                            <div>@company.Address</div> 
-                            <div>@company.PhoneNo</div>
+                            <h5 class="font-weight-bold">@localizer["Store Info"]</h5> 
+                            <div>@Store.StoreName</div> 
+                            <div>@Store.Address</div> 
+                            <div>@Store.PhoneNo</div>
                             </div>
                             <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
                                 <h5 class="font-weight-bold">@localizer["Sales Return Info"]</h5> 
@@ -130,12 +130,12 @@
     public string id { get; set; }
     SalesReturnMasterView master = new SalesReturnMasterView();
     List<ProductView> listPurchaseDetails = new List<ProductView>();
-    Company company = new Company();
+    Store Store = new Store();
     protected  override void OnInitialized()
     {
         master = _salesInvoice.Print(Convert.ToInt32(id));
         listPurchaseDetails = _salesInvoice.SalesReturnInvoiceDetails(Convert.ToInt32(id));
-        company = _company.Edit(1);
+        Store = _Store.Edit(1);
         StateHasChanged();
     }
     void Cancel()

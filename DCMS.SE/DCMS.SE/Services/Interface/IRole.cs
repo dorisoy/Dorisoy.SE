@@ -10,8 +10,8 @@ namespace DCMS.SE.Services.Interface
         List<Role> GetAll();
         List<Privilege> GetAllPrivilege();
         List<Privilege> GetAllPrivilege(int  roleId);
-        bool DeleteRolePriviliage(int CompanyId, int RoleId);
-        Privilege PriviliageCheck(string FormName, int RoleId, int CompanyId);
+        bool DeleteRolePriviliage(int StoreId, int RoleId);
+        Privilege PriviliageCheck(string FormName, int RoleId, int StoreId);
         void SavePrivilige(Privilege privilege);
         bool CheckName(string name);
         bool CheckRoleName(int RoleId);

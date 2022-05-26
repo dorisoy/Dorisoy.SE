@@ -18,7 +18,7 @@ namespace DCMS.SE.Data
         public string LastName { get; set; }        
         public int RoleId { get; set; }
         public DateTime? HireDate { get; set; }
-        public long CompanyId { get; set; }
+        public long StoreId { get; set; }
         public Roles Role { get; set; }
         public string ConfirmPassword { get; set; }
         public string AccessToken { get; set; }

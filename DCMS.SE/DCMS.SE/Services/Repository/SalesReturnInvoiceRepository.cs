@@ -25,10 +25,10 @@ namespace DCMS.SE.Services.Repository
             _conn = conn;
         }
 
-        public bool AccountSalesReturnInvoiceNoCheckExistence(int CompanyId, int FinancialYearId, string VoucherNo)
+        public bool AccountSalesReturnInvoiceNoCheckExistence(int StoreId, int FinancialYearId, string VoucherNo)
         {
             var checkResult = (from progm in _context.SalesReturnMaster
-                               where progm.CompanyId == CompanyId && progm.FinancialYearId == FinancialYearId && progm.VoucherNo == VoucherNo
+                               where progm.StoreId == StoreId && progm.FinancialYearId == FinancialYearId && progm.VoucherNo == VoucherNo
                                select progm.SalesReturnMasterId).Count();
             if (checkResult > 0)
             {
@@ -59,7 +59,7 @@ namespace DCMS.SE.Services.Repository
             }
         }
 
-        public bool Delete(int SalesReturnMasterId, string VoucherNo, int CompanyId, int FinancialYearId)
+        public bool Delete(int SalesReturnMasterId, string VoucherNo, int StoreId, int FinancialYearId)
         {
             SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
             try
@@ -75,8 +75,8 @@ namespace DCMS.SE.Services.Repository
                 para.Value = SalesReturnMasterId;
                 para = cmd.Parameters.Add("@VoucherNo", SqlDbType.NVarChar);
                 para.Value = VoucherNo;
-                para = cmd.Parameters.Add("@CompanyId", SqlDbType.Int);
-                para.Value = CompanyId;
+                para = cmd.Parameters.Add("@StoreId", SqlDbType.Int);
+                para.Value = StoreId;
                 para = cmd.Parameters.Add("@FinancialYearId", SqlDbType.Int);
                 para.Value = FinancialYearId;
                 long rowAffacted = cmd.ExecuteNonQuery();
@@ -110,23 +110,23 @@ namespace DCMS.SE.Services.Repository
             }
         }
 
-        public string GetVoucherNo(int CompanyId, int FinancialYearId, int VoucherTypeId)
+        public string GetVoucherNo(int StoreId, int FinancialYearId, int VoucherTypeId)
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
                 string val = string.Empty;
                 var para = new DynamicParameters();
-                para.Add("@CompanyId", CompanyId);
+                para.Add("@StoreId", StoreId);
                 para.Add("@FinancialYearId", FinancialYearId);
                 para.Add("@VoucherTypeId", VoucherTypeId);
-                return val = sqlcon.Query<string>("SELECT ISNULL( MAX(SerialNo+1),1) FROM SalesReturnMaster where CompanyId=@CompanyId AND FinancialYearId=@FinancialYearId AND VoucherTypeId=@VoucherTypeId", para, null, true, 0, commandType: CommandType.Text).FirstOrDefault();
+                return val = sqlcon.Query<string>("SELECT ISNULL( MAX(SerialNo+1),1) FROM SalesReturnMaster where StoreId=@StoreId AND FinancialYearId=@FinancialYearId AND VoucherTypeId=@VoucherTypeId", para, null, true, 0, commandType: CommandType.Text).FirstOrDefault();
             }
         }
 
         public SalesReturnMasterView Print(int id)
         {
             var varlist = (from a in _context.SalesReturnMaster
-                           join b in _context.AccountLedger on a.LedgerId equals b.LedgerId
+                           join b in _context.Terminal on a.TerminalId equals b.TerminalId
                            join c in _context.Warehouse on a.WarehouseId equals c.WarehouseId
                            where a.SalesReturnMasterId == id
                            select new SalesReturnMasterView
@@ -142,8 +142,8 @@ namespace DCMS.SE.Services.Repository
                                UserId = a.UserId,
                                Status = a.Status,
                                ShippingAmount = a.ShippingAmount,
-                               LedgerCode = b.LedgerCode,
-                               LedgerName = b.LedgerName,
+                               TerminalCode = b.TerminalCode,
+                               TerminalName = b.TerminalName,
                                Email = b.Email,
                                Phone = b.Phone,
                                Address = b.Address,
@@ -183,13 +183,13 @@ namespace DCMS.SE.Services.Repository
         public List<SalesReturnMasterView> SalesReturnInvoiceView(int id)
         {
             var varlist = (from a in _context.SalesReturnMaster
-                           join b in _context.AccountLedger on a.LedgerId equals b.LedgerId
+                           join b in _context.Terminal on a.TerminalId equals b.TerminalId
                            join c in _context.VoucherType on a.VoucherTypeId equals c.VoucherTypeId
-                           where a.CompanyId == id
+                           where a.StoreId == id
                            select new SalesReturnMasterView
                            {
                                SalesReturnMasterId = a.SalesReturnMasterId,
-                               LedgerId = a.LedgerId,
+                               TerminalId = a.TerminalId,
                                Date = a.Date,
                                VoucherNo = a.VoucherNo,
                                GrandTotal = a.GrandTotal,
@@ -197,8 +197,8 @@ namespace DCMS.SE.Services.Repository
                                Status = a.Status,
                                UserId = a.UserId,
                                BalanceDue = a.GrandTotal - a.PayAmount,
-                               LedgerCode = b.LedgerCode,
-                               LedgerName = b.LedgerName,
+                               TerminalCode = b.TerminalCode,
+                               TerminalName = b.TerminalName,
                                VoucherTypeName = c.VoucherTypeName
                            }).ToList();
 
@@ -207,13 +207,13 @@ namespace DCMS.SE.Services.Repository
         public List<SalesReturnMasterView> SalesReturnInvoiceViewwarehouse(int id)
         {
             var varlist = (from a in _context.SalesReturnMaster
-                           join b in _context.AccountLedger on a.LedgerId equals b.LedgerId
+                           join b in _context.Terminal on a.TerminalId equals b.TerminalId
                            join c in _context.VoucherType on a.VoucherTypeId equals c.VoucherTypeId
                            where a.WarehouseId == id
                            select new SalesReturnMasterView
                            {
                                SalesReturnMasterId = a.SalesReturnMasterId,
-                               LedgerId = a.LedgerId,
+                               TerminalId = a.TerminalId,
                                Date = a.Date,
                                VoucherNo = a.VoucherNo,
                                GrandTotal = a.GrandTotal,
@@ -221,8 +221,8 @@ namespace DCMS.SE.Services.Repository
                                Status = a.Status,
                                UserId = a.UserId,
                                BalanceDue = a.GrandTotal - a.PayAmount,
-                               LedgerCode = b.LedgerCode,
-                               LedgerName = b.LedgerName,
+                               TerminalCode = b.TerminalCode,
+                               TerminalName = b.TerminalName,
                                VoucherTypeName = c.VoucherTypeName
                            }).ToList();
 
@@ -278,7 +278,7 @@ namespace DCMS.SE.Services.Repository
                     stockposting.AgainstVoucherTypeId = 0;
                     stockposting.WarehouseId = model.WarehouseId;
                     stockposting.StockCalculate = "SalesReturn";
-                    stockposting.CompanyId = model.CompanyId;
+                    stockposting.StoreId = model.StoreId;
                     stockposting.FinancialYearId = model.FinancialYearId;
                     stockposting.AddedDate = DateTime.UtcNow;
                     _context.StockPosting.Add(stockposting);
@@ -287,12 +287,12 @@ namespace DCMS.SE.Services.Repository
 
 
 
-                //LedgerPosting
+                //TerminalPosting
                 //Customer
-                LedgerPosting ledger = new LedgerPosting();
+                TerminalPosting ledger = new TerminalPosting();
                 ledger.Date = model.Date;
                 ledger.NepaliDate = String.Empty;
-                ledger.LedgerId = model.LedgerId;
+                ledger.TerminalId = model.TerminalId;
                 ledger.Debit = 0;
                 ledger.Credit = model.GrandTotal;
                 ledger.VoucherNo = model.VoucherNo;
@@ -300,21 +300,21 @@ namespace DCMS.SE.Services.Repository
                 ledger.YearId = model.FinancialYearId;
                 ledger.InvoiceNo = model.VoucherNo;
                 ledger.VoucherTypeId = model.VoucherTypeId;
-                ledger.CompanyId = model.CompanyId;
+                ledger.StoreId = model.StoreId;
                 ledger.LongReference = model.Narration;
                 ledger.ReferenceN = model.Narration;
                 ledger.ChequeNo = String.Empty;
                 ledger.ChequeDate = String.Empty;
                 ledger.AddedDate = DateTime.UtcNow;
-                _context.LedgerPosting.Add(ledger);
+                _context.TerminalPosting.Add(ledger);
                 _context.SaveChanges();
 
-                //SalesAccount Ledger send with out vat
+                //SalesAccount Terminal send with out vat
                 decimal decSupplierCustomerAmount = Math.Round(model.NetAmounts - model.BillDiscount, 2);
-                LedgerPosting purchaseledger = new LedgerPosting();
+                TerminalPosting purchaseledger = new TerminalPosting();
                 purchaseledger.Date = model.Date;
                 purchaseledger.NepaliDate = String.Empty;
-                purchaseledger.LedgerId = 10;
+                purchaseledger.TerminalId = 10;
                 purchaseledger.Debit = decSupplierCustomerAmount;
                 purchaseledger.Credit = 0;
                 purchaseledger.VoucherNo = model.VoucherNo;
@@ -322,23 +322,23 @@ namespace DCMS.SE.Services.Repository
                 purchaseledger.YearId = model.FinancialYearId;
                 purchaseledger.InvoiceNo = model.VoucherNo;
                 purchaseledger.VoucherTypeId = model.VoucherTypeId;
-                purchaseledger.CompanyId = model.CompanyId;
+                purchaseledger.StoreId = model.StoreId;
                 purchaseledger.LongReference = model.Narration;
                 purchaseledger.ReferenceN = model.Narration;
                 purchaseledger.ChequeNo = String.Empty;
                 purchaseledger.ChequeDate = String.Empty;
                 purchaseledger.AddedDate = DateTime.UtcNow;
-                _context.LedgerPosting.Add(purchaseledger);
+                _context.TerminalPosting.Add(purchaseledger);
                 _context.SaveChanges();
 
 
                 //Tax
                 if (model.TotalTax > 0)
                 {
-                    LedgerPosting vatledger = new LedgerPosting();
+                    TerminalPosting vatledger = new TerminalPosting();
                     vatledger.Date = model.Date;
                     vatledger.NepaliDate = String.Empty;
-                    vatledger.LedgerId = 14;
+                    vatledger.TerminalId = 14;
                     vatledger.Debit = model.TotalTax;
                     vatledger.Credit = 0;
                     vatledger.VoucherNo = model.VoucherNo;
@@ -346,13 +346,13 @@ namespace DCMS.SE.Services.Repository
                     vatledger.YearId = model.FinancialYearId;
                     vatledger.InvoiceNo = model.VoucherNo;
                     vatledger.VoucherTypeId = model.VoucherTypeId;
-                    vatledger.CompanyId = model.CompanyId;
+                    vatledger.StoreId = model.StoreId;
                     vatledger.LongReference = model.Narration;
                     vatledger.ReferenceN = model.Narration;
                     vatledger.ChequeNo = String.Empty;
                     vatledger.ChequeDate = String.Empty;
                     vatledger.AddedDate = DateTime.UtcNow;
-                    _context.LedgerPosting.Add(vatledger);
+                    _context.TerminalPosting.Add(vatledger);
                     _context.SaveChanges();
                 }
                 dbTran.Commit();
@@ -416,7 +416,7 @@ namespace DCMS.SE.Services.Repository
                         stockposting.AgainstVoucherTypeId = 0;
                         stockposting.WarehouseId = model.WarehouseId;
                         stockposting.StockCalculate = "SalesReturn";
-                        stockposting.CompanyId = model.CompanyId;
+                        stockposting.StoreId = model.StoreId;
                         stockposting.FinancialYearId = model.FinancialYearId;
                         stockposting.AddedDate = DateTime.UtcNow;
                         _context.StockPosting.Add(stockposting);
@@ -471,7 +471,7 @@ namespace DCMS.SE.Services.Repository
                         stockposting.AgainstVoucherTypeId = 0;
                         stockposting.WarehouseId = model.WarehouseId;
                         stockposting.StockCalculate = "SalesReturn";
-                        stockposting.CompanyId = model.CompanyId;
+                        stockposting.StoreId = model.StoreId;
                         stockposting.FinancialYearId = model.FinancialYearId;
                         stockposting.AddedDate = DateTime.UtcNow;
                         _context.StockPosting.Update(stockposting);
@@ -480,23 +480,23 @@ namespace DCMS.SE.Services.Repository
                     
                 }
 
-                //DeleteLedgerPosting
+                //DeleteTerminalPosting
                 using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
                 {
                     var paraScDelete = new DynamicParameters();
                     paraScDelete.Add("@DetailsId", model.SalesReturnMasterId);
                     paraScDelete.Add("@VoucherTypeId", model.VoucherTypeId);
-                    var valueScDelete = sqlcon.Query<int>("DELETE FROM LedgerPosting where DetailsId=@DetailsId AND VoucherTypeId=@VoucherTypeId", paraScDelete, null, true, 0, commandType: CommandType.Text);
+                    var valueScDelete = sqlcon.Query<int>("DELETE FROM TerminalPosting where DetailsId=@DetailsId AND VoucherTypeId=@VoucherTypeId", paraScDelete, null, true, 0, commandType: CommandType.Text);
                 }
 
 
 
-                //LedgerPosting
+                //TerminalPosting
                 //Customer
-                LedgerPosting ledger = new LedgerPosting();
+                TerminalPosting ledger = new TerminalPosting();
                 ledger.Date = model.Date;
                 ledger.NepaliDate = String.Empty;
-                ledger.LedgerId = model.LedgerId;
+                ledger.TerminalId = model.TerminalId;
                 ledger.Debit = 0;
                 ledger.Credit = model.GrandTotal;
                 ledger.VoucherNo = model.VoucherNo;
@@ -504,21 +504,21 @@ namespace DCMS.SE.Services.Repository
                 ledger.YearId = model.FinancialYearId;
                 ledger.InvoiceNo = model.VoucherNo;
                 ledger.VoucherTypeId = model.VoucherTypeId;
-                ledger.CompanyId = model.CompanyId;
+                ledger.StoreId = model.StoreId;
                 ledger.LongReference = model.Narration;
                 ledger.ReferenceN = model.Narration;
                 ledger.ChequeNo = String.Empty;
                 ledger.ChequeDate = String.Empty;
                 ledger.AddedDate = DateTime.UtcNow;
-                _context.LedgerPosting.Add(ledger);
+                _context.TerminalPosting.Add(ledger);
                 _context.SaveChanges();
 
-                //SalesAccount Ledger send with out vat
+                //SalesAccount Terminal send with out vat
                 decimal decSupplierCustomerAmount = Math.Round(model.NetAmounts - model.BillDiscount, 2);
-                LedgerPosting purchaseledger = new LedgerPosting();
+                TerminalPosting purchaseledger = new TerminalPosting();
                 purchaseledger.Date = model.Date;
                 purchaseledger.NepaliDate = String.Empty;
-                purchaseledger.LedgerId = 10;
+                purchaseledger.TerminalId = 10;
                 purchaseledger.Debit = decSupplierCustomerAmount;
                 purchaseledger.Credit = 0;
                 purchaseledger.VoucherNo = model.VoucherNo;
@@ -526,23 +526,23 @@ namespace DCMS.SE.Services.Repository
                 purchaseledger.YearId = model.FinancialYearId;
                 purchaseledger.InvoiceNo = model.VoucherNo;
                 purchaseledger.VoucherTypeId = model.VoucherTypeId;
-                purchaseledger.CompanyId = model.CompanyId;
+                purchaseledger.StoreId = model.StoreId;
                 purchaseledger.LongReference = model.Narration;
                 purchaseledger.ReferenceN = model.Narration;
                 purchaseledger.ChequeNo = String.Empty;
                 purchaseledger.ChequeDate = String.Empty;
                 purchaseledger.AddedDate = DateTime.UtcNow;
-                _context.LedgerPosting.Add(purchaseledger);
+                _context.TerminalPosting.Add(purchaseledger);
                 _context.SaveChanges();
 
 
                 //Tax
                 if (model.TotalTax > 0)
                 {
-                    LedgerPosting vatledger = new LedgerPosting();
+                    TerminalPosting vatledger = new TerminalPosting();
                     vatledger.Date = model.Date;
                     vatledger.NepaliDate = String.Empty;
-                    vatledger.LedgerId = 14;
+                    vatledger.TerminalId = 14;
                     vatledger.Debit = model.TotalTax;
                     vatledger.Credit = 0;
                     vatledger.VoucherNo = model.VoucherNo;
@@ -550,13 +550,13 @@ namespace DCMS.SE.Services.Repository
                     vatledger.YearId = model.FinancialYearId;
                     vatledger.InvoiceNo = model.VoucherNo;
                     vatledger.VoucherTypeId = model.VoucherTypeId;
-                    vatledger.CompanyId = model.CompanyId;
+                    vatledger.StoreId = model.StoreId;
                     vatledger.LongReference = model.Narration;
                     vatledger.ReferenceN = model.Narration;
                     vatledger.ChequeNo = String.Empty;
                     vatledger.ChequeDate = String.Empty;
                     vatledger.AddedDate = DateTime.UtcNow;
-                    _context.LedgerPosting.Add(vatledger);
+                    _context.TerminalPosting.Add(vatledger);
                     _context.SaveChanges();
                 }
 

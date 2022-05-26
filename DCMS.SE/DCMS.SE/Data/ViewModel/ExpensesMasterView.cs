@@ -14,7 +14,7 @@ namespace DCMS.SE.Data.ViewModel
         public DateTime? Date { get; set; }
         public string NepaliDate { get; set; }
         public string VoucherTypeName { get; set; }
-        public string LedgerName { get; set; }
+        public string TerminalName { get; set; }
         public string Narration { get; set; }
         public decimal Amount { get; set; }
         public string WarehouseName { get; set; }

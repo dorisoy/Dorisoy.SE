@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DCMS.SE.Data.ViewModel
 {
-    public class ProductGroupView
+    public class CatagoryView
     {
         [Key]
         public int GroupId { get; set; }

@@ -8,7 +8,7 @@
 @inject ISalesReturnInvoice _salesReturnInvoice
 @inject IPurchaseInvoice _purchaseInvoice
 @inject IPurchaseReturnInvoice _purchaseReturnInvoice
-@inject IAccountLedger _customer
+@inject ITerminal _customer
 @inject IWarehouse _warehouse
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
@@ -106,7 +106,7 @@
     <RowTemplate>
         <MudTd DataLabel="">@context.VoucherNo</MudTd>
         <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.LedgerName</MudTd>
+        <MudTd DataLabel="">@context.TerminalName</MudTd>
         <MudTd DataLabel="">@context.GrandTotal</MudTd>
         <MudTd DataLabel="">@context.PaymentAmount</MudTd>
         <MudTd DataLabel="">@context.BalanceDue</MudTd>
@@ -148,7 +148,7 @@
     <RowTemplate>
         <MudTd DataLabel="">@context.VoucherNo</MudTd>
         <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.LedgerName</MudTd>
+        <MudTd DataLabel="">@context.TerminalName</MudTd>
         @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
         <MudTd DataLabel="">@context.GrandTotal</MudTd>
         <MudTd DataLabel="">@context.PaymentAmount</MudTd>
@@ -191,7 +191,7 @@
     <RowTemplate>
         <MudTd DataLabel="">@context.VoucherNo</MudTd>
         <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.LedgerName</MudTd>
+        <MudTd DataLabel="">@context.TerminalName</MudTd>
         <MudTd DataLabel="">@context.VoucherTypeName</MudTd>
         <MudTd DataLabel="">@context.GrandTotal</MudTd>
         <MudTd DataLabel="">@context.PaymentAmount</MudTd>
@@ -235,7 +235,7 @@
     <RowTemplate>
         <MudTd DataLabel="">@context.VoucherNo</MudTd>
         <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.LedgerName</MudTd>
+        <MudTd DataLabel="">@context.TerminalName</MudTd>
         @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
         <MudTd DataLabel="">@context.GrandTotal</MudTd>
         <MudTd DataLabel="">@context.PaymentAmount</MudTd>
@@ -340,9 +340,9 @@
         var returnPurchaseReturn = reportRepository.PurchaseReturnTotalwarehouse(WarehouseId);
         totalPurchaseReturn = returnPurchaseReturn.GrandTotal;
             listModel = _salesInvoice.SalesInvoiceViewWarehouse(WarehouseId);
-            listSalesReturn = _salesReturnInvoice.SalesReturnInvoiceViewwarehouse(WarehouseId); // 1 is companyid
+            listSalesReturn = _salesReturnInvoice.SalesReturnInvoiceViewwarehouse(WarehouseId); // 1 is StoreId
             listPurchaseInvoice = _purchaseInvoice.PurchaseInvoiceViewwarehouse(WarehouseId);
-            listPurchaseReturn = _purchaseReturnInvoice.PurchaseReturnInvoiceViewwarehouse(WarehouseId); // 1 is companyid
+            listPurchaseReturn = _purchaseReturnInvoice.PurchaseReturnInvoiceViewwarehouse(WarehouseId); // 1 is StoreId
             StateHasChanged();
         }
         else
@@ -361,16 +361,16 @@
         var returnPurchaseReturn = reportRepository.PurchaseReturnTotalwarehouse(WarehouseId);
         totalPurchaseReturn = returnPurchaseReturn.GrandTotal;
             listModel = _salesInvoice.SalesInvoiceViewWarehouse(WarehouseId);
-            listSalesReturn = _salesReturnInvoice.SalesReturnInvoiceViewwarehouse(WarehouseId); // 1 is companyid
+            listSalesReturn = _salesReturnInvoice.SalesReturnInvoiceViewwarehouse(WarehouseId); // 1 is StoreId
             listPurchaseInvoice = _purchaseInvoice.PurchaseInvoiceViewwarehouse(WarehouseId);
-            listPurchaseReturn = _purchaseReturnInvoice.PurchaseReturnInvoiceViewwarehouse(WarehouseId); // 1 is companyid
+            listPurchaseReturn = _purchaseReturnInvoice.PurchaseReturnInvoiceViewwarehouse(WarehouseId); // 1 is StoreId
         }
     }
     private bool Search(SalesMasterView element)
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -380,7 +380,7 @@
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -390,7 +390,7 @@
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -400,7 +400,7 @@
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;

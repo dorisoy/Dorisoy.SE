@@ -1,8 +1,8 @@
-﻿@page "/product/productgroupadd"
+﻿@page "/product/Catagoryadd"
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IProductGroup _productGroup
+@inject ICatagory _Catagory
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -75,8 +75,8 @@
             </div>
             </div>
 @code {
-    ProductGroup master = new ProductGroup();
-    List<ProductGroup> listProductgorup;
+    Catagory master = new Catagory();
+    List<Catagory> listProductgorup;
     string strMenu = "Product Group";
     bool strAdd = true;
     bool strEdit = true;
@@ -108,28 +108,28 @@
             strDelete = true;
             strShow = true;
         }
-        listProductgorup = _productGroup.GetAll();
+        listProductgorup = _Catagory.GetAll();
         master.GroupUnder = 1;
         StateHasChanged();
     }
     public  void HandleValidSubmit()
     {
-        var isCheck = _productGroup.CheckName(master.GroupName);
+        var isCheck = _Catagory.CheckName(master.GroupName);
             if (isCheck == true)
             {
                 Snackbar.Add("Already Exists.", Severity.Info);
             }
             else
             {
-                master.CompanyId = 1;
+                master.StoreId = 1;
                 master.AddedDate = DateTime.Now;
-                _productGroup.Save(master);
+                _Catagory.Save(master);
                 Snackbar.Add("Saved Successfully.", Severity.Success);
-                navManager.NavigateTo("/product/productgrouplist");
+                navManager.NavigateTo("/product/Catagorylist");
             }
     }
     void Cancel()
     {
-        navManager.NavigateTo("/product/productgrouplist");
+        navManager.NavigateTo("/product/Catagorylist");
     }
     }

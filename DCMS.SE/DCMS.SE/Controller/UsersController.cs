@@ -69,30 +69,40 @@ namespace DCMS.SE.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<UserWithToken>> Login([FromBody] User user)
         {
-            user = await _context.User.Include(u => u.Role)
-                                        .Where(u => u.EmailAddress == user.EmailAddress
-                                                && u.Password == user.Password).FirstOrDefaultAsync();
-
             UserWithToken userWithToken = null;
 
-            if (user != null)
+            try
             {
-                RefreshToken refreshToken = GenerateRefreshToken();
-                user.RefreshTokens.Add(refreshToken);
-                await _context.SaveChangesAsync();
+                user = await _context.User.Include(u => u.Role)
+                                            .Where(u => u.EmailAddress == user.EmailAddress
+                                                    && u.Password == user.Password).FirstOrDefaultAsync();
 
-                userWithToken = new UserWithToken(user);
-                userWithToken.RefreshToken = refreshToken.Token;
+              
+
+                if (user != null)
+                {
+                    RefreshToken refreshToken = GenerateRefreshToken();
+                    user.RefreshTokens.Add(refreshToken);
+                    await _context.SaveChangesAsync();
+
+                    userWithToken = new UserWithToken(user);
+                    userWithToken.RefreshToken = refreshToken.Token;
+                }
+
+                if (userWithToken == null)
+                {
+                    return NotFound();
+                }
+
+                //sign your token here here..
+                userWithToken.AccessToken = GenerateAccessToken(user.UserId);
+                return userWithToken;
             }
-
-            if (userWithToken == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                //{"An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure' to the 'UseSqlServer' call."}
+                return userWithToken;
             }
-
-            //sign your token here here..
-            userWithToken.AccessToken = GenerateAccessToken(user.UserId);
-            return userWithToken;
         }
 
         // POST: api/Users

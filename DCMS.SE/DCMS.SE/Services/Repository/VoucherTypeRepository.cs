@@ -39,7 +39,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("UPDATE VoucherType SET VoucherTypeName=@VoucherTypeName,StartIndex=@StartIndex,Prefix=@Prefix,Suffix=@Suffix,CompanyId=@CompanyId,ShowNote=@ShowNote,ShowAddress=@ShowAddress,ShowEmail=@ShowEmail,ShowPhone=@ShowPhone,ShowDiscount=@ShowDiscount,ShowTax=@ShowTax,ShowBarcode=@ShowBarcode,IsActive=@IsActive where VoucherTypeId=@VoucherTypeId", sqlcon);
+                SqlCommand cmd = new SqlCommand("UPDATE VoucherType SET VoucherTypeName=@VoucherTypeName,StartIndex=@StartIndex,Prefix=@Prefix,Suffix=@Suffix,StoreId=@StoreId,ShowNote=@ShowNote,ShowAddress=@ShowAddress,ShowEmail=@ShowEmail,ShowPhone=@ShowPhone,ShowDiscount=@ShowDiscount,ShowTax=@ShowTax,ShowBarcode=@ShowBarcode,IsActive=@IsActive where VoucherTypeId=@VoucherTypeId", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@VoucherTypeId", SqlDbType.Int);
@@ -52,8 +52,8 @@ namespace DCMS.SE.Services.Repository
                 para.Value = voucherType.Prefix;
                 para = cmd.Parameters.Add("@Suffix", SqlDbType.NVarChar);
                 para.Value = voucherType.Suffix;
-                para = cmd.Parameters.Add("@CompanyId", SqlDbType.Int);
-                para.Value = voucherType.CompanyId;
+                para = cmd.Parameters.Add("@StoreId", SqlDbType.Int);
+                para.Value = voucherType.StoreId;
                 para = cmd.Parameters.Add("@ShowNote", SqlDbType.NVarChar);
                 para.Value = voucherType.ShowNote;
                 para = cmd.Parameters.Add("@ShowAddress", SqlDbType.NVarChar);

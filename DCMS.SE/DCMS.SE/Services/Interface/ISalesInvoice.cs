@@ -7,8 +7,8 @@ namespace DCMS.SE.Services.Interface
 {
     public interface ISalesInvoice
     {
-        string GetVoucherNo(int CompanyId, int FinancialYearId, int VoucherTypeId);
-        bool AccountSalesInvoiceNoCheckExistence(int CompanyId, int FinancialYearId, string VoucherNo);
+        string GetVoucherNo(int StoreId, int FinancialYearId, int VoucherTypeId);
+        bool AccountSalesInvoiceNoCheckExistence(int StoreId, int FinancialYearId, string VoucherNo);
         int AccountSalesInvoiceNoCheckExistenceid(string name);
         int Save(SalesMaster model);
         bool Update(SalesMaster model);
@@ -18,6 +18,6 @@ namespace DCMS.SE.Services.Interface
         List<ProductView> SalesInvoiceDetails(int SalesMasterId);
         SalesMaster EditSalesMaster(int id);
         SalesMasterView PrintSalesMasterView(int id);
-        bool DeleteSalesInvoice(int id, string VoucherNo, int CompanyId, int FinancialYearId);
+        bool DeleteSalesInvoice(int id, string VoucherNo, int StoreId, int FinancialYearId);
     }
 }

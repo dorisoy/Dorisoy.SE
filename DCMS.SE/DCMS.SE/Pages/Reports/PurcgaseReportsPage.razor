@@ -3,7 +3,7 @@
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
 @inject IPurchaseInvoice _purchaseInvoice
-@inject IAccountLedger _supplier
+@inject ITerminal _supplier
 @inject IWarehouse _warehouse
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
@@ -58,7 +58,7 @@
     <RowTemplate>
         <MudTd DataLabel="">@context.VoucherNo</MudTd>
         <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.LedgerName</MudTd>
+        <MudTd DataLabel="">@context.TerminalName</MudTd>
         <MudTd DataLabel="">@context.VoucherTypeName</MudTd>
         <MudTd DataLabel="">@context.GrandTotal</MudTd>
         <MudTd DataLabel="">@context.PaymentAmount</MudTd>
@@ -120,7 +120,7 @@
     <option value="0">选择</option>
                               @foreach(var item in listSupplier)
                                 {
-                                    <option value="@item.LedgerId">@item.LedgerName</option>
+                                    <option value="@item.TerminalId">@item.TerminalName</option>
                                 }
                             </select>
     </div>
@@ -180,7 +180,7 @@
     bool open;
     Anchor anchor;
     List<PurchaseMasterView> listModel = new List<PurchaseMasterView>();
-    List<AccountLedgerView> listSupplier = new List<AccountLedgerView>();
+    List<TerminalView> listSupplier = new List<TerminalView>();
     List<Warehouse> listWarehouse = new List<Warehouse>();
     DateTime FromDate = DateTime.UtcNow.AddDays(-1);
     DateTime ToDate = DateTime.UtcNow;
@@ -218,7 +218,7 @@
             strDelete = true;
             strShow = true;
         }
-        listSupplier = _supplier.ViewAllSupplier(1); // 1 is companyid
+        listSupplier = _supplier.ViewAllSupplier(1); // 1 is StoreId
         listWarehouse = _warehouse.GetAll();
         listModel = _purchaseInvoice.PurchaseInvoiceView(1);
         StateHasChanged();
@@ -232,7 +232,7 @@
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -289,7 +289,7 @@
             cell.SetCellValue(objDue.Date.ToString());
 
             cell = row.CreateCell(2);
-            cell.SetCellValue(objDue.LedgerName);
+            cell.SetCellValue(objDue.TerminalName);
 
 
             cell = row.CreateCell(3);

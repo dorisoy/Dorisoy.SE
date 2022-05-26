@@ -25,10 +25,10 @@ namespace DCMS.SE.Services.Repository
             _conn = conn;
         }
 
-        public bool PaymentVoucherNoCheckExistence(int CompanyId, int FinancialYearId, string VoucherNo)
+        public bool PaymentVoucherNoCheckExistence(int StoreId, int FinancialYearId, string VoucherNo)
         {
             var checkResult = (from progm in _context.PaymentMaster
-                               where progm.CompanyId == CompanyId && progm.FinancialYearId == FinancialYearId && progm.VoucherNo == VoucherNo
+                               where progm.StoreId == StoreId && progm.FinancialYearId == FinancialYearId && progm.VoucherNo == VoucherNo
                                select progm.PaymentMasterId).Count();
             if (checkResult > 0)
             {
@@ -40,7 +40,7 @@ namespace DCMS.SE.Services.Repository
             }
         }
 
-        public bool DeletePaymentSupplier( int PaymentMasterId, string VoucherNo, int VoucherTypeId, int FinancialYearId, int CompanyId)
+        public bool DeletePaymentSupplier( int PaymentMasterId, string VoucherNo, int VoucherTypeId, int FinancialYearId, int StoreId)
         {
             SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
             try
@@ -87,8 +87,8 @@ namespace DCMS.SE.Services.Repository
                 para.Value = VoucherTypeId;
                 para = cmd.Parameters.Add("@FinancialYearId", SqlDbType.Int);
                 para.Value = FinancialYearId;
-                para = cmd.Parameters.Add("@CompanyId", SqlDbType.Int);
-                para.Value = CompanyId;
+                para = cmd.Parameters.Add("@StoreId", SqlDbType.Int);
+                para.Value = StoreId;
                 long rowAffacted = cmd.ExecuteNonQuery();
                 if (rowAffacted > 0)
                 {
@@ -120,16 +120,16 @@ namespace DCMS.SE.Services.Repository
             }
         }
 
-        public string GetVoucherNo(int CompanyId, int FinancialYearId, int VoucherTypeId)
+        public string GetVoucherNo(int StoreId, int FinancialYearId, int VoucherTypeId)
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
                 string val = string.Empty;
                 var para = new DynamicParameters();
-                para.Add("@CompanyId", CompanyId);
+                para.Add("@StoreId", StoreId);
                 para.Add("@FinancialYearId", FinancialYearId);
                 para.Add("@VoucherTypeId", VoucherTypeId);
-                return val = sqlcon.Query<string>("SELECT ISNULL( MAX(SerialNo+1),1) FROM PaymentMaster where CompanyId=@CompanyId AND FinancialYearId=@FinancialYearId AND VoucherTypeId=@VoucherTypeId", para, null, true, 0, commandType: CommandType.Text).FirstOrDefault();
+                return val = sqlcon.Query<string>("SELECT ISNULL( MAX(SerialNo+1),1) FROM PaymentMaster where StoreId=@StoreId AND FinancialYearId=@FinancialYearId AND VoucherTypeId=@VoucherTypeId", para, null, true, 0, commandType: CommandType.Text).FirstOrDefault();
             }
         }
 
@@ -172,12 +172,12 @@ namespace DCMS.SE.Services.Repository
                     returnView.PayAmount = returnView.PayAmount + model.Amount;
                     _context.PurchaseMaster.Update(returnView);
                     _context.SaveChanges();
-                    //LedgerPosting
+                    //TerminalPosting
                     //Supplier
-                    LedgerPosting ledger = new LedgerPosting();
+                    TerminalPosting ledger = new TerminalPosting();
                     ledger.Date = model.Date;
                     ledger.NepaliDate = String.Empty;
-                    ledger.LedgerId = model.LedgerId;
+                    ledger.TerminalId = model.TerminalId;
                     ledger.Debit = model.Amount;
                     ledger.Credit = 0;
                     ledger.VoucherNo = model.VoucherNo;
@@ -185,20 +185,20 @@ namespace DCMS.SE.Services.Repository
                     ledger.YearId = 1;
                     ledger.InvoiceNo = model.VoucherNo;
                     ledger.VoucherTypeId = model.VoucherTypeId;
-                    ledger.CompanyId = 1;
+                    ledger.StoreId = 1;
                     ledger.LongReference = model.Narration;
                     ledger.ReferenceN = model.Narration;
                     ledger.ChequeNo = String.Empty;
                     ledger.ChequeDate = String.Empty;
                     ledger.AddedDate = DateTime.UtcNow;
-                    _context.LedgerPosting.Add(ledger);
+                    _context.TerminalPosting.Add(ledger);
                     _context.SaveChanges();
 
                     //Cash
-                    LedgerPosting purchaseledger = new LedgerPosting();
+                    TerminalPosting purchaseledger = new TerminalPosting();
                     purchaseledger.Date = model.Date;
                     purchaseledger.NepaliDate = String.Empty;
-                    purchaseledger.LedgerId = 1;
+                    purchaseledger.TerminalId = 1;
                     purchaseledger.Debit = 0;
                     purchaseledger.Credit = model.Amount;
                     purchaseledger.VoucherNo = model.VoucherNo;
@@ -206,13 +206,13 @@ namespace DCMS.SE.Services.Repository
                     purchaseledger.YearId = 1;
                     purchaseledger.InvoiceNo = model.VoucherNo;
                     purchaseledger.VoucherTypeId = model.VoucherTypeId;
-                    purchaseledger.CompanyId = 1;
+                    purchaseledger.StoreId = 1;
                     purchaseledger.LongReference = model.Narration;
                     purchaseledger.ReferenceN = model.Narration;
                     purchaseledger.ChequeNo = String.Empty;
                     purchaseledger.ChequeDate = String.Empty;
                     purchaseledger.AddedDate = DateTime.UtcNow;
-                    _context.LedgerPosting.Add(purchaseledger);
+                    _context.TerminalPosting.Add(purchaseledger);
                     _context.SaveChanges();
                     dbTran.Commit();
                     return true;
@@ -249,20 +249,20 @@ namespace DCMS.SE.Services.Repository
 
 
 
-                    //DeleteLedgerPosting
+                    //DeleteTerminalPosting
                     using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
                     {
                         var paraScDelete = new DynamicParameters();
                         paraScDelete.Add("@DetailsId", model.PaymentMasterId);
                         paraScDelete.Add("@VoucherTypeId", model.VoucherTypeId);
-                        var valueScDelete = sqlcon.Query<int>("DELETE FROM LedgerPosting where DetailsId=@DetailsId AND VoucherTypeId=@VoucherTypeId", paraScDelete, null, true, 0, commandType: CommandType.Text);
+                        var valueScDelete = sqlcon.Query<int>("DELETE FROM TerminalPosting where DetailsId=@DetailsId AND VoucherTypeId=@VoucherTypeId", paraScDelete, null, true, 0, commandType: CommandType.Text);
                     }
-                    //LedgerPosting
+                    //TerminalPosting
                     //Supplier
-                    LedgerPosting ledger = new LedgerPosting();
+                    TerminalPosting ledger = new TerminalPosting();
                     ledger.Date = model.Date;
                     ledger.NepaliDate = String.Empty;
-                    ledger.LedgerId = model.LedgerId;
+                    ledger.TerminalId = model.TerminalId;
                     ledger.Debit = model.Amount;
                     ledger.Credit = 0;
                     ledger.VoucherNo = model.VoucherNo;
@@ -270,20 +270,20 @@ namespace DCMS.SE.Services.Repository
                     ledger.YearId = 1;
                     ledger.InvoiceNo = model.VoucherNo;
                     ledger.VoucherTypeId = model.VoucherTypeId;
-                    ledger.CompanyId = 1;
+                    ledger.StoreId = 1;
                     ledger.LongReference = model.Narration;
                     ledger.ReferenceN = model.Narration;
                     ledger.ChequeNo = String.Empty;
                     ledger.ChequeDate = String.Empty;
                     ledger.AddedDate = DateTime.UtcNow;
-                    _context.LedgerPosting.Add(ledger);
+                    _context.TerminalPosting.Add(ledger);
                     _context.SaveChanges();
 
                     //Cash
-                    LedgerPosting purchaseledger = new LedgerPosting();
+                    TerminalPosting purchaseledger = new TerminalPosting();
                     purchaseledger.Date = model.Date;
                     purchaseledger.NepaliDate = String.Empty;
-                    purchaseledger.LedgerId = 1;
+                    purchaseledger.TerminalId = 1;
                     purchaseledger.Debit = 0;
                     purchaseledger.Credit = model.Amount;
                     purchaseledger.VoucherNo = model.VoucherNo;
@@ -291,13 +291,13 @@ namespace DCMS.SE.Services.Repository
                     purchaseledger.YearId = 1;
                     purchaseledger.InvoiceNo = model.VoucherNo;
                     purchaseledger.VoucherTypeId = model.VoucherTypeId;
-                    purchaseledger.CompanyId = 1;
+                    purchaseledger.StoreId = 1;
                     purchaseledger.LongReference = model.Narration;
                     purchaseledger.ReferenceN = model.Narration;
                     purchaseledger.ChequeNo = String.Empty;
                     purchaseledger.ChequeDate = String.Empty;
                     purchaseledger.AddedDate = DateTime.UtcNow;
-                    _context.LedgerPosting.Add(purchaseledger);
+                    _context.TerminalPosting.Add(purchaseledger);
                     _context.SaveChanges();
                     dbTran.Commit();
                     return true;
@@ -331,7 +331,7 @@ namespace DCMS.SE.Services.Repository
             throw new NotImplementedException();
         }
 
-        public PaymentReceiveView GetPreviousDuesBalancesupplier(int LedgerId)
+        public PaymentReceiveView GetPreviousDuesBalancesupplier(int TerminalId)
         {
             PaymentReceiveView info = new PaymentReceiveView();
             SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
@@ -345,8 +345,8 @@ namespace DCMS.SE.Services.Repository
                 SqlCommand sccmd = new SqlCommand("PaymentSupplierDue", sqlcon);
                 sccmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter sprmparam = new SqlParameter();
-                sprmparam = sccmd.Parameters.Add("@LedgerId", SqlDbType.Int);
-                sprmparam.Value = LedgerId;
+                sprmparam = sccmd.Parameters.Add("@TerminalId", SqlDbType.Int);
+                sprmparam.Value = TerminalId;
                 rdr = sccmd.ExecuteReader();
                 while (rdr.Read())
                 {
@@ -425,7 +425,7 @@ namespace DCMS.SE.Services.Repository
         public PaymentReceiveView PaymentSupplierView(int PaymentMasterId)
         {
             var varlist = (from a in _context.PaymentMaster
-                           join b in _context.AccountLedger on a.LedgerId equals b.LedgerId
+                           join b in _context.Terminal on a.TerminalId equals b.TerminalId
                            where a.PaymentMasterId == PaymentMasterId
                            select new PaymentReceiveView
                            {
@@ -434,7 +434,7 @@ namespace DCMS.SE.Services.Repository
                                VoucherNo = a.VoucherNo,
                                Date = a.Date,
                                PaymentType = a.PaymentType,
-                               LedgerName = b.LedgerName,
+                               TerminalName = b.TerminalName,
                                Address = b.Address,
                                Mobile = b.Mobile,
                                Email = b.Email
@@ -443,14 +443,14 @@ namespace DCMS.SE.Services.Repository
             return varlist;
         }
 
-        public List<PaymentReceiveView> PurchasePaymentView(DateTime FromDate , DateTime ToDate, int LedgerId , int PurchaseMasterId)
+        public List<PaymentReceiveView> PurchasePaymentView(DateTime FromDate , DateTime ToDate, int TerminalId , int PurchaseMasterId)
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@FromDate", FromDate);
                 para.Add("@ToDate", ToDate);
-                para.Add("@LedgerId", LedgerId);
+                para.Add("@TerminalId", TerminalId);
                 para.Add("@PurchaseMasterId", PurchaseMasterId);
                 var ListofPlan = sqlcon.Query<PaymentReceiveView>("PurchasePaymentView", para, null, true, 0, commandType: CommandType.StoredProcedure).ToList();
                 return ListofPlan;

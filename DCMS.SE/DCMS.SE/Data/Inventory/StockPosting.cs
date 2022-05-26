@@ -26,7 +26,7 @@ namespace DCMS.SE.Data.Inventory
         public Decimal OutwardQty { get; set; }
         public Decimal Rate { get; set; }
         public int FinancialYearId { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public int DetailsId { get; set; }
         public string StockCalculate { get; set; }
         public DateTime? AddedDate { get; set; }

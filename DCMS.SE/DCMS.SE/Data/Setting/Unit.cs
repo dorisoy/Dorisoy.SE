@@ -13,7 +13,7 @@ namespace DCMS.SE.Data.Setting
         [Required]
         public string UnitName { get; set; }
         public int NoOfDecimalplaces { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public DateTime? AddedDate { get; set; }
         public DateTime? ModifyDate { get; set; }
     }

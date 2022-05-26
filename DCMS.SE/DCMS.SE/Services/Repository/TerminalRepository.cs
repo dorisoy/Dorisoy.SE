@@ -12,26 +12,26 @@ using System.Linq;
 
 namespace DCMS.SE.Services.Repository
 {
-    public class AccountLedgerRepository : IAccountLedger
+    public class TerminalRepository : ITerminal
     {
        private readonly ApplicationDbContext _context;
        private readonly DatabaseConnection _conn;
-        public AccountLedgerRepository(ApplicationDbContext context, DatabaseConnection conn)
+        public TerminalRepository(ApplicationDbContext context, DatabaseConnection conn)
         {
             _context = context;
             _conn = conn;
         }
-        public string SerialNoCode(int CompanyId)
+        public string SerialNoCode(int StoreId)
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
                 string val = string.Empty;
                 var para = new DynamicParameters();
-                para.Add("@CompanyId", CompanyId);
-                return val = sqlcon.Query<string>("SELECT ISNULL( MAX(LedgerCode+1),1) FROM AccountLedger where CompanyId=@CompanyId", para, null, true, 0, commandType: CommandType.Text).FirstOrDefault();
+                para.Add("@StoreId", StoreId);
+                return val = sqlcon.Query<string>("SELECT ISNULL( MAX(TerminalCode+1),1) FROM Terminal where StoreId=@StoreId", para, null, true, 0, commandType: CommandType.Text).FirstOrDefault();
             }
         }
-        public bool Delete(int LedgerId)
+        public bool Delete(int TerminalId)
         {
             SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
             try
@@ -40,11 +40,11 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("AccountLedgerDelete", sqlcon);
+                SqlCommand cmd = new SqlCommand("TerminalDelete", sqlcon);
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter para = new SqlParameter();
-                para = cmd.Parameters.Add("@LedgerId", SqlDbType.Int);
-                para.Value = LedgerId;
+                para = cmd.Parameters.Add("@TerminalId", SqlDbType.Int);
+                para.Value = TerminalId;
                 long rowAffacted = cmd.ExecuteNonQuery();
                 if (rowAffacted > 0)
                 {
@@ -65,32 +65,32 @@ namespace DCMS.SE.Services.Repository
             }
         }
 
-        public AccountLedger Edit(int id)
+        public Terminal Edit(int id)
         {
-            AccountLedger returnView = _context.AccountLedger.Find(id);
+            Terminal returnView = _context.Terminal.Find(id);
             return returnView;
         }
 
-        public List<AccountLedgerView> GetAll(int CompanyId)
+        public List<TerminalView> GetAll(int StoreId)
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
                 var para = new DynamicParameters();
-                para.Add("@CompanyId", CompanyId);
-                var ListofPlan = sqlcon.Query<AccountLedgerView>("SELECT dbo.AccountLedger.LedgerId,dbo.AccountLedger.Email, dbo.AccountLedger.LedgerName, dbo.AccountLedger.LedgerCode, dbo.AccountGroup.AccountGroupId, dbo.AccountGroup.AccountGroupName, dbo.Area.AreaName, dbo.AccountLedger.IsDefault,  dbo.AccountLedger.Phone, dbo.AccountLedger.Mobile, dbo.Area.AreaId FROM            dbo.AccountLedger INNER JOIN dbo.AccountGroup ON dbo.AccountLedger.AccountGroupId = dbo.AccountGroup.AccountGroupId INNER JOIN  dbo.Area ON dbo.AccountLedger.AreaId = dbo.Area.AreaId where AccountLedger.CompanyId=@CompanyId", para, null, true, 0, commandType: CommandType.Text).ToList();
+                para.Add("@StoreId", StoreId);
+                var ListofPlan = sqlcon.Query<TerminalView>("SELECT dbo.Terminal.TerminalId,dbo.Terminal.Email, dbo.Terminal.TerminalName, dbo.Terminal.TerminalCode, dbo.AccountGroup.AccountGroupId, dbo.AccountGroup.AccountGroupName, dbo.Area.AreaName, dbo.Terminal.IsDefault,  dbo.Terminal.Phone, dbo.Terminal.Mobile, dbo.Area.AreaId FROM            dbo.Terminal INNER JOIN dbo.AccountGroup ON dbo.Terminal.AccountGroupId = dbo.AccountGroup.AccountGroupId INNER JOIN  dbo.Area ON dbo.Terminal.AreaId = dbo.Area.AreaId where Terminal.StoreId=@StoreId", para, null, true, 0, commandType: CommandType.Text).ToList();
                 return ListofPlan;
             }
         }
-        public List<AccountLedgerView> ViewAllCustomer(int CompanyId)
+        public List<TerminalView> ViewAllCustomer(int StoreId)
         {
-            var result = (from a in _context.AccountLedger
+            var result = (from a in _context.Terminal
                           join b in _context.AccountGroup on a.AccountGroupId equals b.AccountGroupId
-                          where a.CompanyId == CompanyId && a.AccountGroupId == 26
-                          select new AccountLedgerView
+                          where a.StoreId == StoreId && a.AccountGroupId == 26
+                          select new TerminalView
                           {
-                              LedgerId = a.LedgerId,
-                              LedgerCode = a.LedgerCode,
-                              LedgerName = a.LedgerName,
+                              TerminalId = a.TerminalId,
+                              TerminalCode = a.TerminalCode,
+                              TerminalName = a.TerminalName,
                               Phone = a.Phone,
                               Email = a.Email,
                               Country = a.Country,
@@ -99,16 +99,16 @@ namespace DCMS.SE.Services.Repository
                           }).ToList();
             return result;
         }
-        public List<AccountLedgerView> ViewAllSupplier(int CompanyId)
+        public List<TerminalView> ViewAllSupplier(int StoreId)
         {
-            var result = (from a in _context.AccountLedger
+            var result = (from a in _context.Terminal
                           join b in _context.AccountGroup on a.AccountGroupId equals b.AccountGroupId
-                          where a.CompanyId == CompanyId && a.AccountGroupId == 22
-                          select new AccountLedgerView
+                          where a.StoreId == StoreId && a.AccountGroupId == 22
+                          select new TerminalView
                           {
-                              LedgerId = a.LedgerId,
-                              LedgerCode = a.LedgerCode,
-                              LedgerName = a.LedgerName,
+                              TerminalId = a.TerminalId,
+                              TerminalCode = a.TerminalCode,
+                              TerminalName = a.TerminalName,
                               Phone = a.Phone,
                               Email = a.Email,
                               Country = a.Country,
@@ -117,24 +117,24 @@ namespace DCMS.SE.Services.Repository
                           }).ToList();
             return result;
         }
-        public int Save(AccountLedger model)
+        public int Save(Terminal model)
         {
-            _context.AccountLedger.Add(model);
+            _context.Terminal.Add(model);
             _context.SaveChanges();
-            int id = model.LedgerId;
+            int id = model.TerminalId;
             return id;
         }
 
-        public void Update(AccountLedger model)
+        public void Update(Terminal model)
         {
-            _context.AccountLedger.Update(model);
+            _context.Terminal.Update(model);
             _context.SaveChanges();
         }
         public bool CheckName(string name)
         {
-            var checkResult = (from progm in _context.AccountLedger
-                               where progm.LedgerCode == name
-                               select progm.LedgerId).Count();
+            var checkResult = (from progm in _context.Terminal
+                               where progm.TerminalCode == name
+                               select progm.TerminalId).Count();
             if (checkResult > 0)
             {
                 return true;
@@ -147,15 +147,15 @@ namespace DCMS.SE.Services.Repository
 
         public int CheckNameId(string name)
         {
-            var checkResult = (from progm in _context.AccountLedger
-                               where progm.LedgerCode == name
-                               select progm.LedgerId).Count();
+            var checkResult = (from progm in _context.Terminal
+                               where progm.TerminalCode == name
+                               select progm.TerminalId).Count();
             if (checkResult > 0)
             {
 
-                var checkAccount = (from progm in _context.AccountLedger
-                                    where progm.LedgerCode == name
-                                    select progm.LedgerId).FirstOrDefault();
+                var checkAccount = (from progm in _context.Terminal
+                                    where progm.TerminalCode == name
+                                    select progm.TerminalId).FirstOrDefault();
                 return checkAccount;
             }
             else
@@ -163,37 +163,37 @@ namespace DCMS.SE.Services.Repository
                 return 0;
             }
         }
-        public List<AccountLedger> GetCashFill()
+        public List<Terminal> GetCashFill()
         {
-            var result = (from a in _context.AccountLedger
-                          select new AccountLedger
+            var result = (from a in _context.Terminal
+                          select new Terminal
                           {
-                              LedgerId = a.LedgerId,
-                              LedgerCode = a.LedgerCode
+                              TerminalId = a.TerminalId,
+                              TerminalCode = a.TerminalCode
                           }).ToList();
             return result;
         }
-        public List<AccountLedger> GetBankFill()
+        public List<Terminal> GetBankFill()
         {
-            var result = (from a in _context.AccountLedger
-                          select new AccountLedger
+            var result = (from a in _context.Terminal
+                          select new Terminal
                           {
-                              LedgerId = a.LedgerId,
-                              LedgerCode = a.LedgerCode
+                              TerminalId = a.TerminalId,
+                              TerminalCode = a.TerminalCode
                           }).ToList();
             return result;
         }
 
-        public List<AccountLedgerView> ViewAllExpensesCategory(int id)
+        public List<TerminalView> ViewAllExpensesCategory(int id)
         {
-            var result = (from a in _context.AccountLedger
+            var result = (from a in _context.Terminal
                           join b in _context.AccountGroup on a.AccountGroupId equals b.AccountGroupId
-                          where a.CompanyId == id && a.AccountGroupId == 13 || a.AccountGroupId == 15
-                          select new AccountLedgerView
+                          where a.StoreId == id && a.AccountGroupId == 13 || a.AccountGroupId == 15
+                          select new TerminalView
                           {
-                              LedgerId = a.LedgerId,
-                              LedgerCode = a.LedgerCode,
-                              LedgerName = a.LedgerName,
+                              TerminalId = a.TerminalId,
+                              TerminalCode = a.TerminalCode,
+                              TerminalName = a.TerminalName,
                               Phone = a.Phone,
                               Email = a.Email,
                               Country = a.Country,

@@ -5,12 +5,12 @@ namespace DCMS.SE.Data.ViewModel
     public class FinancialReport
     {
         public int ID { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public int FinancialYearId { get; set; }
         public int AccountGroupId { get; set; }
         public int VoucherTypeId { get; set; }
-        public int LedgerId { get; set; }
-        public int SubledgerId { get; set; }
+        public int TerminalId { get; set; }
+        public int SubTerminalId { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
         public decimal OpeningDr { get; set; }
@@ -30,8 +30,8 @@ namespace DCMS.SE.Data.ViewModel
         public string NepaliDate { get; set; }
         public DateTime FromDateEng { get; set; }
         public DateTime ToDateEng { get; set; }
-        public string LedgerCode { get; set; }
-        public string LedgerName { get; set; }
+        public string TerminalCode { get; set; }
+        public string TerminalName { get; set; }
         public decimal Qty { get; set; }
         public string UnitName { get; set; }
         public string ProductName { get; set; }

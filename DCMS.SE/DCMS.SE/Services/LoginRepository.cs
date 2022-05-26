@@ -122,11 +122,11 @@ namespace DCMS.SE.Services
                 param.Add("@EmailAddress", tapType.EmailAddress);
                 param.Add("@Password", tapType.Password);
                 param.Add("@Source", tapType.Source);
-                param.Add("@CompanyId", tapType.CompanyId);
+                param.Add("@StoreId", tapType.StoreId);
                 param.Add("@MiddleName", tapType.MiddleName);
                 param.Add("@RoleId", tapType.RoleId);
                 param.Add("@HireDate", tapType.HireDate);
-                int result = con.Execute("IF NOT EXISTS (SELECT EmailAddress from dbo.[User] where EmailAddress=@EmailAddress)INSERT INTO  dbo.[User] (EmailAddress,Password,Source,FirstName,MiddleName,LastName,RoleId,CompanyId,HireDate)VALUES(@EmailAddress,@Password,@Source,@FirstName,@MiddleName,@LastName,@RoleId,@CompanyId,@HireDate)", param, null, 0, CommandType.Text);
+                int result = con.Execute("IF NOT EXISTS (SELECT EmailAddress from dbo.[User] where EmailAddress=@EmailAddress)INSERT INTO  dbo.[User] (EmailAddress,Password,Source,FirstName,MiddleName,LastName,RoleId,StoreId,HireDate)VALUES(@EmailAddress,@Password,@Source,@FirstName,@MiddleName,@LastName,@RoleId,@StoreId,@HireDate)", param, null, 0, CommandType.Text);
 
                 if (result > 0)
                 {
@@ -151,11 +151,11 @@ namespace DCMS.SE.Services
                 param.Add("@EmailAddress", tapType.EmailAddress);
                 param.Add("@Password", tapType.Password);
                 param.Add("@Source", tapType.Source);
-                param.Add("@CompanyId", tapType.CompanyId);
+                param.Add("@StoreId", tapType.StoreId);
                 param.Add("@MiddleName", tapType.MiddleName);
                 param.Add("@RoleId", tapType.RoleId);
                 param.Add("@HireDate", tapType.HireDate);
-                int result = con.Execute("IF NOT EXISTS (SELECT EmailAddress from dbo.[User] where EmailAddress=@EmailAddress AND UserId<>@UserId) UPDATE dbo.[User] SET FirstName=@FirstName,LastName=@LastName,EmailAddress=@EmailAddress,Password=@Password,Source=@Source,CompanyId=@CompanyId,MiddleName=@MiddleName,RoleId=@RoleId,HireDate=@HireDate where UserId=@UserId", param, null, 0, CommandType.Text);
+                int result = con.Execute("IF NOT EXISTS (SELECT EmailAddress from dbo.[User] where EmailAddress=@EmailAddress AND UserId<>@UserId) UPDATE dbo.[User] SET FirstName=@FirstName,LastName=@LastName,EmailAddress=@EmailAddress,Password=@Password,Source=@Source,StoreId=@StoreId,MiddleName=@MiddleName,RoleId=@RoleId,HireDate=@HireDate where UserId=@UserId", param, null, 0, CommandType.Text);
 
                 if (result > 0)
                 {
@@ -207,12 +207,12 @@ namespace DCMS.SE.Services
             }
         }
 
-        public List<LoginRequest> ViewUser(long CompanyId)
+        public List<LoginRequest> ViewUser(long StoreId)
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
                 var param = new DynamicParameters();
-                param.Add("@CompanyId", CompanyId);
+                param.Add("@StoreId", StoreId);
                 var ListofPlan = sqlcon.Query<LoginRequest>("ViewUser", param, null, true, 0, commandType: CommandType.StoredProcedure).ToList();
                 return ListofPlan;
             }

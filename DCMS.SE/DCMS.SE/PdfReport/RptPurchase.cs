@@ -19,7 +19,7 @@ namespace DCMS.SE.PdfReport
         List<ProductView> _oStudents = new List<ProductView>();
         #endregion
 
-      public byte[] Report(List<ProductView> oStudents , Company company)
+      public byte[] Report(List<ProductView> oStudents , Store Store)
         {
             _oStudents = oStudents;
             _document = new Document(PageSize.A4, 10f, 10f, 20f, 30f);
@@ -36,7 +36,7 @@ namespace DCMS.SE.PdfReport
                 else sizes[i] = 100;
             }
             _pdfTable.SetWidths(sizes);
-            this.ReportHeader(company);
+            this.ReportHeader(Store);
             this.ReportBody();
 
 
@@ -46,10 +46,10 @@ namespace DCMS.SE.PdfReport
             _document.Close();
             return _memoryStream.ToArray();
         }
-        private void ReportHeader(Company company)
+        private void ReportHeader(Store Store)
         {
             _fontStyle = FontFactory.GetFont("Tahoma", 18f, 1);
-            _pdfCell = new PdfPCell(new Phrase(company.CompanyName, _fontStyle));
+            _pdfCell = new PdfPCell(new Phrase(Store.StoreName, _fontStyle));
             _pdfCell.Colspan = _maxColumn;
             _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             _pdfCell.ExtraParagraphSpace = 0;
@@ -57,7 +57,7 @@ namespace DCMS.SE.PdfReport
             _pdfTable.CompleteRow();
 
             _fontStyle = FontFactory.GetFont("Tahoma", 18f, 1);
-            _pdfCell = new PdfPCell(new Phrase(company.Address, _fontStyle));
+            _pdfCell = new PdfPCell(new Phrase(Store.Address, _fontStyle));
             _pdfCell.Colspan = _maxColumn;
             _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             _pdfCell.ExtraParagraphSpace = 0;

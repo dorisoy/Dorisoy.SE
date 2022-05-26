@@ -104,7 +104,7 @@
             var isCheck = _unit.CheckNameId(master.UnitName);
                 if (isCheck == master.UnitId || isCheck == 0)
                 {
-                    master.CompanyId = 1;
+                    master.StoreId = 1;
                     master.ModifyDate = DateTime.UtcNow;
                     _unit.Update(master);
                     Snackbar.Add("Saved Successfully.", Severity.Success);

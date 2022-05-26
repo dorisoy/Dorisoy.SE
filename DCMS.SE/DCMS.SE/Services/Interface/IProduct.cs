@@ -10,7 +10,7 @@ namespace DCMS.SE.Services.Interface
         List<ProductView> ViewCategoryWiseProduct(int id);
         bool CheckName(string name);
         int CheckNameId(string name);
-        string GetProductNo(int companyId);
+        string GetProductNo(int StoreId);
         Product Edit(int id);
         int Save(Product model);
         void Update(Product model);

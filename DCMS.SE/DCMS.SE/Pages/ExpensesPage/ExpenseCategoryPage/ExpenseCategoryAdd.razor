@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IAccountLedger accountLedger
+@inject ITerminal accountTerminal
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -29,13 +29,13 @@
                                     <div class="row">
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="firstName1">@localizer["Category Name"]</label>
-                                            <input class="form-control" @bind="master.LedgerName" type="text">
-                                        <ValidationMessage For="@(() => master.LedgerName)" />
+                                            <input class="form-control" @bind="master.TerminalName" type="text">
+                                        <ValidationMessage For="@(() => master.TerminalName)" />
                                         </div>
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="lastName1">@localizer["Code"]</label>
-                                            <input class="form-control" @bind="master.LedgerCode" readonly type="text">
-                                        <ValidationMessage For="@(() => master.LedgerCode)" />
+                                            <input class="form-control" @bind="master.TerminalCode" readonly type="text">
+                                        <ValidationMessage For="@(() => master.TerminalCode)" />
                                         </div>
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="lastName1">@localizer["Group"]</label>
@@ -59,7 +59,7 @@
             </div>
             </div>
 @code {
-    AccountLedger master = new AccountLedger();
+    Terminal master = new Terminal();
     List<AccountGroup> listExpensesCategory = new List<AccountGroup>();
     string strMenu = "Expenses Category";
     bool strAdd = true;
@@ -92,9 +92,9 @@
             strDelete = true;
             strShow = true;
         }
-        var strSerialNo = accountLedger.SerialNoCode(1);
-        master.LedgerCode = strSerialNo;
-        listExpensesCategory = accountLedger.ExpensesCategory();
+        var strSerialNo = accountTerminal.SerialNoCode(1);
+        master.TerminalCode = strSerialNo;
+        listExpensesCategory = accountTerminal.ExpensesCategory();
         master.AccountGroupId = 13;
         StateHasChanged();
     }
@@ -111,15 +111,15 @@
             master.IsDefault = false;
             master.CrOrDr = "Dr";
             master.AddedDate = DateTime.UtcNow;
-            master.CompanyId = 1;
-            var isCheck = accountLedger.CheckName(master.LedgerCode);
+            master.StoreId = 1;
+            var isCheck = accountTerminal.CheckName(master.TerminalCode);
             if (isCheck == true)
             {
                 Snackbar.Add("Code Already Exists.", Severity.Info);
             }
             else
             {
-                int intProductId = accountLedger.Save(master);
+                int intProductId = accountTerminal.Save(master);
                 Snackbar.Add("Saved Successfully.", Severity.Success);
                 navManager.NavigateTo("/expenses/expensescategory");
             }

@@ -4,7 +4,7 @@
 @inject IRole _role
 @inject IPurchaseInvoice _purchaseInvoice
 @inject IPaymentSupplier _paymentSupplier
-@inject IAccountLedger _supplier
+@inject ITerminal _supplier
 @inject IWarehouse _warehouse
 @inject IVoucherType _voucherType
 @inject IJSRuntime JsRuntime
@@ -74,7 +74,7 @@
                             <RowTemplate>
                                 <MudTd DataLabel="">@context.VoucherNo</MudTd>
                                 <MudTd DataLabel="">@context.Date</MudTd>
-                                <MudTd DataLabel="">@context.LedgerName</MudTd>
+                                <MudTd DataLabel="">@context.TerminalName</MudTd>
                                 @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
                                 <MudTd DataLabel="">@context.GrandTotal</MudTd>
                                 <MudTd DataLabel="">@context.PaymentAmount</MudTd>
@@ -349,7 +349,7 @@ else
                             <option value="0">选择</option>
                             @foreach (var item in listSupplier)
                             {
-                                <option value="@item.LedgerId">@item.LedgerName</option>
+                                <option value="@item.TerminalId">@item.TerminalName</option>
                             }
                         </select>
                     </div>
@@ -421,7 +421,7 @@ else
     bool isPayment = false;
     bool isShowPayment = false;
     List<PaymentMaster> listPayment = new List<PaymentMaster>();
-    List<AccountLedgerView> listSupplier = new List<AccountLedgerView>();
+    List<TerminalView> listSupplier = new List<TerminalView>();
     List<Warehouse> listWarehouse = new List<Warehouse>();
     DateTime FromDate = DateTime.UtcNow.AddDays(-1);
     DateTime ToDate = DateTime.UtcNow;
@@ -459,7 +459,7 @@ else
             strDelete = true;
             strShow = true;
         }
-        listSupplier = _supplier.ViewAllSupplier(1); // 1 is companyid
+        listSupplier = _supplier.ViewAllSupplier(1); // 1 is StoreId
         listWarehouse = _warehouse.GetAll();
         LoadData();
         StateHasChanged();
@@ -492,7 +492,7 @@ else
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -500,7 +500,7 @@ else
     }
     private async void CreatePayment()
     {
-        if (master.LedgerId == 0)
+        if (master.TerminalId == 0)
         {
             Snackbar.Add("Choose Supplier.", Severity.Warning);
         }
@@ -526,7 +526,7 @@ else
                 {
                     master.SerialNo = strSerialNo;
                     master.UserId = Id;
-                    master.CompanyId = 1;
+                    master.StoreId = 1;
                     master.FinancialYearId = 1;
                     master.VoucherTypeId = decPaymentSupplierVoucherType;
                     master.PreviousDue = PreviousDue;
@@ -558,7 +558,7 @@ else
     void EditPayment(PurchaseMasterView purchaseMaster)
     {
         isPayment = true;
-        master.LedgerId = purchaseMaster.LedgerId;
+        master.TerminalId = purchaseMaster.TerminalId;
         master.Date = DateTime.UtcNow;
         master.Amount = 0;
         master.PurchaseMasterId = purchaseMaster.PurchaseMasterId;
@@ -617,7 +617,7 @@ else
         {
             var view = _paymentSupplier.EditPaymentMaster(id);
             bool isSave = false;
-            isSave = _paymentSupplier.DeletePaymentSupplier(id, view.VoucherNo, view.VoucherTypeId, view.FinancialYearId, view.CompanyId);
+            isSave = _paymentSupplier.DeletePaymentSupplier(id, view.VoucherNo, view.VoucherTypeId, view.FinancialYearId, view.StoreId);
             if (isSave == true)
             {
                 Snackbar.Add("Deleted Successfully.", Severity.Success);
@@ -641,7 +641,7 @@ else
     private void ClosePayment()
     {
         isPayment = false;
-        master.LedgerId = 0;
+        master.TerminalId = 0;
         master.Date = DateTime.UtcNow;
         master.Amount = 0;
         master.Narration = string.Empty;
@@ -706,7 +706,7 @@ else
             cell.SetCellValue(objDue.Date.ToString());
 
             cell = row.CreateCell(2);
-            cell.SetCellValue(objDue.LedgerName);
+            cell.SetCellValue(objDue.TerminalName);
 
             cell = row.CreateCell(3);
             cell.SetCellValue(objDue.VoucherTypeName);

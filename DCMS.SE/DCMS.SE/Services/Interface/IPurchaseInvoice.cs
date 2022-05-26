@@ -8,8 +8,8 @@ namespace DCMS.SE.Services.Interface
 {
     public interface IPurchaseInvoice
     {
-        string GetVoucherNo(int CompanyId, int FinancialYearId, int VoucherTypeId);
-        bool AccountPurchseInvoiceNoCheckExistence(int CompanyId, int FinancialYearId, string VoucherNo);
+        string GetVoucherNo(int StoreId, int FinancialYearId, int VoucherTypeId);
+        bool AccountPurchseInvoiceNoCheckExistence(int StoreId, int FinancialYearId, string VoucherNo);
         int AccountPurchseInvoiceNoCheckExistenceid(string name);
         int Save(PurchaseMaster model);
         bool Update(PurchaseMaster model);
@@ -20,6 +20,6 @@ namespace DCMS.SE.Services.Interface
         List<PurchaseMasterView> PurchaseInvoiceDetails(int id, DateTime fromDate, DateTime toDate);
         PurchaseMaster EditPurchaseMaster(int id);
         PurchaseMasterView PrintPurchaseMasterView(int id);
-        bool DeletePurchseInvoice(int id, string VoucherNo, int CompanyId, int FinancialYearId);
+        bool DeletePurchseInvoice(int id, string VoucherNo, int StoreId, int FinancialYearId);
     }
 }

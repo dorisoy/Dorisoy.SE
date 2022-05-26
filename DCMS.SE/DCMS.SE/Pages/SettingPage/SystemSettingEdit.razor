@@ -154,7 +154,7 @@
         else
         {
             master.VoucherTypeId = Convert.ToInt32(id);
-            master.CompanyId = 1;
+            master.StoreId = 1;
             master.IsActive = true;
             _voucherType.Update(master);
                 Snackbar.Add("Updated Successfully.", Severity.Success);

@@ -8,8 +8,8 @@ namespace DCMS.SE.Services.Interface
 {
     public interface IPurchaseReturnInvoice
     {
-        string GetVoucherNo(int CompanyId, int FinancialYearId, int VoucherTypeId);
-        bool AccountPurchseReturnInvoiceNoCheckExistence(int CompanyId, int FinancialYearId, string VoucherNo);
+        string GetVoucherNo(int StoreId, int FinancialYearId, int VoucherTypeId);
+        bool AccountPurchseReturnInvoiceNoCheckExistence(int StoreId, int FinancialYearId, string VoucherNo);
         int AccountPurchseReturnInvoiceNoCheckExistenceid(string name);
         int Save(PurchaseReturnMaster model);
         bool Update(PurchaseReturnMaster model);
@@ -18,6 +18,6 @@ namespace DCMS.SE.Services.Interface
         List<ProductView> PurchaseReturnInvoiceDetails(int PurchaseMasterId);
         PurchaseReturnMaster Edit(int id);
         PurchaseReturnMasterView Print(int id);
-        bool Delete(int id, string VoucherNo, int CompanyId, int FinancialYearId);
+        bool Delete(int id, string VoucherNo, int StoreId, int FinancialYearId);
     }
 }

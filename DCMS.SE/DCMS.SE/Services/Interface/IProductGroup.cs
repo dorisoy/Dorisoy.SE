@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace DCMS.SE.Services.Interface
 {
-    public interface IProductGroup
+    public interface ICatagory
     {
-        List<ProductGroup> GetAll();
-        List<ProductGroupView> ViewAllProductGroup();
+        List<Catagory> GetAll();
+        List<CatagoryView> ViewAllCatagory();
         bool CheckName(string name);
         int CheckNameId(string name);
-        ProductGroup Edit(int id);
-        int Save(ProductGroup model);
-        void Update(ProductGroup model);
+        Catagory Edit(int id);
+        int Save(Catagory model);
+        void Update(Catagory model);
         bool Delete(int id);
     }
 }

@@ -1,8 +1,8 @@
-﻿@page "/product/productgrouplist"
+﻿@page "/product/Catagorylist"
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IProductGroup _productGroup
+@inject ICatagory _Catagory
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -24,11 +24,11 @@
                     <div class="vgt-global-search vgt-clearfix">
                         <div class="vgt-global-search__actions vgt-pull-right">
                             <div class="mt-2 mb-3">
-                              @*  <a href="/product/productgroupadd" class="btn btn-rounded btn-btn btn-primary btn-icon m-1">
+                              @*  <a href="/product/Catagoryadd" class="btn btn-rounded btn-btn btn-primary btn-icon m-1">
                                     <i class="i-Add"></i>
                                     @localizer["Create"]
                                 </a>*@
-                                <MudButton Link="/product/productgroupadd" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add">添加</MudButton>
+                                <MudButton Link="/product/Catagoryadd" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add">添加</MudButton>
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                              MultiSelection="true"
                             Hover="@hover" 
                             Bordered="@bordered" Striped="@striped" 
-                            Filter="new Func<ProductGroup,bool>(Search)">
+                            Filter="new Func<Catagory,bool>(Search)">
                                <ColGroup>
                                 <col style="width: 60px;text-align:center" />
                                 <col />
@@ -57,7 +57,7 @@
                                 <MudTd DataLabel="">@context.GroupName</MudTd>
                                 <MudTd DataLabel="">
                           @*          <center>
-                                        <a href="/setting/productgroupedit/@context.GroupId">
+                                        <a href="/setting/Catagoryedit/@context.GroupId">
                                             <i class="i-Edit text-25 text-success"></i>
                                         </a>
                                         <a style="cursor:pointer;" @onclick="() => Delete(context.GroupId)">
@@ -67,7 +67,7 @@
                                     </center>*@
 
                                     
-                                       <MudButton Link="@("/product/productgroupedit/"+context.GroupId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
+                                       <MudButton Link="@("/product/Catagoryedit/"+context.GroupId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
 
                                         <MudButton  @onclick="() => Delete(context.GroupId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
 
@@ -90,7 +90,7 @@
     private bool bordered = true;
     private string searchString1 = "";
     private string searchString2 = "";
-    List<ProductGroup> listModel;
+    List<Catagory> listModel;
     string strMenu = "Product Group";
     bool strAdd = true;
     bool strEdit = true;
@@ -127,7 +127,7 @@
     }
     private void LoadData()
     {
-        listModel = _productGroup.GetAll();
+        listModel = _Catagory.GetAll();
         StateHasChanged();
     }
     async Task Delete(int id)
@@ -138,7 +138,7 @@
             if (id != 1)
             {
                 bool isSave = false;
-                isSave = _productGroup.Delete(id);
+                isSave = _Catagory.Delete(id);
                 if (isSave == true)
                 {
                     Snackbar.Add("Delete Successfully.", Severity.Success);
@@ -155,7 +155,7 @@
             }
         }
     }
-    private bool Search(ProductGroup element)
+    private bool Search(Catagory element)
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;

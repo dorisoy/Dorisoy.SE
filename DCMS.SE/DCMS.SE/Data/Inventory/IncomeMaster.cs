@@ -8,7 +8,7 @@ namespace DCMS.SE.Data.Inventory
         [Key]
         public int IncomeMasterId { get; set; }
         [Required]
-        public int LedgerId { get; set; }
+        public int TerminalId { get; set; }
         [Required]
         public DateTime? Date { get; set; }
         public int VoucherTypeId { get; set; }
@@ -19,7 +19,7 @@ namespace DCMS.SE.Data.Inventory
         public decimal Amount { get; set; }
         public string Narration { get; set; }
         public int FinancialYearId { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public string UserId { get; set; }
         public DateTime? AddedDate { get; set; }
         public DateTime? ModifyDate { get; set; }

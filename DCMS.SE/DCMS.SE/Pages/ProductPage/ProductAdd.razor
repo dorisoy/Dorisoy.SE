@@ -4,7 +4,7 @@
 @inject IRole _role
 @using DCMS.SE.Services.IService
 @inject IProduct _product
-@inject IProductGroup _productGroup
+@inject ICatagory _Catagory
 @inject IBrand _brand
 @inject IUnit _unit
 @inject ITax _tax
@@ -50,7 +50,7 @@
                                     <label for="exampleInputEmail1">商品类别</label>
                                     <select class="form-control" @bind="master.GroupId">
                                         <option value="0">选择</option>
-                                        @foreach (var item in listProductGroup)
+                                        @foreach (var item in listCatagory)
                                         {
                                             <option value="@item.GroupId">@item.GroupName</option>
                                         }
@@ -181,7 +181,7 @@
 </div>
 @code {
     Product master = new Product();
-    List<ProductGroup> listProductGroup;
+    List<Catagory> listCatagory;
     List<Brand> listBrand;
     List<Unit> listUnit;
     List<Tax> listTax;
@@ -218,7 +218,7 @@
         }
         //string strProductCode = _product.GetProductNo(1);
         master.ProductCode = "310100800081405";
-        listProductGroup = _productGroup.GetAll();
+        listCatagory = _Catagory.GetAll();
         listBrand = _brand.GetAll();
         listUnit = _unit.GetAll();
         listTax = _tax.GetAll();
@@ -264,7 +264,7 @@
         {
             master.Barcode = master.ProductCode;
             master.AddedDate = DateTime.Now;
-            master.CompanyId = 1;
+            master.StoreId = 1;
             var isCheck = _product.CheckName(master.ProductCode);
             if (isCheck == true)
             {

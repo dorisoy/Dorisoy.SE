@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject ICompany _company
+@inject IStore _Store
 @inject IPurchaseInvoice _purchaseInvoice
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
@@ -51,16 +51,16 @@
                     </div> <hr> <div class="row mt-5">
                         <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
                             <h5 class="font-weight-bold">@localizer["供应商信息"]</h5> 
-                            <div>@master.LedgerName</div> 
+                            <div>@master.TerminalName</div> 
                             <div>@master.Email</div> 
                             <div>@master.Phone</div> 
                             <div>@master.Address</div>
                         </div> 
                         <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
                             <h5 class="font-weight-bold">@localizer["公司信息"]</h5> 
-                            <div>@company.CompanyName</div> 
-                            <div>@company.Address</div> 
-                            <div>@company.PhoneNo</div>
+                            <div>@Store.StoreName</div> 
+                            <div>@Store.Address</div> 
+                            <div>@Store.PhoneNo</div>
                             </div>
                             <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
                                 <h5 class="font-weight-bold">采购信息</h5> 
@@ -130,12 +130,12 @@
     public string id { get; set; }
     PurchaseMasterView master = new PurchaseMasterView();
     List<ProductView> listPurchaseDetails = new List<ProductView>();
-    Company company = new Company();
+    Store Store = new Store();
     protected  override void OnInitialized()
     {
         master = _purchaseInvoice.PrintPurchaseMasterView(Convert.ToInt32(id));
         listPurchaseDetails = _purchaseInvoice.PurchaseInvoiceDetails(Convert.ToInt32(id));
-        company = _company.Edit(1);
+        Store = _Store.Edit(1);
         StateHasChanged();
     }
     private void GeneratePdf()
@@ -154,7 +154,7 @@
         JsRuntime.InvokeAsync<ProductView>(
             "saveAsFile",
             "ProductList.pdf",
-            Convert.ToBase64String(oRptStudent.Report(listPurchaseDetails , company))
+            Convert.ToBase64String(oRptStudent.Report(listPurchaseDetails , Store))
         );
     }
     void Cancel()

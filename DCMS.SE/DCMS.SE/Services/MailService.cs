@@ -61,7 +61,7 @@ namespace DCMS.SE.Services
             //            smtp.Port = 587;
             //            smtp.Send(mm);
             //            area.FileName = fileName;
-            //            area.CompanyId = 1;
+            //            area.StoreId = 1;
             //            area.AddedDate = DateTime.Now;
             //            _context.Mailbox.Add(area);
             //            _context.SaveChanges();

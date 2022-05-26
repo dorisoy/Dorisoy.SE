@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IWarehouse accountLedger
+@inject IWarehouse accountTerminal
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -99,17 +99,17 @@
             strDelete = true;
             strShow = true;
         }
-        master = accountLedger.Edit(Convert.ToInt32(id));
+        master = accountTerminal.Edit(Convert.ToInt32(id));
         StateHasChanged();
     }
     public void HandleValidSubmit()
     {
             master.ModifyDate = DateTime.UtcNow;
-            master.CompanyId = 1;
-            var isCheck = accountLedger.CheckNameId(master.Name);
+            master.StoreId = 1;
+            var isCheck = accountTerminal.CheckNameId(master.Name);
             if (isCheck == master.WarehouseId || isCheck == 0)
             {
-                accountLedger.Update(master);
+                accountTerminal.Update(master);
                 Snackbar.Add("Saved Successfully.", Severity.Success);
                 navManager.NavigateTo("/setting/warehouselist");
             }

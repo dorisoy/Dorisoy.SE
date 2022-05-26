@@ -59,7 +59,7 @@
     <RowTemplate>
         <MudTd DataLabel="">@context.VoucherNo</MudTd>
         <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.LedgerName</MudTd>
+        <MudTd DataLabel="">@context.TerminalName</MudTd>
         @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
         <MudTd DataLabel="">@context.GrandTotal</MudTd>
         <MudTd DataLabel="">@context.PaymentAmount</MudTd>
@@ -144,7 +144,7 @@
     }
     private  void LoadData()
     {
-        listModel = _purchaseReturn.PurchaseReturnInvoiceView(1); // 1 is companyid
+        listModel = _purchaseReturn.PurchaseReturnInvoiceView(1); // 1 is StoreId
     }
     async Task Delete(int id)
     {
@@ -154,7 +154,7 @@
             PurchaseReturnMaster view = new PurchaseReturnMaster();
             view = _purchaseReturn.Edit(id);
             bool isSave = false;
-            isSave = _purchaseReturn.Delete(id , view.VoucherNo, 1 , 1); // 1 is companyid //1 is financialyearid
+            isSave = _purchaseReturn.Delete(id , view.VoucherNo, 1 , 1); // 1 is StoreId //1 is financialyearid
             if (isSave == true)
             {
                 Snackbar.Add("Delete Successfully.", Severity.Success);
@@ -170,7 +170,7 @@
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -229,7 +229,7 @@
             cell.SetCellValue(objDue.Date.ToString());
 
             cell = row.CreateCell(2);
-            cell.SetCellValue(objDue.LedgerName);
+            cell.SetCellValue(objDue.TerminalName);
 
             cell = row.CreateCell(3);
             cell.SetCellValue(objDue.VoucherTypeName);

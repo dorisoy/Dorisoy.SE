@@ -7,17 +7,17 @@ namespace DCMS.SE.Services.Interface
 {
     public interface IPaymentSupplier
     {
-        string GetVoucherNo(int CompanyId, int FinancialYearId, int VoucherTypeId);
-        bool PaymentVoucherNoCheckExistence(int CompanyId, int FinancialYearId, string VoucherNo);
+        string GetVoucherNo(int StoreId, int FinancialYearId, int VoucherTypeId);
+        bool PaymentVoucherNoCheckExistence(int StoreId, int FinancialYearId, string VoucherNo);
         PaymentMaster EdiById(int id);
         bool Save(PaymentMaster model);
         bool Update(PaymentMaster model);
         PaymentMaster EditPaymentMaster(int id);
-        bool DeletePaymentSupplier( int PaymentMasterId, string VoucherNo, int VoucherTypeId, int CompanyId, int FinancialYearId);
+        bool DeletePaymentSupplier( int PaymentMasterId, string VoucherNo, int VoucherTypeId, int StoreId, int FinancialYearId);
 
         List<PaymentMaster> GetAllById(int id);
         //Other
-        PaymentReceiveView GetPreviousDuesBalancesupplier(int LedgerId);
+        PaymentReceiveView GetPreviousDuesBalancesupplier(int TerminalId);
         PaymentReceiveView GetTotalReceiableAmount(int PurchaseMaterId);
         PaymentReceiveView PaymentSupplierView(int PaymentMasterId);
 

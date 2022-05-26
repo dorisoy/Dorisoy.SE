@@ -101,12 +101,12 @@ namespace DCMS.SE.Services.Repository
             Product returnView = _context.Product.Find(id);
             return returnView;
         }
-        public List<ProductView> ViewAllProduct(int companyId)
+        public List<ProductView> ViewAllProduct(int StoreId)
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
                 var para = new DynamicParameters();
-                para.Add("@companyId", companyId);
+                para.Add("@StoreId", StoreId);
                 var ListofPlan = sqlcon.Query<ProductView>("ViewAllProduct", para, null, true, 0, commandType: CommandType.StoredProcedure).ToList();
                 return ListofPlan;
             }
@@ -123,8 +123,8 @@ namespace DCMS.SE.Services.Repository
             //var result = (from a in _context.Product
             //                   join b in _context.Brand on a.BrandId equals b.BrandId
             //                   join d in _context.Unit on a.UnitId equals d.UnitId
-            //                   join e in _context.ProductGroup on a.GroupId equals e.GroupId
-            //                where a.CompanyId == companyId
+            //                   join e in _context.Catagory on a.GroupId equals e.GroupId
+            //                where a.StoreId == StoreId
             //              select new ProductView
             //              {
             //                       ProductId = a.ProductId,
@@ -142,14 +142,14 @@ namespace DCMS.SE.Services.Repository
 
 
 
-        public string GetProductNo(int companyId)
+        public string GetProductNo(int StoreId)
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
                 string val = string.Empty;
                 var para = new DynamicParameters();
-                para.Add("@companyId", companyId);
-                return val = sqlcon.Query<string>("SELECT ISNULL( MAX(productCode+1),1) FROM Product where companyId=@companyId", para, null, true, 0, commandType: CommandType.Text).FirstOrDefault();
+                para.Add("@StoreId", StoreId);
+                return val = sqlcon.Query<string>("SELECT ISNULL( MAX(productCode+1),1) FROM Product where StoreId=@StoreId", para, null, true, 0, commandType: CommandType.Text).FirstOrDefault();
             }
         }
 

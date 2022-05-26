@@ -16,10 +16,10 @@ namespace DCMS.SE.PdfReport
         PdfPCell _pdfCell;
         Font _fontStyle;
         MemoryStream _memoryStream = new MemoryStream();
-        List<AccountLedgerView> _listReport = new List<AccountLedgerView>();
+        List<ManufacturerView> _listReport = new List<ManufacturerView>();
         #endregion
 
-      public byte[] Report(List<AccountLedgerView> listReport , string title)
+      public byte[] Report(List<ManufacturerView> listReport , string title)
         {
             _listReport = listReport;
             _document = new Document(PageSize.A4, 10f, 10f, 20f, 30f);
@@ -128,13 +128,13 @@ namespace DCMS.SE.PdfReport
                 _pdfCell.BackgroundColor = BaseColor.White;
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.LedgerName, _fontStyle));
+                _pdfCell = new PdfPCell(new Phrase(ostudent.ManufacturerName, _fontStyle));
                 _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 _pdfCell.BackgroundColor = BaseColor.White;
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.LedgerCode, _fontStyle));
+                _pdfCell = new PdfPCell(new Phrase(ostudent.ManufacturerCode, _fontStyle));
                 _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 _pdfCell.BackgroundColor = BaseColor.White;

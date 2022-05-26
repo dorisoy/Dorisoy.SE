@@ -3,16 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DCMS.SE.Data.Inventory
 {
-    public class AccountLedger
+    public class Manufacturer
     {
         [Key]
-        public int LedgerId { get; set; }
+        public int ManufacturerId { get; set; }
         public int AccountGroupId { get; set; }
         [Required]
-        public string LedgerName { get; set; }
+        public string ManufacturerName { get; set; }
         [Required]
-        public string LedgerCode { get; set; }
-        public int CompanyId { get; set; }
+        public string ManufacturerCode { get; set; }
+        public int StoreId { get; set; }
         public Decimal OpeningBalance { get; set; }
         public bool IsDefault { get; set; }
         public string CrOrDr { get; set; }

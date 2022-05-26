@@ -4,7 +4,7 @@
 @inject IRole _role
 @inject IReceiveCustomer _customerReceive
 @inject ISalesInvoice _salesInvoice
-@inject IAccountLedger _supplier
+@inject ITerminal _supplier
 @inject IWarehouse _warehouse
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
@@ -57,7 +57,7 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.LedgerName</MudTd>
+        <MudTd DataLabel="">@context.TerminalName</MudTd>
         <MudTd DataLabel="">@context.VoucherNo</MudTd>
         <MudTd DataLabel="">@context.PurchaseVoucherNo</MudTd>
         <MudTd DataLabel="">@context.VoucherTypeName</MudTd>
@@ -106,7 +106,7 @@
     <option value="0">选择</option>
                               @foreach(var item in listSupplier)
                                 {
-                                    <option value="@item.LedgerId">@item.LedgerName</option>
+                                    <option value="@item.TerminalId">@item.TerminalName</option>
                                 }
                             </select>
     </div>
@@ -150,7 +150,7 @@
     private string searchString2 = "";
     bool open;
     Anchor anchor;
-    List<AccountLedgerView> listSupplier = new List<AccountLedgerView>();
+    List<TerminalView> listSupplier = new List<TerminalView>();
     List<PaymentReceiveView> listModel = new List<PaymentReceiveView>();
     List<SalesMasterView> listPurchaseVoucher = new List<SalesMasterView>();
     DateTime FromDate = DateTime.UtcNow.AddDays(-1);
@@ -188,7 +188,7 @@
             strDelete = true;
             strShow = true;
         }
-        listSupplier = _supplier.ViewAllCustomer(1); // 1 is companyid
+        listSupplier = _supplier.ViewAllCustomer(1); // 1 is StoreId
         listPurchaseVoucher = _salesInvoice.SalesInvoiceView(1);
         listModel = _customerReceive.SalesReceiveView(Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CustomerId , SalesMasterId);
         StateHasChanged();
@@ -203,7 +203,7 @@
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -260,7 +260,7 @@
             cell.SetCellValue(objDue.Date);
 
             cell = row.CreateCell(1);
-            cell.SetCellValue(objDue.LedgerName);
+            cell.SetCellValue(objDue.TerminalName);
 
             cell = row.CreateCell(2);
             cell.SetCellValue(objDue.VoucherNo);

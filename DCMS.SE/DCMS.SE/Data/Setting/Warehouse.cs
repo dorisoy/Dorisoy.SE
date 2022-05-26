@@ -12,7 +12,7 @@ namespace DCMS.SE.Data.Setting
         public string Country { get; set; }
         public string City { get; set; }
         public string Email { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public DateTime? AddedDate { get; set; }
         public DateTime? ModifyDate { get; set; }
     }

@@ -17,7 +17,7 @@ namespace DCMS.SE.Data.Inventory
         [Required]
         public DateTime Date { get; set; }
         [Required]
-        public int LedgerId { get; set; }
+        public int TerminalId { get; set; }
         [Required]
         public Decimal Amount { get; set; }
         public string SerialNo { get; set; }
@@ -29,7 +29,7 @@ namespace DCMS.SE.Data.Inventory
         [Required]
         public int FinancialYearId { get; set; }
         [Required]
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public DateTime? AddedDate { get; set; }
         public DateTime? ModifyDate { get; set; }
         [NotMapped]

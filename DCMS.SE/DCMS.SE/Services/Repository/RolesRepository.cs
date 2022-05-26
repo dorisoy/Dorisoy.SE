@@ -154,7 +154,7 @@ namespace DCMS.SE.Services.Repository
             _context.Role.Update(model);
             _context.SaveChanges();
         }
-        public bool DeleteRolePriviliage(int CompanyId, int RoleId)
+        public bool DeleteRolePriviliage(int StoreId, int RoleId)
         {
             SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
             try
@@ -163,11 +163,11 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("DELETE FROM Privilege where CompanyId=@CompanyId AND RoleId=@RoleId", sqlcon);
+                SqlCommand cmd = new SqlCommand("DELETE FROM Privilege where StoreId=@StoreId AND RoleId=@RoleId", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
-                para = cmd.Parameters.Add("@CompanyId", SqlDbType.Int);
-                para.Value = CompanyId;
+                para = cmd.Parameters.Add("@StoreId", SqlDbType.Int);
+                para.Value = StoreId;
                 para = cmd.Parameters.Add("@RoleId", SqlDbType.Int);
                 para.Value = RoleId;
                 int rowAffacted = cmd.ExecuteNonQuery();
@@ -198,7 +198,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("INSERT INTO Privilege (FormName,FormNameNepali,SettingType,AddAction,EditAction,DeleteAction,ShowAction,RoleId,CompanyId,AddedDate,IsActive)values(@FormName,@FormNameNepali,@SettingType,@AddAction,@EditAction,@DeleteAction,@ShowAction,@RoleId,@CompanyId,@AddedDate,@IsActive)", sqlcon);
+                SqlCommand cmd = new SqlCommand("INSERT INTO Privilege (FormName,FormNameNepali,SettingType,AddAction,EditAction,DeleteAction,ShowAction,RoleId,StoreId,AddedDate,IsActive)values(@FormName,@FormNameNepali,@SettingType,@AddAction,@EditAction,@DeleteAction,@ShowAction,@RoleId,@StoreId,@AddedDate,@IsActive)", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@FormName", SqlDbType.NVarChar);
@@ -217,8 +217,8 @@ namespace DCMS.SE.Services.Repository
                 para.Value = tapType.ShowAction;
                 para = cmd.Parameters.Add("@RoleId", SqlDbType.Int);
                 para.Value = tapType.RoleId;
-                para = cmd.Parameters.Add("@CompanyId", SqlDbType.Int);
-                para.Value = tapType.CompanyId;
+                para = cmd.Parameters.Add("@StoreId", SqlDbType.Int);
+                para.Value = tapType.StoreId;
                 para = cmd.Parameters.Add("@IsActive", SqlDbType.Bit);
                 para.Value = tapType.IsActive;
                 para = cmd.Parameters.Add("@AddedDate", SqlDbType.DateTime);
@@ -234,14 +234,14 @@ namespace DCMS.SE.Services.Repository
                 sqlcon.Close();
             }
         }
-        public Privilege PriviliageCheck(string FormName, int RoleId, int CompanyId)
+        public Privilege PriviliageCheck(string FormName, int RoleId, int StoreId)
         {
             using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@FormName", FormName);
                 para.Add("@RoleId", RoleId);
-                para.Add("@CompanyId", CompanyId);
+                para.Add("@StoreId", StoreId);
                 var result = sqlcon.Query<Privilege>("PrivilegeCheck", para, null, true, 0, commandType: CommandType.StoredProcedure).FirstOrDefault();
                 return result;
             }

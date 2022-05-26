@@ -1,8 +1,8 @@
-﻿@page "/product/ProductGroupEdit/{id}"
+﻿@page "/product/CatagoryEdit/{id}"
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IProductGroup _productGroup
+@inject ICatagory _Catagory
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -77,8 +77,8 @@
 @code {
     [Parameter]
     public string id { get; set; }
-    ProductGroup master = new ProductGroup();
-    List<ProductGroup> listProductgorup;
+    Catagory master = new Catagory();
+    List<Catagory> listProductgorup;
     string strMenu = "Product Group";
     bool strAdd = true;
     bool strEdit = true;
@@ -110,20 +110,20 @@
             strDelete = true;
             strShow = true;
         }
-        master = _productGroup.Edit(Convert.ToInt32(id));
-        listProductgorup = _productGroup.GetAll();
+        master = _Catagory.Edit(Convert.ToInt32(id));
+        listProductgorup = _Catagory.GetAll();
         StateHasChanged();
     }
     public void HandleValidSubmit()
     {
-        var isCheck = _productGroup.CheckNameId(master.GroupName);
+        var isCheck = _Catagory.CheckNameId(master.GroupName);
         if (isCheck == master.GroupId || isCheck == 0)
         {
-            master.CompanyId = 1;
+            master.StoreId = 1;
             master.ModifyDate = DateTime.Now;
-            _productGroup.Update(master);
+            _Catagory.Update(master);
             Snackbar.Add("Updated Successfully.", Severity.Success);
-            navManager.NavigateTo("/product/productgrouplist");
+            navManager.NavigateTo("/product/Catagorylist");
         }
         else
         {
@@ -132,6 +132,6 @@
     }
     void Cancel()
     {
-        navManager.NavigateTo("/product/productgrouplist");
+        navManager.NavigateTo("/product/Catagorylist");
     }
     }

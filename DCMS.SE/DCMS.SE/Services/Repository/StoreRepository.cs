@@ -11,21 +11,21 @@ using System.Linq;
 
 namespace DCMS.SE.Services.Repository
 {
-    public class CompanyRepository : ICompany
+    public class StoreRepository : IStore
     {
         private readonly ApplicationDbContext _context;
         private readonly DatabaseConnection _conn;
-        public CompanyRepository(ApplicationDbContext context, DatabaseConnection conn)
+        public StoreRepository(ApplicationDbContext context, DatabaseConnection conn)
         {
             _context = context;
             _conn = conn;
         }
-        public Company Edit(int CompanyId)
+        public Store Edit(int StoreId)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("CompanyId", CompanyId, DbType.Int64);
+            parameters.Add("StoreId", StoreId, DbType.Int64);
 
-            Company company = new Company();
+            Store Store = new ();
 
             using (var conn = new SqlConnection(_conn.DbConn))
             {
@@ -34,7 +34,7 @@ namespace DCMS.SE.Services.Repository
                     conn.Open();
                 try
                 {
-                    company = conn.QueryFirstOrDefault<Company>("SELECT *FROM Company where CompanyId=@CompanyId", parameters, commandType: CommandType.Text);
+                    Store = conn.QueryFirstOrDefault<Store>("SELECT *FROM Store where StoreId=@StoreId", parameters, commandType: CommandType.Text);
                 }
                 catch (Exception ex)
                 {
@@ -46,22 +46,20 @@ namespace DCMS.SE.Services.Repository
                         conn.Close();
                 }
             }
-            return company;
+            return Store;
         }
 
-        public List<Company> GetAll()
+        public List<Store> GetAll()
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
-            {
-                var param = new DynamicParameters();
-                var ListofPlan = sqlcon.Query<Company>("SELECT *FROM Company", null, null, true, 0, commandType: CommandType.Text).ToList();
-                return ListofPlan;
-            }
+            using SqlConnection sqlcon = new(_conn.DbConn);
+            var param = new DynamicParameters();
+            var ListofPlan = sqlcon.Query<Store>("SELECT *FROM Store", null, null, true, 0, commandType: CommandType.Text).ToList();
+            return ListofPlan;
         }
 
-        public void Update(Company model)
+        public void Update(Store model)
         {
-            _context.Company.Update(model);
+            _context.Store.Update(model);
             _context.SaveChanges();
         }
     }

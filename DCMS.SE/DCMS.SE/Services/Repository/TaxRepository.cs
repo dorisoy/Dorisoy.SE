@@ -55,16 +55,18 @@ namespace DCMS.SE.Services.Repository
 
         public bool Delete(int TaxId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("IF NOT EXISTS (SELECT TaxId from Product where TaxId=@TaxId) DELETE FROM Tax where TaxId=@TaxId", sqlcon);
-                cmd.CommandType = CommandType.Text;
-                SqlParameter para = new SqlParameter();
+                SqlCommand cmd = new("IF NOT EXISTS (SELECT TaxId from Product where TaxId=@TaxId) DELETE FROM Tax where TaxId=@TaxId", sqlcon)
+                {
+                    CommandType = CommandType.Text
+                };
+                SqlParameter para = new ();
                 para = cmd.Parameters.Add("@TaxId", SqlDbType.Int);
                 para.Value = TaxId;
                 long rowAffacted = cmd.ExecuteNonQuery();

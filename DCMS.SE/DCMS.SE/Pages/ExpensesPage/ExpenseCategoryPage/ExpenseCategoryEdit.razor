@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IAccountLedger accountLedger
+@inject ITerminal accountTerminal
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -29,13 +29,13 @@
                                     <div class="row">
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="firstName1">@localizer["Category Name"]</label>
-                                            <input class="form-control" @bind="master.LedgerName" type="text">
-                                        <ValidationMessage For="@(() => master.LedgerName)" />
+                                            <input class="form-control" @bind="master.TerminalName" type="text">
+                                        <ValidationMessage For="@(() => master.TerminalName)" />
                                         </div>
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="lastName1">@localizer["Code"]</label>
-                                            <input class="form-control" @bind="master.LedgerCode" readonly type="text">
-                                        <ValidationMessage For="@(() => master.LedgerCode)" />
+                                            <input class="form-control" @bind="master.TerminalCode" readonly type="text">
+                                        <ValidationMessage For="@(() => master.TerminalCode)" />
                                         </div>
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="lastName1">@localizer["Group"]</label>
@@ -61,7 +61,7 @@
 @code {
     [Parameter]
     public string id { get; set; }
-    AccountLedger master = new AccountLedger();
+    Terminal master = new Terminal();
     List<AccountGroup> listExpensesCategory = new List<AccountGroup>();
     string strMenu = "Expenses Category";
     bool strAdd = true;
@@ -94,8 +94,8 @@
             strDelete = true;
             strShow = true;
         }
-        master = accountLedger.Edit(Convert.ToInt32(id));
-        listExpensesCategory = accountLedger.ExpensesCategory();
+        master = accountTerminal.Edit(Convert.ToInt32(id));
+        listExpensesCategory = accountTerminal.ExpensesCategory();
         StateHasChanged();
     }
     public void HandleValidSubmit()
@@ -111,11 +111,11 @@
             master.IsDefault = false;
             master.CrOrDr = "Dr";
             master.ModifyDate = DateTime.UtcNow;
-            master.CompanyId = 1;
-            var isCheck = accountLedger.CheckNameId(master.LedgerCode);
-            if (isCheck == master.LedgerId || isCheck == 0)
+            master.StoreId = 1;
+            var isCheck = accountTerminal.CheckNameId(master.TerminalCode);
+            if (isCheck == master.TerminalId || isCheck == 0)
             {
-                accountLedger.Update(master);
+                accountTerminal.Update(master);
                 Snackbar.Add("Saved Successfully.", Severity.Success);
                 navManager.NavigateTo("/expenses/expensescategory");
             }

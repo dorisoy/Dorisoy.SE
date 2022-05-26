@@ -18,7 +18,7 @@ namespace DCMS.SE.Data.Apimodel
             this.FirstName = user.FirstName;
             this.MiddleName = user.MiddleName;
             this.LastName = user.LastName;
-            this.CompanyId = user.CompanyId;
+            this.StoreId = user.StoreId;
             this.HireDate = user.HireDate;
 
             this.Role = user.Role;

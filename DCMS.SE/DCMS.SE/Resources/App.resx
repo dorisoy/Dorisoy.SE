@@ -153,10 +153,10 @@
   <data name="Code" xml:space="preserve">
     <value>代码</value>
   </data>
-  <data name="Company" xml:space="preserve">
+  <data name="Store" xml:space="preserve">
     <value>公司</value>
   </data>
-  <data name="Company Setting" xml:space="preserve">
+  <data name="Store Setting" xml:space="preserve">
     <value>公司配置</value>
   </data>
   <data name="Confirm Password" xml:space="preserve">

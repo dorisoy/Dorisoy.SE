@@ -201,7 +201,7 @@
             if (model.UserId == 0)
             {
                     model.Password = Utility.Encrypt(model.Password);
-                    model.CompanyId = 1;
+                    model.StoreId = 1;
                     model.Source = "DCMS.SE";
                     model.HireDate = DateTime.Now;
                     bool isSave = false;
@@ -219,7 +219,7 @@
             else
             {
                     model.Password = Utility.Encrypt(model.Password);
-                    model.CompanyId = 1;
+                    model.StoreId = 1;
                     model.Source = "DCMS.SE";
                     if (authService.Update(model))
                     {

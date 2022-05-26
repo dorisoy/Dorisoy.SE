@@ -14,7 +14,7 @@ namespace DCMS.SE.Data.Setting
         public bool DeleteAction { get; set; }
         public bool ShowAction { get; set; }
         public int RoleId { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public string SettingType { get; set; }
         public bool IsActive { get; set; }
         public DateTime? AddedDate { get; set; }

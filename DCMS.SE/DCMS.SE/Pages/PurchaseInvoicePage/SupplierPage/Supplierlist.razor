@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IAccountLedger accountLedger
+@inject IManufacturer accountManufacturer
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -34,7 +34,7 @@
         </div>
         </div>
         <div class="vgt-responsive">
-            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<AccountLedgerView,bool>(Search)">
+            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<ManufacturerView,bool>(Search)">
     <ToolBarContent>
         <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
@@ -49,18 +49,18 @@
     </HeaderContent>
     <RowTemplate>
         
-        <MudTd DataLabel="">@context.LedgerName</MudTd>
-        <MudTd DataLabel="">@context.LedgerCode</MudTd>
+        <MudTd DataLabel="">@context.ManufacturerName</MudTd>
+        <MudTd DataLabel="">@context.ManufacturerCode</MudTd>
         <MudTd DataLabel="">@context.Phone</MudTd>
         <MudTd DataLabel="">@context.Email</MudTd>
         <MudTd DataLabel="">@context.Country</MudTd>
         <MudTd DataLabel="">@context.City</MudTd>
         <MudTd DataLabel="">
             <center>
-                                     <a style="cursor:pointer;" href="/purchase/supplieredit/@context.LedgerId">
+                                     <a style="cursor:pointer;" href="/purchase/supplieredit/@context.ManufacturerId">
                                          <i class="i-Edit text-25 text-success"></i>
                                          </a>
-                                          <a style="cursor:pointer;" @onclick="() => Delete(context.LedgerId)">
+                                          <a style="cursor:pointer;" @onclick="() => Delete(context.ManufacturerId)">
                                               <i class="i-Close-Window text-25 text-danger"></i></a>
                                                                                 
                                     </center>
@@ -83,7 +83,7 @@
     private bool bordered = true;
     private string searchString1 = "";
     private string searchString2 = "";
-    List<AccountLedgerView> listModel;
+    List<ManufacturerView> listModel;
     string strMenu = "Supplier";
     bool strAdd = true;
     bool strEdit = true;
@@ -120,7 +120,7 @@
     }
     private  void LoadData()
     {
-        listModel = accountLedger.ViewAllSupplier(1);
+        listModel = accountManufacturer.ViewAllSupplier(1);
     }
     async Task Delete(int id)
     {
@@ -130,7 +130,7 @@
             if (id != 1)
             {
                 bool isSave = false;
-                isSave = accountLedger.Delete(id);
+                isSave = accountManufacturer.Delete(id);
                 if (isSave == true)
                 {
                     Snackbar.Add("Delete Successfully.", Severity.Success);
@@ -147,20 +147,20 @@
             }
         }
     }
-    private bool Search(AccountLedgerView element)
+    private bool Search(ManufacturerView element)
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.LedgerCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.ManufacturerCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
-            if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.ManufacturerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         return false;
     }
     private void GeneratePdf()
     {
         PdfCustomerSupplier pdfExp = new PdfCustomerSupplier();
-        JsRuntime.InvokeAsync<AccountLedgerView>(
+        JsRuntime.InvokeAsync<ManufacturerView>(
             "saveAsFile",
             "Supplier.pdf",
             Convert.ToBase64String(pdfExp.Report(listModel , "Supplier"))

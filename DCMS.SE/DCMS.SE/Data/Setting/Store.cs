@@ -5,11 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DCMS.SE.Data.Setting
 {
-    public class Company
+    public class Store
     {
         [Key]
-        public int CompanyId { get; set; }
-        public string CompanyName { get; set; }
+        public int StoreId { get; set; }
+        public string StoreName { get; set; }
         public string Address { get; set; }
         public int CountryId { get; set; }
         public string PhoneNo { get; set; }
@@ -20,7 +20,7 @@ namespace DCMS.SE.Data.Setting
         public string BusinessType { get; set; }
         public string Website { get; set; }
         public string PanNo { get; set; }
-        public int LedgerId { get; set; }
+        public int TerminalId { get; set; }
         public int WarehouseId { get; set; }
         public string Logo { get; set; }
         public DateTime? AddedDate { get; set; }

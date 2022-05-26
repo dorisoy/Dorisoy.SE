@@ -64,7 +64,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("IF NOT EXISTS (SELECT AccountGroupId from AccountLedger where AccountGroupId=@AccountGroupId) DELETE FROM AccountGroup where AccountGroupId=@AccountGroupId", sqlcon);
+                SqlCommand cmd = new SqlCommand("IF NOT EXISTS (SELECT AccountGroupId from Terminal where AccountGroupId=@AccountGroupId) DELETE FROM AccountGroup where AccountGroupId=@AccountGroupId", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@AccountGroupId", SqlDbType.Int);

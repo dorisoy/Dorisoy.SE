@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject ICompany _company
+@inject IStore _Store
 @inject IPaymentSupplier _paymentSupplier
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
@@ -40,15 +40,15 @@
                     </div> <hr> <div class="row mt-5">
                         <div class="mb-4 col-sm-12 col-md-6 col-lg-6">
                             <h5 class="font-weight-bold">@localizer["Supplier Info"]</h5> 
-                            <div>@master.LedgerName</div> 
+                            <div>@master.TerminalName</div> 
                             <div>@master.Email</div> 
                             <div>@master.Mobile</div> 
                             <div>@master.Address</div>
                         </div> <div class="mb-4 col-sm-12 col-md-6 col-lg-6">
-                            <h5 class="font-weight-bold">@localizer["Company Info"]</h5> 
-                            <div>@company.CompanyName</div> 
-                            <div>@company.Address</div> 
-                            <div>@company.PhoneNo</div> 
+                            <h5 class="font-weight-bold">@localizer["Store Info"]</h5> 
+                            <div>@Store.StoreName</div> 
+                            <div>@Store.Address</div> 
+                            <div>@Store.PhoneNo</div> 
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-12">
@@ -84,11 +84,11 @@
     [Parameter]
     public string id { get; set; }
     PaymentReceiveView master = new PaymentReceiveView();
-    Company company = new Company();
+    Store Store = new Store();
     protected  override void OnInitialized()
     {
         master = _paymentSupplier.PaymentSupplierView(Convert.ToInt32(id));
-        company = _company.Edit(1);
+        Store = _Store.Edit(1);
         StateHasChanged();
     }
     void Cancel()

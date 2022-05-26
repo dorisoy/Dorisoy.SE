@@ -15,7 +15,7 @@ namespace DCMS.SE.Data.ViewModel
         public DateTime Date { get; set; }
         public string NepaliDate { get; set; }
         public string VoucherTypeName { get; set; }
-        public string LedgerName { get; set; }
+        public string TerminalName { get; set; }
         public string Narration { get; set; }
         public decimal Debit { get; set; }
         public decimal Credit { get; set; }
@@ -30,6 +30,6 @@ namespace DCMS.SE.Data.ViewModel
 
         //Due
         public decimal DueBalance { get; set; }
-        public long LedgerId { get; set; }
+        public long TerminalId { get; set; }
     }
 }

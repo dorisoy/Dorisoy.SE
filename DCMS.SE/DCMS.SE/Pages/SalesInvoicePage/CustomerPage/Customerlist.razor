@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IAccountLedger accountLedger
+@inject ITerminal accountTerminal
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="vgt-responsive">
-                        <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<AccountLedgerView,bool>(Search)">
+                        <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<TerminalView,bool>(Search)">
                             <ToolBarContent>
                                 <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                             </ToolBarContent>
@@ -50,18 +50,18 @@
                                 <MudTh></MudTh>
                             </HeaderContent>
                             <RowTemplate>
-                                <MudTd DataLabel="">@context.LedgerName</MudTd>
-                                <MudTd DataLabel="">@context.LedgerCode</MudTd>
+                                <MudTd DataLabel="">@context.TerminalName</MudTd>
+                                <MudTd DataLabel="">@context.TerminalCode</MudTd>
                                 <MudTd DataLabel="">@context.Phone</MudTd>
                                 @*<MudTd DataLabel="">@context.Email</MudTd>*@
                                 <MudTd DataLabel="">@context.Country</MudTd>
                                 <MudTd DataLabel="">@context.City</MudTd>
                                 <MudTd DataLabel="">
                                     <center>
-                                        <a style="cursor:pointer;" href="/sales/customeredit/@context.LedgerId">
+                                        <a style="cursor:pointer;" href="/sales/customeredit/@context.TerminalId">
                                             <i class="i-Edit text-25 text-success"></i>
                                         </a>
-                                        <a style="cursor:pointer;" @onclick="() => Delete(context.LedgerId)">
+                                        <a style="cursor:pointer;" @onclick="() => Delete(context.TerminalId)">
                                             <i class="i-Close-Window text-25 text-danger"></i>
                                         </a>
 
@@ -85,7 +85,8 @@
     private bool bordered = true;
     private string searchString1 = "";
     private string searchString2 = "";
-    List<AccountLedgerView> listModel;
+    List<TerminalView> listModel;
+    List<ManufacturerView> listModel2;
     string strMenu = "Customer";
     bool strAdd = true;
     bool strEdit = true;
@@ -122,7 +123,7 @@
     }
     private void LoadData()
     {
-        listModel = accountLedger.ViewAllCustomer(1);
+        listModel = accountTerminal.ViewAllCustomer(1);
     }
     async Task Delete(int id)
     {
@@ -132,7 +133,7 @@
             if (id != 1)
             {
                 bool isSave = false;
-                isSave = accountLedger.Delete(id);
+                isSave = accountTerminal.Delete(id);
                 if (isSave == true)
                 {
                     Snackbar.Add("Delete Successfully.", Severity.Success);
@@ -149,23 +150,23 @@
             }
         }
     }
-    private bool Search(AccountLedgerView element)
+    private bool Search(TerminalView element)
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.LedgerCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.LedgerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         return false;
     }
     private void GeneratePdf()
     {
         PdfCustomerSupplier pdfExp = new PdfCustomerSupplier();
-        JsRuntime.InvokeAsync<AccountLedgerView>(
+        JsRuntime.InvokeAsync<ManufacturerView>(
             "saveAsFile",
             "Customer.pdf",
-            Convert.ToBase64String(pdfExp.Report(listModel, "Customer"))
+            Convert.ToBase64String(pdfExp.Report(listModel2, "Customer"))
         );
     }
 }

@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject IWarehouse accountLedger
+@inject IWarehouse accountTerminal
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -102,15 +102,15 @@
     public void HandleValidSubmit()
     {
             master.AddedDate = DateTime.UtcNow;
-            master.CompanyId = 1;
-            var isCheck = accountLedger.CheckName(master.Name);
+            master.StoreId = 1;
+            var isCheck = accountTerminal.CheckName(master.Name);
             if (isCheck == true)
             {
                 Snackbar.Add("Warehouse Already Exists.", Severity.Info);
             }
             else
             {
-                int intProductId = accountLedger.Save(master);
+                int intProductId = accountTerminal.Save(master);
                 Snackbar.Add("Saved Successfully.", Severity.Success);
                 navManager.NavigateTo("/setting/warehouselist");
             }

@@ -35,7 +35,7 @@ namespace DCMS.SE.Data.Setting
         public bool IsActive { get; set; }
         public string Barcode { get; set; }
         public string Image { get; set; }
-        public int CompanyId { get; set; }
+        public int StoreId { get; set; }
         public DateTime? AddedDate { get; set; }
         public DateTime? ModifyDate { get; set; }
         [NotMapped]

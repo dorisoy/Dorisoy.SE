@@ -20,13 +20,16 @@ namespace DCMS.SE.Data.Connection
         public virtual DbSet<User> User { get; set; }
         public DbSet<Privilege> Privilege { get; set; }
         public DbSet<AccountGroup> AccountGroup { get; set; }
-        public DbSet<ProductGroup> ProductGroup { get; set; }
-        public DbSet<AccountLedger> AccountLedger { get; set; }
+        public DbSet<Catagory> Catagory { get; set; }
+        public DbSet<Terminal> Terminal { get; set; }
+        public DbSet<Manufacturer> Manufacturer { get; set; }
         public DbSet<Currency> Currency { get; set; }
         public DbSet<ExpenseMaster> ExpenseMaster { get; set; }
         public DbSet<FinancialYear> FinancialYear { get; set; }
         public DbSet<IncomeMaster> IncomeMaster { get; set; }
-        public DbSet<LedgerPosting> LedgerPosting { get; set; }
+        public DbSet<TerminalPosting> TerminalPosting { get; set; }
+        public DbSet<ManufacturerPosting> ManufacturerPosting { get; set; }
+        
         public DbSet<PaymentMaster> PaymentMaster { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<PurchaseDetails> PurchaseDetails { get; set; }
@@ -42,7 +45,7 @@ namespace DCMS.SE.Data.Connection
         public DbSet<StockPosting> StockPosting { get; set; }
         public DbSet<Unit> Unit { get; set; }
         public DbSet<VoucherType> VoucherType { get; set; }
-        public DbSet<Company> Company { get; set; }
+        public DbSet<Store> Store { get; set; }
         public DbSet<Brand> Brand { get; set; }
         public DbSet<Warehouse> Warehouse { get; set; }
 
@@ -142,8 +145,8 @@ namespace DCMS.SE.Data.Connection
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CompanyId)
-                    .HasColumnName("CompanyId")
+                entity.Property(e => e.StoreId)
+                    .HasColumnName("StoreId")
                     .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.RoleId)

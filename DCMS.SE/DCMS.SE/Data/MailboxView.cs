@@ -9,9 +9,9 @@ namespace DCMS.SE.Data
     {
         public long PurchaseMasterId { get; set; }
         public string VoucherNo { get; set; }
-        public long LedgerId { get; set; }
-        public string LedgerName { get; set; }
-        public string LedgerCode { get; set; }
+        public long TerminalId { get; set; }
+        public string TerminalName { get; set; }
+        public string TerminalCode { get; set; }
         public string Phone { get; set; }
         public string Mobile { get; set; }
         public string Email { get; set; }

@@ -18,7 +18,7 @@ namespace DCMS.SE.Data
         public string ToEmail { get; set; }
         [Display(Name = "Customer")]
         [Required]
-        public long LedgerId { get; set; }
+        public long TerminalId { get; set; }
         [Display(Name = "Subject")]
         [Required]
         public string Subject { get; set; }
@@ -35,7 +35,7 @@ namespace DCMS.SE.Data
         public string Password { get; set; }
         [Display(Name = "File Name")]
         public string FileName { get; set; }
-        public long CompanyId { get; set; }
+        public long StoreId { get; set; }
         public DateTime? AddedDate { get; set; }
         public DateTime? ModifyDate { get; set; }
     }

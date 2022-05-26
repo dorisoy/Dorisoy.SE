@@ -8,7 +8,7 @@ namespace DCMS.SE.Data
     {
         public static int _decCurrentUserId = 1;
         public static int _roleId = 1;
-        public static int _decCurrentCompanyId = 1;
+        public static int _decCurrentStoreId = 1;
         public static int _dtFromDateFinancial;//financial year starting  
         public static string _username;
         public static string _dtCurrentDate;

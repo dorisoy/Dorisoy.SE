@@ -3,7 +3,7 @@
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
 @inject IExpensesMaster _expenseMaster
-@inject IAccountLedger accountLedger
+@inject ITerminal accountTerminal
 @inject IWarehouse _warehouse
 @inject IVoucherType _voucherType
 @inject IJSRuntime JsRuntime
@@ -52,11 +52,11 @@
                                         </div>
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="lastName1">@localizer["Group"]</label>
-                                            <select class="form-control" @bind="@master.LedgerId">
+                                            <select class="form-control" @bind="@master.TerminalId">
                                                 <option value="0">Choose Category</option>
                                                 @foreach(var item in listExpensesCategory)
                                         {
-                                            <option value="@item.LedgerId">@item.LedgerName</option>
+                                            <option value="@item.TerminalId">@item.TerminalName</option>
                                         }
                                     </select>
                                         </div>
@@ -86,7 +86,7 @@
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
     ExpenseMaster master = new ExpenseMaster();
-    List<AccountLedgerView> listExpensesCategory = new List<AccountLedgerView>();
+    List<TerminalView> listExpensesCategory = new List<TerminalView>();
     List<Warehouse> listWarehouse = new List<Warehouse>();
     int decExpenseVoucherType = 10;
     string strSerialNo;
@@ -124,10 +124,10 @@
         var voucherType = _voucherType.Edit(decExpenseVoucherType);
         strSerialNo = _expenseMaster.GetVoucherNo(1, 1, decExpenseVoucherType);
         master.VoucherNo = CommonHelper.GetBillNumber(voucherType.Prefix, 130);
-        listExpensesCategory = accountLedger.ViewAllExpensesCategory(1);
+        listExpensesCategory = accountTerminal.ViewAllExpensesCategory(1);
         master.Date = DateTime.Now;
         listWarehouse = _warehouse.GetAll();
-        master.LedgerId = 0;
+        master.TerminalId = 0;
         master.WarehouseId = 0;
         StateHasChanged();
     }
@@ -137,7 +137,7 @@
         {
             Snackbar.Add("Choose Warehouse.", Severity.Info);
         }
-        else if (master.LedgerId == 0)
+        else if (master.TerminalId == 0)
         {
             Snackbar.Add("Choose Category.", Severity.Info);
         }
@@ -151,8 +151,8 @@
             master.VoucherTypeId = decExpenseVoucherType;
             master.FinancialYearId = 1;
             master.AddedDate = DateTime.UtcNow;
-            master.CompanyId = 1;
-            var isCheck = _expenseMaster.ExpensesVoucherNoCheckExistence(1, 1, master.VoucherNo); //1 , 1 is company id and financialyearid
+            master.StoreId = 1;
+            var isCheck = _expenseMaster.ExpensesVoucherNoCheckExistence(1, 1, master.VoucherNo); //1 , 1 is Store id and financialyearid
             if (isCheck == true)
             {
                 Snackbar.Add("ReferenceNo Already Exists.", Severity.Info);

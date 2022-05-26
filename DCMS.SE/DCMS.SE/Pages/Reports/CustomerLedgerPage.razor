@@ -3,8 +3,8 @@
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
 @inject IInventoryReport report
-@inject IAccountLedger _customer
-@inject ICompany _company
+@inject ITerminal _customer
+@inject IStore _Store
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -15,9 +15,9 @@
 @using System.IO
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1> @localizer["Customer Ledger"]</h1>
+        <div class="breadcrumb"><h1> @localizer["Customer Terminal"]</h1>
             <ul>
-                <li><a href=""> @localizer["Customer Ledger"] </a></li> 
+                <li><a href=""> @localizer["Customer Terminal"] </a></li> 
                 <li> @localizer["Report"] </li>
             </ul>
             </div>
@@ -46,14 +46,14 @@
                 
                 <tbody><tr>
                     <td align="left" class="print-table-tr">
-                        <img src="@company.Logo" class="companyimg" />
+                        <img src="@Store.Logo" class="Storeimg" />
                     </td>
                     <td align="center" class="print-cominfo">
-                        <span class="company-txt" style="font-size:16px;">
-                            @company.CompanyName                  
+                        <span class="Store-txt" style="font-size:16px;">
+                            @Store.StoreName                  
                         </span><br>
-                        @company.Address                        <br>
-                         @company.PhoneNo
+                        @Store.Address                        <br>
+                         @Store.PhoneNo
                     </td>
                    
                      <td align="right" class="print-table-tr">
@@ -104,7 +104,7 @@
     <option value="0">选择</option>
                               @foreach(var item in listCustomer)
                                 {
-                                    <option value="@item.LedgerId">@item.LedgerName</option>
+                                    <option value="@item.TerminalId">@item.TerminalName</option>
                                 }
                             </select>
     </div>
@@ -128,13 +128,13 @@
     bool open;
     Anchor anchor;
     List<SalesMasterView> listModel = new List<SalesMasterView>();
-    List<AccountLedgerView> listCustomer = new List<AccountLedgerView>();
+    List<TerminalView> listCustomer = new List<TerminalView>();
     DateTime FromDate = DateTime.UtcNow.AddDays(-1);
     DateTime ToDate = DateTime.UtcNow;
-    Company company = new Company();
+    Store Store = new Store();
     int CustomerId = 0;
     string myMarkup;
-    string strMenu = "Customer Ledger";
+    string strMenu = "Customer Terminal";
     bool strAdd = true;
     bool strEdit = true;
     bool strDelete = true;
@@ -165,8 +165,8 @@
             strDelete = true;
             strShow = true;
         }
-        listCustomer = _customer.ViewAllCustomer(1); // 1 is companyid
-        company = _company.Edit(1);
+        listCustomer = _customer.ViewAllCustomer(1); // 1 is StoreId
+        Store = _Store.Edit(1);
         Search();
         StateHasChanged();
     }
@@ -186,7 +186,7 @@
             //OpeningBlnce
             DataTable dtblsubOpening = new DataTable();
             DataSet dsetOpening = new DataSet();
-            dsetOpening = report.CustomerLedgerOpening(Convert.ToDateTime(FromDate), CustomerId, 1);
+            dsetOpening = report.CustomerTerminalOpening(Convert.ToDateTime(FromDate), CustomerId, 1);
             int counter1 = 0;
             dtblsubOpening = dsetOpening.Tables[0];
             decimal decDebit = 0;
@@ -216,7 +216,7 @@
 
             DataTable dtblsub = new DataTable();
             DataSet dset = new DataSet();
-            dset = report.CustomerLedger(Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CustomerId, 1);
+            dset = report.CustomerTerminal(Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CustomerId, 1);
             int counter = 0;
             dtblsub = dset.Tables[0];
             string strBalance = string.Empty;

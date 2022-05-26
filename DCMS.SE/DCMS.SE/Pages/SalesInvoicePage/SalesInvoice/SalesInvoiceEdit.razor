@@ -4,7 +4,7 @@
 @inject IRole _role
 @inject IProduct _product
 @inject IWarehouse _warehouse
-@inject IAccountLedger _accountLedger
+@inject ITerminal _accountTerminal
 @inject ICartSalesService CartService
 @inject IVoucherType _voucherType
 @inject ISalesInvoice _salesInvoice
@@ -80,9 +80,9 @@
 
                                             </legend>
                                             <div>
-                                                <Radzen.Blazor.RadzenDropDown AllowClear="true" @bind-Value="master.LedgerId" AllowVirtualization="true" Class="w-100" 
-                            AllowFiltering="true" Data=@listAccountledger TextProperty="LedgerName" ValueProperty="LedgerId"
-         Change="() =>LedgerClicked()" style="height:32px; font-size:10px;" />
+                                                <Radzen.Blazor.RadzenDropDown AllowClear="true" @bind-Value="master.TerminalId" AllowVirtualization="true" Class="w-100" 
+                            AllowFiltering="true" Data=@listAccountledger TextProperty="TerminalName" ValueProperty="TerminalId"
+         Change="() =>TerminalClicked()" style="height:32px; font-size:10px;" />
                                                 </div>
                                                 </fieldset>
                                                 </span>
@@ -322,7 +322,7 @@ else
     SalesMaster master = new SalesMaster();
     CartItem productDetails = new CartItem();
     IEnumerable<ProductView> listProduct;
-    List<AccountLedgerView> listAccountledger;
+    List<TerminalView> listAccountledger;
     List<Tax> listTax;
     List<Warehouse> listWarehouse;
     ProductView product = new ProductView();
@@ -370,7 +370,7 @@ else
         ClearCart();
         master = _salesInvoice.EditSalesMaster(Convert.ToInt32(id));
         TodoList = _salesInvoice.SalesInvoiceDetails(Convert.ToInt32(id));
-        listAccountledger = _accountLedger.ViewAllCustomer(1);
+        listAccountledger = _accountTerminal.ViewAllCustomer(1);
         listWarehouse = _warehouse.GetAll();
         listProduct = _product.ViewAllProduct(1);
         listTax = _tax.GetAll();
@@ -426,7 +426,7 @@ else
         {
             Snackbar.Add("Choose Warehouse.", Severity.Warning);
         }
-        else if (master.LedgerId == 0)
+        else if (master.TerminalId == 0)
         {
             Snackbar.Add("Choose Customer.", Severity.Warning);
         }
@@ -445,7 +445,7 @@ else
             var user = authState.User;
             string Id = user.Identity.Name.ToString();
                 master.UserId = Id;
-                master.CompanyId = 1;
+                master.StoreId = 1;
                 master.FinancialYearId = 1;
                 master.VoucherTypeId = decPurchaseInvoiceVoucherType;
                 master.PreviousDue = 0;
@@ -506,11 +506,11 @@ else
                 }
         }
         }
-    protected  void LedgerClicked()
+    protected  void TerminalClicked()
     {
-        if (master.LedgerId > 0)
+        if (master.TerminalId > 0)
         {
-            //var view = salesInvoiceRepository.CustomerSalesDue(master.LedgerId);
+            //var view = salesInvoiceRepository.CustomerSalesDue(master.TerminalId);
             //master.PreviousDue = view.DueBalance;
         }
         else

@@ -62,7 +62,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("IF NOT EXISTS (SELECT CurrencyId from Company where CurrencyId=@CurrencyId) DELETE FROM Currency where CurrencyId=@CurrencyId", sqlcon);
+                SqlCommand cmd = new SqlCommand("IF NOT EXISTS (SELECT CurrencyId from Store where CurrencyId=@CurrencyId) DELETE FROM Currency where CurrencyId=@CurrencyId", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@CurrencyId", SqlDbType.Int);

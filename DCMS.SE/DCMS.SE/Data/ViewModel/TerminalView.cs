@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DCMS.SE.Data.ViewModel
 {
-    public class AccountLedgerView
+    public class TerminalView
     {
         [Key]
-        public int LedgerId { get; set; }
+        public int TerminalId { get; set; }
         public string AccountGroupName { get; set; }
-        public string LedgerName { get; set; }
-        public string LedgerCode { get; set; }
+        public string TerminalName { get; set; }
+        public string TerminalCode { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
         public string Mobile { get; set; }

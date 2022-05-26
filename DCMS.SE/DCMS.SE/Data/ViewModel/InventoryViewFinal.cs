@@ -28,8 +28,8 @@ namespace DCMS.SE.Data.ViewModel
         public decimal CurrentStock { get; set; }
 
 
-        //Ledger
-        public string LedgerName { get; set; }
+        //Terminal
+        public string TerminalName { get; set; }
         public string NepaliDate { get; set; }
         public string Address { get; set; }
         public string Mobile { get; set; }

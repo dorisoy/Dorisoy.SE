@@ -3,7 +3,7 @@
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
 @inject IExpensesMaster _expenseMaster
-@inject IAccountLedger accountLedger
+@inject ITerminal accountTerminal
 @inject IWarehouse _warehouse
 @inject IVoucherType _voucherType
 @inject IJSRuntime JsRuntime
@@ -52,11 +52,11 @@
                                         </div>
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="lastName1">@localizer["Group"]</label>
-                                            <select class="form-control" @bind="@master.LedgerId">
+                                            <select class="form-control" @bind="@master.TerminalId">
                                                 <option value="0">Choose Category</option>
                                                 @foreach(var item in listExpensesCategory)
                                         {
-                                            <option value="@item.LedgerId">@item.LedgerName</option>
+                                            <option value="@item.TerminalId">@item.TerminalName</option>
                                         }
                                     </select>
                                         </div>
@@ -86,7 +86,7 @@
     [Parameter]
     public string id { get; set; }
     ExpenseMaster master = new ExpenseMaster();
-    List<AccountLedgerView> listExpensesCategory = new List<AccountLedgerView>();
+    List<TerminalView> listExpensesCategory = new List<TerminalView>();
     List<Warehouse> listWarehouse = new List<Warehouse>();
     int decExpenseVoucherType = 10;
     string strSerialNo;
@@ -122,7 +122,7 @@
             strShow = true;
         }
         master = _expenseMaster.EdiById(Convert.ToInt32(id));
-        listExpensesCategory = accountLedger.ViewAllExpensesCategory(1);
+        listExpensesCategory = accountTerminal.ViewAllExpensesCategory(1);
         listWarehouse = _warehouse.GetAll();
         StateHasChanged();
     }
@@ -132,7 +132,7 @@
         {
             Snackbar.Add("Choose Warehouse.", Severity.Info);
         }
-        else if (master.LedgerId == 0)
+        else if (master.TerminalId == 0)
         {
             Snackbar.Add("Choose Category.", Severity.Info);
         }
@@ -141,7 +141,7 @@
             master.VoucherTypeId = decExpenseVoucherType;
             master.FinancialYearId = 1;
             master.ModifyDate = DateTime.UtcNow;
-            master.CompanyId = 1;
+            master.StoreId = 1;
                 bool isSave = false;
                 isSave = _expenseMaster.Update(master);
                 if(isSave == true)
