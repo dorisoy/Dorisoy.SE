@@ -48,3 +48,6 @@ Thumbs.db
 *.mov
 *.wmv
 
+DCMS.SE/DCMS.SE/obj/
+DCMS.SE/DCMS.SE/bin/
+DCMS.SE/.vs/
