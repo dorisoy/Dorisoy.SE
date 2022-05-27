@@ -17,7 +17,7 @@ namespace DCMS.SE.Data.Inventory
         [Required]
         public DateTime Date { get; set; }
         [Required]
-        public int TerminalId { get; set; }
+        public int ManufacturerId { get; set; }
         [Required]
         public Decimal Amount { get; set; }
         public string SerialNo { get; set; }

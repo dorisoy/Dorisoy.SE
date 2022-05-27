@@ -11,75 +11,81 @@
 @using System.IO
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1>@localizer["Expenses List"]</h1>
+        <div class="breadcrumb">
+            <h1>@localizer["费用"]</h1>
             <ul>
-                <li><a href=""> @localizer["Expenses"] </a></li> 
-                <li> @localizer["list"] </li>
+                <li><a href=""> @localizer["费用单"] </a></li>
+                <li>@localizer["列表"] </li>
             </ul>
-            </div>
-            <div class="separator-breadcrumb border-top">
+        </div>
+        <div class="separator-breadcrumb border-top">
+        </div>
+    </div>
+    <div class="card wrapper">
+        <div class="card-body">
+            <div class="vgt-wrap ">
+                <div class="vgt-inner-wrap">
+                    <div class="vgt-global-search vgt-clearfix">
+                        <div class="vgt-global-search__actions vgt-pull-right">
+                            <div class="mt-2 mb-3">
 
-            </div>
-            </div>
-            <div class="card wrapper">
-            <div class="card-body">
-            <div class="vgt-wrap "> 
-            <div class="vgt-inner-wrap">
-                <div class="vgt-global-search vgt-clearfix">
-                 <div class="vgt-global-search__actions vgt-pull-right">
-                     <div class="mt-2 mb-3">
-                         <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf"><i class="i-File-TXT"></i> PDF
-        </button>
-        <button type="button" @onclick="@(async ()=> {await GenerateExcel();})" class="btn btn-outline-danger btn-icon m-1"><i class="i-File-Excel"></i> EXCEL
-        </button>
-                         <a href="/expenses/expensesadd" class="btn btn-outline btn-btn btn-primary btn-icon m-1"><i class="i-Add"></i>
-          Create
-        </a>
-        </div>
-        </div>
-        </div>
-        <div class="vgt-responsive">
-            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<ExpensesMasterView,bool>(Search)">
-    <ToolBarContent>
-        <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>@localizer["Reference"]</MudTh>
-        <MudTh>@localizer["Date"]</MudTh>
-        <MudTh>@localizer["Details"]</MudTh>
-        <MudTh>@localizer["Amount"]</MudTh>
-        <MudTh>@localizer["Category"]</MudTh>
-        <MudTh>@localizer["Warehouse"]</MudTh>
-        <MudTh></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="">@context.VoucherNo</MudTd>
-        <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.Narration</MudTd>
-        <MudTd DataLabel="">@context.Amount</MudTd>
-        <MudTd DataLabel="">@context.TerminalName</MudTd>
-        <MudTd DataLabel="">@context.WarehouseName</MudTd>
-        <MudTd DataLabel="">
-            <center>
-                                     <a style="cursor:pointer;" href="/expenses/expensesedit/@context.ExpensiveMasterId">
-                                         <i class="i-Edit text-25 text-success"></i>
-                                         </a>
-                                          <a style="cursor:pointer;" @onclick="() => Delete(context.ExpensiveMasterId)">
-                                              <i class="i-Close-Window text-25 text-danger"></i></a>
-                                                                                
+                                <MudButton Link="/expenses/expensesadd" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add">添加</MudButton>
+
+                                <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf">
+                                    <i class="i-File-TXT"></i> PDF
+                                </button>
+                                <button type="button" @onclick="@(async ()=> {await GenerateExcel();})" class="btn btn-outline-danger btn-icon m-1">
+                                    <i class="i-File-Excel"></i> EXCEL
+                                </button>
+                                <MudButton Variant="Variant.Filled" Color="Color.Info" EndIcon="@Icons.Material.Filled.ImportantDevices">导入</MudButton>
+
+                                <MudButton Variant="Variant.Filled" Color="Color.Warning" EndIcon="@Icons.Material.Filled.Print">打印</MudButton>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vgt-responsive">
+                        <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<ExpensesMasterView,bool>(Search)">
+                            <ToolBarContent>
+                                <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>@localizer["来源"]</MudTh>
+                                <MudTh>@localizer["日期"]</MudTh>
+                                <MudTh>@localizer["明细"]</MudTh>
+                                <MudTh>@localizer["金额"]</MudTh>
+                                <MudTh>@localizer["类别"]</MudTh>
+                                <MudTh>@localizer["仓库"]</MudTh>
+                                <MudTh>操作</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="">@context.VoucherNo</MudTd>
+                                <MudTd DataLabel="">@context.Date</MudTd>
+                                <MudTd DataLabel="">@context.Narration</MudTd>
+                                <MudTd DataLabel="">@context.Amount</MudTd>
+                                <MudTd DataLabel="">@context.TerminalName</MudTd>
+                                <MudTd DataLabel="">@context.WarehouseName</MudTd>
+                                <MudTd DataLabel="">
+                                    <center>
+                                        <a style="cursor:pointer;" href="/expenses/expensesedit/@context.ExpensiveMasterId">
+                                            <i class="i-Edit text-25 text-success"></i>
+                                        </a>
+                                        <a style="cursor:pointer;" @onclick="() => Delete(context.ExpensiveMasterId)">
+                                            <i class="i-Close-Window text-25 text-danger"></i>
+                                        </a>
+
                                     </center>
-        </MudTd>
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数"/>
-    </PagerContent>
-</MudTable>
+                                </MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数" />
+                            </PagerContent>
+                        </MudTable>
+                    </div>
                 </div>
+            </div>
         </div>
-        </div>
-        </div>
-        </div>
-        </div>
+    </div>
+</div>
 
 @code {
     private bool dense = true;
@@ -98,7 +104,7 @@
     int RoleId = 1;
     Privilege privi = new Privilege();
 
-    protected  override void OnInitialized()
+    protected override void OnInitialized()
     {
         //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
         //CheckPriviliage
@@ -125,7 +131,7 @@
         LoadData();
         StateHasChanged();
     }
-    private  void LoadData()
+    private void LoadData()
     {
         listModel = _expensesMaster.ViewAll(1);
     }
@@ -137,7 +143,7 @@
             ExpenseMaster view = new ExpenseMaster();
             view = _expensesMaster.EdiById(id);
             bool isSave = false;
-            isSave = _expensesMaster.Delete(id, view.VoucherNo, decExpenseVoucherType, 1 , 1);
+            isSave = _expensesMaster.Delete(id, view.VoucherNo, decExpenseVoucherType, 1, 1);
             if (isSave == true)
             {
                 Snackbar.Add("Delete Successfully.", Severity.Success);
@@ -198,7 +204,7 @@
 
         //Tble Body
         foreach (var objDue in listModel)
-    {
+        {
             row = worksheet.CreateRow(rowNumber++);
 
             cell = row.CreateCell(0);

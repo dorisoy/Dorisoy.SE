@@ -42,7 +42,7 @@ namespace DCMS.SE.Services.Repository
 
         public bool DeleteReceiveCustomer( int ReceiptMasterId, string VoucherNo, int VoucherTypeId, int FinancialYearId, int StoreId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
 
@@ -79,7 +79,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("ReceiptMasterDelete", sqlcon);
+                SqlCommand cmd = new ("ReceiptMasterDelete", sqlcon);
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@ReceiptMasterId", SqlDbType.Int);
@@ -113,7 +113,7 @@ namespace DCMS.SE.Services.Repository
         }
         public ReceiptMaster EditReceiveMaster(int ReceiptMasterId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@ReceiptMasterId", ReceiptMasterId);
@@ -124,7 +124,7 @@ namespace DCMS.SE.Services.Repository
 
         public string GetVoucherNo(int StoreId, int FinancialYearId, int VoucherTypeId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 string val = string.Empty;
                 var para = new DynamicParameters();
@@ -252,7 +252,7 @@ namespace DCMS.SE.Services.Repository
 
 
                     //DeleteTerminalPosting
-                    using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+                    using (SqlConnection sqlcon = new (_conn.DbConn))
                     {
                         var paraScDelete = new DynamicParameters();
                         paraScDelete.Add("@DetailsId", model.ReceiptMasterId);
@@ -330,7 +330,7 @@ namespace DCMS.SE.Services.Repository
         public PaymentReceiveView GetPreviousDuesBalancesupplier(int TerminalId)
         {
             PaymentReceiveView info = new PaymentReceiveView();
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             SqlDataReader rdr = null;
             try
             {
@@ -338,7 +338,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand sccmd = new SqlCommand("PaymentSupplierDue", sqlcon);
+                SqlCommand sccmd = new ("PaymentSupplierDue", sqlcon);
                 sccmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter sprmparam = new SqlParameter();
                 sprmparam = sccmd.Parameters.Add("@TerminalId", SqlDbType.Int);
@@ -364,7 +364,7 @@ namespace DCMS.SE.Services.Repository
         public PaymentReceiveView GetTotalReceiableAmount(int SalesMasterId)
         {
             PaymentReceiveView info = new PaymentReceiveView();
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             SqlDataReader rdr = null;
             try
             {
@@ -372,7 +372,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand sccmd = new SqlCommand("SELECT ISNULL(SUM(Amount), 0) as Amount FROM ReceiptMaster where SalesMasterId=@SalesMasterId", sqlcon);
+                SqlCommand sccmd = new ("SELECT ISNULL(SUM(Amount), 0) as Amount FROM ReceiptMaster where SalesMasterId=@SalesMasterId", sqlcon);
                 sccmd.CommandType = CommandType.Text;
                 SqlParameter sprmparam = new SqlParameter();
                 sprmparam = sccmd.Parameters.Add("@SalesMasterId", SqlDbType.Int);
@@ -441,7 +441,7 @@ namespace DCMS.SE.Services.Repository
 
         public List<PaymentReceiveView> SalesReceiveView(DateTime FromDate, DateTime ToDate, int TerminalId, int SalesMasterId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@FromDate", FromDate);

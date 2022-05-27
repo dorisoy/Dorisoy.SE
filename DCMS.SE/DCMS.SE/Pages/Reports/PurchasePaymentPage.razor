@@ -4,7 +4,7 @@
 @inject IRole _role
 @inject IPaymentSupplier _paymentSupplier
 @inject IPurchaseInvoice _purchaseInvoice
-@inject ITerminal _supplier
+@inject IManufacturer _supplier
 @inject IWarehouse _warehouse
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
@@ -57,7 +57,7 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.TerminalName</MudTd>
+        <MudTd DataLabel="">@context.ManufacturerName</MudTd>
         <MudTd DataLabel="">@context.VoucherNo</MudTd>
         <MudTd DataLabel="">@context.PurchaseVoucherNo</MudTd>
         <MudTd DataLabel="">@context.VoucherTypeName</MudTd>
@@ -106,7 +106,7 @@
     <option value="0">选择</option>
                               @foreach(var item in listSupplier)
                                 {
-                                    <option value="@item.TerminalId">@item.TerminalName</option>
+                                    <option value="@item.ManufacturerId">@item.ManufacturerName</option>
                                 }
                             </select>
     </div>
@@ -150,7 +150,7 @@
     private string searchString2 = "";
     bool open;
     Anchor anchor;
-    List<TerminalView> listSupplier = new List<TerminalView>();
+    List<ManufacturerView> listSupplier = new List<ManufacturerView>();
     List<PaymentReceiveView> listModel = new List<PaymentReceiveView>();
     List<PurchaseMasterView> listPurchaseVoucher = new List<PurchaseMasterView>();
     DateTime FromDate = DateTime.UtcNow.AddDays(-1);
@@ -203,7 +203,7 @@
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.ManufacturerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -260,7 +260,7 @@
             cell.SetCellValue(objDue.Date);
 
             cell = row.CreateCell(1);
-            cell.SetCellValue(objDue.TerminalName);
+            cell.SetCellValue(objDue.ManufacturerName);
 
             cell = row.CreateCell(2);
             cell.SetCellValue(objDue.VoucherNo);

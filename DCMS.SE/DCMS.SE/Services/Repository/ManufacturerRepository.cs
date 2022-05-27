@@ -23,7 +23,7 @@ namespace DCMS.SE.Services.Repository
         }
         public string SerialNoCode(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 string val = string.Empty;
                 var para = new DynamicParameters();
@@ -33,14 +33,14 @@ namespace DCMS.SE.Services.Repository
         }
         public bool Delete(int ManufacturerId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("ManufacturerDelete", sqlcon);
+                SqlCommand cmd = new ("ManufacturerDelete", sqlcon);
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@ManufacturerId", SqlDbType.Int);
@@ -73,7 +73,7 @@ namespace DCMS.SE.Services.Repository
 
         public List<ManufacturerView> GetAll(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@StoreId", StoreId);

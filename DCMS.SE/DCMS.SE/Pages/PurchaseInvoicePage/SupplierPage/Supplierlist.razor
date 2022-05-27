@@ -8,10 +8,10 @@
 @inject ISnackbar Snackbar
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1> @localizer["供应商"]</h1>
+        <div class="breadcrumb"><h1> @localizer["档案"]</h1>
             <ul>
-                <li><a href=""> @localizer["采购"] </a></li> 
-                <li> @localizer["供应商"] / @localizer["列表"] </li>
+                <li><a href=""> @localizer["供应商"] </a></li> 
+                <li> @localizer["列表"] </li>
             </ul>
             </div>
             <div class="separator-breadcrumb border-top">
@@ -25,11 +25,21 @@
                 <div class="vgt-global-search vgt-clearfix">
                  <div class="vgt-global-search__actions vgt-pull-right">
                      <div class="mt-2 mb-3">
-                         <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf"><i class="i-File-TXT"></i> PDF
-        </button>
-                         <a href="/purchase/supplieradd" class="btn btn-rounded btn-btn btn-primary btn-icon m-1"><i class="i-Add"></i>
-          @localizer["Create"]
-        </a>
+
+
+        
+                                 <MudButton Link="/purchase/supplieradd" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add">添加</MudButton>
+
+                                <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf">
+                                    <i class="i-File-TXT"></i> PDF
+                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-icon m-1">
+                                    <i class="i-File-Excel"></i> EXCEL
+                                </button>
+
+                                 <MudButton Variant="Variant.Filled" Color="Color.Info" EndIcon="@Icons.Material.Filled.ImportantDevices">导入</MudButton>
+
+                                 <MudButton Variant="Variant.Filled" Color="Color.Warning" EndIcon="@Icons.Material.Filled.Print">打印</MudButton>
         </div>
         </div>
         </div>
@@ -57,12 +67,13 @@
         <MudTd DataLabel="">@context.City</MudTd>
         <MudTd DataLabel="">
             <center>
-                                     <a style="cursor:pointer;" href="/purchase/supplieredit/@context.ManufacturerId">
-                                         <i class="i-Edit text-25 text-success"></i>
-                                         </a>
-                                          <a style="cursor:pointer;" @onclick="() => Delete(context.ManufacturerId)">
-                                              <i class="i-Close-Window text-25 text-danger"></i></a>
-                                                                                
+                        
+                                              
+                                                <MudButton Link="@("/purchase/supplieredit/"+context.ManufacturerId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
+
+                                        <MudButton  @onclick="() => Delete(context.ManufacturerId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
+
+
                                     </center>
         </MudTd>
     </RowTemplate>

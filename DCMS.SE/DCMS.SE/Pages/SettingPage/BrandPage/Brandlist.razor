@@ -41,7 +41,7 @@
     <HeaderContent>
         <MudTh>@localizer["Image"]</MudTh>
         <MudTh>@localizer["Brand"]</MudTh>
-        <MudTh></MudTh>
+        <MudTh>操作</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="">
@@ -57,11 +57,15 @@
         <MudTd DataLabel="">@context.Name</MudTd>
         <MudTd DataLabel="">
             <center>
-                                     <a style="cursor:pointer;" href="/setting/brandedit/@context.BrandId">
+                                  @*   <a style="cursor:pointer;" href="/setting/brandedit/@context.BrandId">
                                          <i class="i-Edit text-25 text-success"></i>
                                          </a>
                                           <a style="cursor:pointer;" @onclick="() => Delete(context.BrandId)">
-                                              <i class="i-Close-Window text-25 text-danger"></i></a>
+                                              <i class="i-Close-Window text-25 text-danger"></i></a>*@
+
+                                               <MudButton Link="@("/setting/brandedit/"+context.BrandId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
+
+                                        <MudButton  @onclick="() => Delete(context.BrandId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
                                                                                 
                                     </center>
         </MudTd>

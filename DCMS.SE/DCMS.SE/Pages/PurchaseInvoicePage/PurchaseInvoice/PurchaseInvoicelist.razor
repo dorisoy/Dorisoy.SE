@@ -4,7 +4,7 @@
 @inject IRole _role
 @inject IPurchaseInvoice _purchaseInvoice
 @inject IPaymentSupplier _paymentSupplier
-@inject ITerminal _supplier
+@inject IManufacturer _supplier
 @inject IWarehouse _warehouse
 @inject IVoucherType _voucherType
 @inject IJSRuntime JsRuntime
@@ -17,9 +17,9 @@
 <div class="main-content pt-4">
     <div>
         <div class="breadcrumb">
-            <h1>@localizer["采购单"]</h1>
+            <h1>@localizer["采购"]</h1>
             <ul>
-                <li><a href=""> @localizer["采购"] </a></li>
+                <li><a href=""> @localizer["采购单"] </a></li>
                 <li>@localizer["列表"] </li>
             </ul>
         </div>
@@ -74,7 +74,7 @@
                             <RowTemplate>
                                 <MudTd DataLabel="">@context.VoucherNo</MudTd>
                                 <MudTd DataLabel="">@context.Date</MudTd>
-                                <MudTd DataLabel="">@context.TerminalName</MudTd>
+                                <MudTd DataLabel="">@context.ManufacturerName</MudTd>
                                 @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
                                 <MudTd DataLabel="">@context.GrandTotal</MudTd>
                                 <MudTd DataLabel="">@context.PaymentAmount</MudTd>
@@ -349,7 +349,7 @@ else
                             <option value="0">选择</option>
                             @foreach (var item in listSupplier)
                             {
-                                <option value="@item.TerminalId">@item.TerminalName</option>
+                                <option value="@item.ManufacturerId">@item.ManufacturerName</option>
                             }
                         </select>
                     </div>
@@ -421,7 +421,7 @@ else
     bool isPayment = false;
     bool isShowPayment = false;
     List<PaymentMaster> listPayment = new List<PaymentMaster>();
-    List<TerminalView> listSupplier = new List<TerminalView>();
+    List<ManufacturerView> listSupplier = new List<ManufacturerView>();
     List<Warehouse> listWarehouse = new List<Warehouse>();
     DateTime FromDate = DateTime.UtcNow.AddDays(-1);
     DateTime ToDate = DateTime.UtcNow;
@@ -492,7 +492,7 @@ else
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.ManufacturerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -500,7 +500,7 @@ else
     }
     private async void CreatePayment()
     {
-        if (master.TerminalId == 0)
+        if (master.ManufacturerId == 0)
         {
             Snackbar.Add("Choose Supplier.", Severity.Warning);
         }
@@ -558,7 +558,7 @@ else
     void EditPayment(PurchaseMasterView purchaseMaster)
     {
         isPayment = true;
-        master.TerminalId = purchaseMaster.TerminalId;
+        master.ManufacturerId = purchaseMaster.ManufacturerId;
         master.Date = DateTime.UtcNow;
         master.Amount = 0;
         master.PurchaseMasterId = purchaseMaster.PurchaseMasterId;
@@ -641,7 +641,7 @@ else
     private void ClosePayment()
     {
         isPayment = false;
-        master.TerminalId = 0;
+        master.ManufacturerId = 0;
         master.Date = DateTime.UtcNow;
         master.Amount = 0;
         master.Narration = string.Empty;
@@ -706,7 +706,7 @@ else
             cell.SetCellValue(objDue.Date.ToString());
 
             cell = row.CreateCell(2);
-            cell.SetCellValue(objDue.TerminalName);
+            cell.SetCellValue(objDue.ManufacturerName);
 
             cell = row.CreateCell(3);
             cell.SetCellValue(objDue.VoucherTypeName);

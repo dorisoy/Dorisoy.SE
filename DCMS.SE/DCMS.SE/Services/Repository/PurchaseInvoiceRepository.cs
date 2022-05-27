@@ -125,7 +125,7 @@ namespace DCMS.SE.Services.Repository
         public PurchaseMasterView PrintPurchaseMasterView(int id)
         {
             var varlist = (from a in _context.PurchaseMaster
-                           join b in _context.Manufacturer on a.TerminalId equals b.ManufacturerId
+                           join b in _context.Manufacturer on a.ManufacturerId equals b.ManufacturerId
                            join c in _context.Warehouse on a.WarehouseId equals c.WarehouseId
                            where a.PurchaseMasterId == id
                            select new PurchaseMasterView
@@ -141,8 +141,8 @@ namespace DCMS.SE.Services.Repository
                                UserId = a.UserId,
                                Status = a.Status,
                                ShippingAmount = a.ShippingAmount,
-                               TerminalCode = b.ManufacturerCode,
-                               TerminalName = b.ManufacturerName,
+                               ManufacturerCode = b.ManufacturerCode,
+                               ManufacturerName = b.ManufacturerName,
                                Email = b.Email,
                                Phone = b.Phone,
                                Address = b.Address,
@@ -155,7 +155,7 @@ namespace DCMS.SE.Services.Repository
         public List<PurchaseMasterView> PurchaseInvoiceDetails(int id, DateTime fromDate, DateTime toDate)
         {
             var varlist = (from a in _context.PurchaseMaster
-                           join b in _context.Manufacturer on a.TerminalId equals b.ManufacturerId
+                           join b in _context.Manufacturer on a.ManufacturerId equals b.ManufacturerId
                            join c in _context.VoucherType on a.VoucherTypeId equals c.VoucherTypeId
                            where a.StoreId == id && a.Date >= fromDate && a.Date <= toDate
                            select new PurchaseMasterView
@@ -167,8 +167,8 @@ namespace DCMS.SE.Services.Repository
                                Status = a.Status,
                                UserId = a.UserId,
                                BalanceDue = a.GrandTotal - a.PreviousDue,
-                               TerminalCode = b.ManufacturerCode,
-                               TerminalName = b.ManufacturerName,
+                               ManufacturerCode = b.ManufacturerCode,
+                               ManufacturerName = b.ManufacturerName,
                                VoucherTypeName = c.VoucherTypeName
                            }).ToList();
 
@@ -205,13 +205,13 @@ namespace DCMS.SE.Services.Repository
         public List<PurchaseMasterView> PurchaseInvoiceView(int id)
         {
             var varlist = (from a in _context.PurchaseMaster
-                           join b in _context.Manufacturer on a.TerminalId equals b.ManufacturerId
+                           join b in _context.Manufacturer on a.ManufacturerId equals b.ManufacturerId
                            join c in _context.VoucherType on a.VoucherTypeId equals c.VoucherTypeId
                            where a.StoreId == id
                            select new PurchaseMasterView
                            {
                                PurchaseMasterId = a.PurchaseMasterId,
-                               TerminalId = a.TerminalId,
+                               ManufacturerId = a.ManufacturerId,
                                Date = a.Date,
                                VoucherNo = a.VoucherNo,
                                GrandTotal = a.GrandTotal,
@@ -219,8 +219,8 @@ namespace DCMS.SE.Services.Repository
                                Status = a.Status,
                                UserId = a.UserId,
                                BalanceDue = a.BalanceDue,
-                               TerminalCode = b.ManufacturerCode,
-                               TerminalName = b.ManufacturerName,
+                               ManufacturerCode = b.ManufacturerCode,
+                               ManufacturerName = b.ManufacturerName,
                                VoucherTypeName = c.VoucherTypeName
                            }).ToList();
 
@@ -229,13 +229,13 @@ namespace DCMS.SE.Services.Repository
         public List<PurchaseMasterView> PurchaseInvoiceViewwarehouse(int id)
         {
             var varlist = (from a in _context.PurchaseMaster
-                           join b in _context.Manufacturer on a.TerminalId equals b.ManufacturerId
+                           join b in _context.Manufacturer on a.ManufacturerId equals b.ManufacturerId
                            join c in _context.VoucherType on a.VoucherTypeId equals c.VoucherTypeId
                            where a.WarehouseId == id
                            select new PurchaseMasterView
                            {
                                PurchaseMasterId = a.PurchaseMasterId,
-                               TerminalId = a.TerminalId,
+                               ManufacturerId = a.ManufacturerId,
                                Date = a.Date,
                                VoucherNo = a.VoucherNo,
                                GrandTotal = a.GrandTotal,
@@ -243,8 +243,8 @@ namespace DCMS.SE.Services.Repository
                                Status = a.Status,
                                UserId = a.UserId,
                                BalanceDue = a.BalanceDue,
-                               TerminalCode = b.ManufacturerCode,
-                               TerminalName = b.ManufacturerName,
+                               ManufacturerCode = b.ManufacturerCode,
+                               ManufacturerName = b.ManufacturerName,
                                VoucherTypeName = c.VoucherTypeName
                            }).ToList();
 
@@ -319,7 +319,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     Date = model.Date,
                     NepaliDate = String.Empty,
-                    ManufacturerId = model.TerminalId,
+                    ManufacturerId = model.ManufacturerId,
                     Debit = 0,
                     Credit = model.GrandTotal,
                     VoucherNo = model.VoucherNo,
@@ -410,7 +410,7 @@ namespace DCMS.SE.Services.Repository
                 para.Add("@WarehouseId", model.WarehouseId);
                 para.Add("@VoucherTypeId", model.VoucherTypeId);
                 para.Add("@Date", model.Date);
-                para.Add("@ManufacturerId", model.TerminalId);
+                para.Add("@ManufacturerId", model.ManufacturerId);
                 para.Add("@Narration", model.Narration);
                 para.Add("@PurchaseOrderMasterId", model.PurchaseOrderMasterId);
                 para.Add("@TotalTax", model.TotalTax);
@@ -566,7 +566,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     Date = model.Date,
                     NepaliDate = String.Empty,
-                    ManufacturerId = model.TerminalId,
+                    ManufacturerId = model.ManufacturerId,
                     Debit = 0,
                     Credit = model.GrandTotal,
                     VoucherNo = model.VoucherNo,

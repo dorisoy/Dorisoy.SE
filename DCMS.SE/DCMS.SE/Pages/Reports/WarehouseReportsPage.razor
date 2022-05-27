@@ -8,12 +8,14 @@
 @inject ISalesReturnInvoice _salesReturnInvoice
 @inject IPurchaseInvoice _purchaseInvoice
 @inject IPurchaseReturnInvoice _purchaseReturnInvoice
-@inject ITerminal _customer
+@inject IManufacturer _customer
 @inject IWarehouse _warehouse
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+
+
 <div class="main-content pt-4">
     <div>
         <div class="breadcrumb"><h1> @localizer["Warehouse Report"]</h1>
@@ -191,7 +193,7 @@
     <RowTemplate>
         <MudTd DataLabel="">@context.VoucherNo</MudTd>
         <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.TerminalName</MudTd>
+        <MudTd DataLabel="">@context.ManufacturerName</MudTd>
         <MudTd DataLabel="">@context.VoucherTypeName</MudTd>
         <MudTd DataLabel="">@context.GrandTotal</MudTd>
         <MudTd DataLabel="">@context.PaymentAmount</MudTd>
@@ -235,7 +237,7 @@
     <RowTemplate>
         <MudTd DataLabel="">@context.VoucherNo</MudTd>
         <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.TerminalName</MudTd>
+        <MudTd DataLabel="">@context.ManufacturerName</MudTd>
         @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
         <MudTd DataLabel="">@context.GrandTotal</MudTd>
         <MudTd DataLabel="">@context.PaymentAmount</MudTd>
@@ -390,7 +392,7 @@
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.ManufacturerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
@@ -400,7 +402,7 @@
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.ManufacturerName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         if (element.VoucherNo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;

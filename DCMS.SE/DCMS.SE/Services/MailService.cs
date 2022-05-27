@@ -70,7 +70,7 @@ namespace DCMS.SE.Services
         }
         public MailboxView GetSmsPurchasemaster(long PurchaseMasterId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@PurchaseMasterId", PurchaseMasterId);

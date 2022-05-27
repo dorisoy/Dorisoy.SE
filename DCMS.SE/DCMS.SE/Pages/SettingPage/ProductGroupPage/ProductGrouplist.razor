@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject ICatagory _Catagory
+@inject ICatagory _catagory
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -54,22 +54,22 @@
                                 <MudTh>操作</MudTh>
                             </HeaderContent>
                             <RowTemplate>
-                                <MudTd DataLabel="">@context.GroupName</MudTd>
+                                <MudTd DataLabel="">@context.CatagoryName</MudTd>
                                 <MudTd DataLabel="">
                           @*          <center>
-                                        <a href="/setting/Catagoryedit/@context.GroupId">
+                                        <a href="/setting/Catagoryedit/@context.CatagoryId">
                                             <i class="i-Edit text-25 text-success"></i>
                                         </a>
-                                        <a style="cursor:pointer;" @onclick="() => Delete(context.GroupId)">
+                                        <a style="cursor:pointer;" @onclick="() => Delete(context.CatagoryId)">
                                             <i class="i-Close-Window text-25 text-danger"></i>
                                         </a>
 
                                     </center>*@
 
                                     
-                                       <MudButton Link="@("/product/Catagoryedit/"+context.GroupId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
+                                       <MudButton Link="@("/product/Catagoryedit/"+context.CatagoryId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
 
-                                        <MudButton  @onclick="() => Delete(context.GroupId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
+                                        <MudButton  @onclick="() => Delete(context.CatagoryId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
 
                                 </MudTd>
                             </RowTemplate>
@@ -127,7 +127,7 @@
     }
     private void LoadData()
     {
-        listModel = _Catagory.GetAll();
+        listModel = _catagory.GetAll();
         StateHasChanged();
     }
     async Task Delete(int id)
@@ -138,7 +138,7 @@
             if (id != 1)
             {
                 bool isSave = false;
-                isSave = _Catagory.Delete(id);
+                isSave = _catagory.Delete(id);
                 if (isSave == true)
                 {
                     Snackbar.Add("Delete Successfully.", Severity.Success);
@@ -159,7 +159,7 @@
     {
         if (string.IsNullOrWhiteSpace(searchString1))
             return true;
-        if (element.GroupName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.CatagoryName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         return false;
     }

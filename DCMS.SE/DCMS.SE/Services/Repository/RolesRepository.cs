@@ -72,14 +72,14 @@ namespace DCMS.SE.Services.Repository
 
         public bool Delete(int RoleId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("IF NOT EXISTS (SELECT RoleId from User where RoleId=@RoleId) DELETE FROM Role where RoleId=@RoleId", sqlcon);
+                SqlCommand cmd = new ("IF NOT EXISTS (SELECT RoleId from User where RoleId=@RoleId) DELETE FROM Role where RoleId=@RoleId", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@RoleId", SqlDbType.Int);
@@ -156,14 +156,14 @@ namespace DCMS.SE.Services.Repository
         }
         public bool DeleteRolePriviliage(int StoreId, int RoleId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("DELETE FROM Privilege where StoreId=@StoreId AND RoleId=@RoleId", sqlcon);
+                SqlCommand cmd = new ("DELETE FROM Privilege where StoreId=@StoreId AND RoleId=@RoleId", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@StoreId", SqlDbType.Int);
@@ -191,14 +191,14 @@ namespace DCMS.SE.Services.Repository
         }
         public void SavePrivilige(Privilege tapType)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("INSERT INTO Privilege (FormName,FormNameNepali,SettingType,AddAction,EditAction,DeleteAction,ShowAction,RoleId,StoreId,AddedDate,IsActive)values(@FormName,@FormNameNepali,@SettingType,@AddAction,@EditAction,@DeleteAction,@ShowAction,@RoleId,@StoreId,@AddedDate,@IsActive)", sqlcon);
+                SqlCommand cmd = new ("INSERT INTO Privilege (FormName,FormNameNepali,SettingType,AddAction,EditAction,DeleteAction,ShowAction,RoleId,StoreId,AddedDate,IsActive)values(@FormName,@FormNameNepali,@SettingType,@AddAction,@EditAction,@DeleteAction,@ShowAction,@RoleId,@StoreId,@AddedDate,@IsActive)", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@FormName", SqlDbType.NVarChar);
@@ -236,7 +236,7 @@ namespace DCMS.SE.Services.Repository
         }
         public Privilege PriviliageCheck(string FormName, int RoleId, int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@FormName", FormName);

@@ -91,7 +91,7 @@
                                 </MudTd>
                                 @*<MudTd DataLabel="">@context.ProductCode</MudTd>*@
                                 <MudTd DataLabel="">@context.ProductName</MudTd>
-                                <MudTd DataLabel="">@context.GroupName</MudTd>
+                                <MudTd DataLabel="">@context.CatagoryName</MudTd>
                                 <MudTd DataLabel="">@context.UnitName</MudTd>
                                 <MudTd DataLabel="">@context.PurchaseRate</MudTd>
                                 <MudTd DataLabel="">@context.SalesRate</MudTd>
@@ -201,7 +201,7 @@
             return true;
         if (element.ProductCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
-        if (element.GroupName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.CatagoryName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         return false;
     }
@@ -258,7 +258,7 @@
             cell.SetCellValue(objDue.ProductName);
 
             cell = row.CreateCell(2);
-            cell.SetCellValue(objDue.GroupName);
+            cell.SetCellValue(objDue.CatagoryName);
 
             cell = row.CreateCell(3);
             cell.SetCellValue(objDue.UnitName);

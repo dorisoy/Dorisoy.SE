@@ -39,18 +39,22 @@
     <HeaderContent>
         <MudTh>@localizer["Tax Name"]</MudTh>
         <MudTh>@localizer["Per"] (%)</MudTh>
-        <MudTh></MudTh>
+        <MudTh>操作</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="">@context.TaxName</MudTd>
         <MudTd DataLabel="">@context.Rate</MudTd>
         <MudTd DataLabel="">
             <center>
-                                     <a style="cursor:pointer;" href="/setting/taxedit/@context.TaxId">
+                                  @*   <a style="cursor:pointer;" href="/setting/taxedit/@context.TaxId">
                                          <i class="i-Edit text-25 text-success"></i>
                                          </a>
                                           <a style="cursor:pointer;" @onclick="() => Delete(context.TaxId)">
-                                              <i class="i-Close-Window text-25 text-danger"></i></a>
+                                              <i class="i-Close-Window text-25 text-danger"></i></a>*@
+
+                                                 <MudButton Link="@("/setting/taxedit/"+context.TaxId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
+
+                                        <MudButton  @onclick="() => Delete(context.TaxId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
                                                                                 
                                     </center>
         </MudTd>

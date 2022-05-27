@@ -21,14 +21,14 @@ namespace DCMS.SE.Services
         }
         public bool Delete(long UserId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("UserDelete", sqlcon);
+                SqlCommand cmd = new ("UserDelete", sqlcon);
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@UserId", SqlDbType.BigInt);
@@ -60,7 +60,7 @@ namespace DCMS.SE.Services
 
             Users employee = new Users();
 
-            using (var conn = new SqlConnection(_conn.DbConn))
+            using (SqlConnection conn = new (_conn.DbConn))
             {
 
                 if (conn.State == ConnectionState.Closed)
@@ -89,7 +89,7 @@ namespace DCMS.SE.Services
             parameters.Add("Password", Password, DbType.String);
             LoginRequest loginUser = new LoginRequest();
 
-            using (var conn = new SqlConnection(_conn.DbConn))
+            using (SqlConnection conn = new (_conn.DbConn))
             {
 
                 if (conn.State == ConnectionState.Closed)
@@ -113,7 +113,7 @@ namespace DCMS.SE.Services
 
         public bool Save(Users tapType)
         {
-            using (SqlConnection con = new SqlConnection(_conn.DbConn))
+            using (SqlConnection con = new (_conn.DbConn))
             {
                 con.Open();
                 var param = new DynamicParameters();
@@ -141,7 +141,7 @@ namespace DCMS.SE.Services
 
         public bool Update(Users tapType)
         {
-            using (SqlConnection con = new SqlConnection(_conn.DbConn))
+            using (SqlConnection con = new (_conn.DbConn))
             {
                 con.Open();
                 var param = new DynamicParameters();
@@ -175,7 +175,7 @@ namespace DCMS.SE.Services
 
             Users employee = new Users();
 
-            using (var conn = new SqlConnection(_conn.DbConn))
+            using (SqlConnection conn = new (_conn.DbConn))
             {
 
                 if (conn.State == ConnectionState.Closed)
@@ -199,7 +199,7 @@ namespace DCMS.SE.Services
 
         public List<Roles> ViewRole()
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var param = new DynamicParameters();
                 var ListofPlan = sqlcon.Query<Roles>("SELECT RoleId, RoleDesc FROM Role", param, null, true, 0, commandType: CommandType.Text).ToList();
@@ -209,7 +209,7 @@ namespace DCMS.SE.Services
 
         public List<LoginRequest> ViewUser(long StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var param = new DynamicParameters();
                 param.Add("@StoreId", StoreId);

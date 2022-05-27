@@ -10,13 +10,13 @@ namespace DCMS.SE.PdfReport
     public class PdfPurchaseReturn
     {
         #region Declararion
-        int _maxColumn = 9;
+        readonly int _maxColumn = 9;
         Document _document;
-        PdfPTable _pdfTable = new PdfPTable(9);
+        readonly PdfPTable _pdfTable = new (9);
         PdfPCell _pdfCell;
         Font _fontStyle;
-        MemoryStream _memoryStream = new MemoryStream();
-        List<PurchaseReturnMasterView> _listReport = new List<PurchaseReturnMasterView>();
+        readonly MemoryStream _memoryStream = new ();
+        List<PurchaseReturnMasterView> _listReport = new ();
         #endregion
 
       public byte[] Report(List<PurchaseReturnMasterView> listReport)
@@ -49,71 +49,91 @@ namespace DCMS.SE.PdfReport
         private void ReportHeader()
         {
             _fontStyle = FontFactory.GetFont("Tahoma", 18f, 1);
-            _pdfCell = new PdfPCell(new Phrase("PurchaseReturn List", _fontStyle));
-            _pdfCell.Colspan = _maxColumn;
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.ExtraParagraphSpace = 0;
+            _pdfCell = new (new Phrase("PurchaseReturn List", _fontStyle))
+            {
+                Colspan = _maxColumn,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                ExtraParagraphSpace = 0
+            };
             _pdfTable.AddCell(_pdfCell);
             _pdfTable.CompleteRow();
         }
         private void ReportBody()
         {
             _fontStyle = FontFactory.GetFont("Tahoma", 9f, 1);
-            var fontStyle = FontFactory.GetFont("Tahoma", 9f, 0);
+            _ = FontFactory.GetFont("Tahoma", 9f, 0);
 
             #region Table Header
-            _pdfCell = new PdfPCell(new Phrase("S.No", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell = new (new Phrase("S.No", _fontStyle))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BackgroundColor = BaseColor.Gray
+            };
             _pdfTable.AddCell(_pdfCell);
 
-            _pdfCell = new PdfPCell(new Phrase("Voucher No.", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell = new (new Phrase("Voucher No.", _fontStyle))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BackgroundColor = BaseColor.Gray
+            };
             _pdfTable.AddCell(_pdfCell);
 
-            _pdfCell = new PdfPCell(new Phrase("Date", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell = new (new Phrase("Date", _fontStyle))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BackgroundColor = BaseColor.Gray
+            };
             _pdfTable.AddCell(_pdfCell);
 
-            _pdfCell = new PdfPCell(new Phrase("Supplier", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell = new (new Phrase("Supplier", _fontStyle))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BackgroundColor = BaseColor.Gray
+            };
             _pdfTable.AddCell(_pdfCell);
 
-            _pdfCell = new PdfPCell(new Phrase("VoucherType", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell = new (new Phrase("VoucherType", _fontStyle))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BackgroundColor = BaseColor.Gray
+            };
             _pdfTable.AddCell(_pdfCell);
 
-            _pdfCell = new PdfPCell(new Phrase("Amount", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell = new (new Phrase("Amount", _fontStyle))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BackgroundColor = BaseColor.Gray
+            };
             _pdfTable.AddCell(_pdfCell);
 
-            _pdfCell = new PdfPCell(new Phrase("Paid", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell = new(new Phrase("Paid", _fontStyle))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BackgroundColor = BaseColor.Gray
+            };
             _pdfTable.AddCell(_pdfCell);
 
-            _pdfCell = new PdfPCell(new Phrase("Balance Due", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell = new(new Phrase("Balance Due", _fontStyle))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BackgroundColor = BaseColor.Gray
+            };
             _pdfTable.AddCell(_pdfCell);
 
-            _pdfCell = new PdfPCell(new Phrase("Status", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell = new(new Phrase("Status", _fontStyle))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BackgroundColor = BaseColor.Gray
+            };
             _pdfTable.AddCell(_pdfCell);
 
             _pdfTable.CompleteRow();
@@ -127,40 +147,52 @@ namespace DCMS.SE.PdfReport
             int sno = 1;
            foreach(var ostudent in _listReport)
             {
-                _pdfCell = new PdfPCell(new Phrase(sno++.ToString(), _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new (new Phrase(sno++.ToString(), _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.VoucherNo, _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new PdfPCell(new Phrase(ostudent.VoucherNo, _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.Date.ToString(), _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new(new Phrase(ostudent.Date.ToString(), _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.TerminalName, _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new(new Phrase(ostudent.ManufacturerName, _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.VoucherTypeName, _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new(new Phrase(ostudent.VoucherTypeName, _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.GrandTotal.ToString(), _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new PdfPCell(new Phrase(str: ostudent.GrandTotal.ToString(), font: _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
                 _pdfCell = new PdfPCell(new Phrase(ostudent.PaymentAmount.ToString(), _fontStyle));
@@ -169,16 +201,20 @@ namespace DCMS.SE.PdfReport
                 _pdfCell.BackgroundColor = BaseColor.White;
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.BalanceDue.ToString(), _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new PdfPCell(new Phrase(ostudent.BalanceDue.ToString(), _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.Status, _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new PdfPCell(new Phrase(ostudent.Status, _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
                 _pdfTable.CompleteRow();

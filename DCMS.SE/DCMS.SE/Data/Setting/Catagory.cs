@@ -6,11 +6,13 @@ namespace DCMS.SE.Data.Setting
     public class Catagory
     {
         [Key]
-        public int GroupId { get; set; }
+        public int CatagoryId { get; set; }
+
         [Required]
-        public string GroupName { get; set; }
+        public string CatagoryName { get; set; }
+
         [Required]
-        public int GroupUnder { get; set; }
+        public int CatagoryUnder { get; set; }
         public string Narration { get; set; }
         public int StoreId { get; set; }
         public DateTime? AddedDate { get; set; }

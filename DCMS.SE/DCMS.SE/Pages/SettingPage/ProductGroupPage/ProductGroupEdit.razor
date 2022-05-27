@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject ICatagory _Catagory
+@inject ICatagory _catagory
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -27,10 +27,10 @@
                                 <div class="col-md-12 form-group mb-3">
                                     <span>
                                         <div class="form-group">
-                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Product Group"]</legend>
+                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["类别名称"]</legend>
                                             <div>
-                                                <input type="text" class="form-control" @bind="master.GroupName" placeholder="Product Group">
-                                    <ValidationMessage For="@(() => master.GroupName)" />
+                                                <input type="text" class="form-control" @bind="master.CatagoryName" placeholder="Product Group">
+                                    <ValidationMessage For="@(() => master.CatagoryName)" />
                                                 </div>
                                                 </div>
                                                 </span>
@@ -38,12 +38,12 @@
                                                 <div class="col-md-12 form-group mb-3">
                                     <span>
                                         <div class="form-group">
-                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Group Under"]</legend>
+                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["所属"]</legend>
                                             <div>
-                                                <select class="form-control" @bind="master.GroupUnder">
-                                          @foreach(var item in listProductgorup)
+                                                <select class="form-control" @bind="master.CatagoryUnder">
+                                          @foreach(var item in catagories)
                                     {
-                                    <option value="@item.GroupId"> @item.GroupName</option>
+                                    <option value="@item.CatagoryId"> @item.CatagoryName</option>
 
                                     }
                                         </select>
@@ -54,7 +54,7 @@
                                                 <div class="col-md-12 form-group mb-3">
                                     <span>
                                         <div class="form-group">
-                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Narration"]</legend>
+                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["描述"]</legend>
                                             <div>
                                                 <input type="text" class="form-control" @bind="master.Narration" placeholder="Narration">
                                     <ValidationMessage For="@(() => master.Narration)" />
@@ -78,8 +78,8 @@
     [Parameter]
     public string id { get; set; }
     Catagory master = new Catagory();
-    List<Catagory> listProductgorup;
-    string strMenu = "Product Group";
+    List<Catagory> catagories= new List<Catagory>();
+    string strMenu = "商品类别";
     bool strAdd = true;
     bool strEdit = true;
     bool strDelete = true;
@@ -110,18 +110,18 @@
             strDelete = true;
             strShow = true;
         }
-        master = _Catagory.Edit(Convert.ToInt32(id));
-        listProductgorup = _Catagory.GetAll();
+        master = _catagory.Edit(Convert.ToInt32(id));
+        catagories = _catagory.GetAll();
         StateHasChanged();
     }
     public void HandleValidSubmit()
     {
-        var isCheck = _Catagory.CheckNameId(master.GroupName);
-        if (isCheck == master.GroupId || isCheck == 0)
+        var isCheck = _catagory.CheckNameId(master.CatagoryName);
+        if (isCheck == master.CatagoryId || isCheck == 0)
         {
             master.StoreId = 1;
             master.ModifyDate = DateTime.Now;
-            _Catagory.Update(master);
+            _catagory.Update(master);
             Snackbar.Add("Updated Successfully.", Severity.Success);
             navManager.NavigateTo("/product/Catagorylist");
         }

@@ -81,7 +81,7 @@
         <MudTh>@localizer["Last Name"]</MudTh>
         <MudTh>@localizer["Email"]</MudTh>
         <MudTh>@localizer["Role"]</MudTh>
-        <MudTh></MudTh>
+        <MudTh>操作</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="">@context.FirstName</MudTd>
@@ -90,12 +90,17 @@
         <MudTd DataLabel="">@context.RoleName</MudTd>
         <MudTd DataLabel="">
             <center>
-                                     <a class="btn btn-info btn-sm" @onclick="() => Edit(context.UserId)">
+                    @*                 <a class="btn btn-info btn-sm" @onclick="() => Edit(context.UserId)">
                                                 Edit
                                             </a> |
                                             <a class="btn btn-danger btn-sm" @onclick="() => Delete(context.UserId)">
                                                 Delete
-                                            </a>                                  
+                                            </a>                *@   
+                                            
+
+                                               <MudButton @onclick="() => Edit(context.UserId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
+
+                                        <MudButton  @onclick="() => Delete(context.UserId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
                                     </center>
         </MudTd>
     </RowTemplate>

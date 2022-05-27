@@ -15,7 +15,7 @@ namespace DCMS.SE.Data.Setting
         [Required]
         public string ProductName { get; set; }
         [Required]
-        public int GroupId { get; set; }
+        public int CatagoryId { get; set; }
         public int BrandId { get; set; }
         [Required]
         public int UnitId { get; set; }

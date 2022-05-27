@@ -24,23 +24,38 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-<div class="row">
-    <div class="mb-2 col-md-12"><a href="/sales/salesinvoiceedit/@id" class="btn btn-success btn-icon ripple btn-sm" title="Edit"><i class="i-Edit"></i> <span>编辑</span></a>
-@*        <button class="btn btn-info btn-icon ripple btn-sm"><i class="i-Envelope-2"></i>
-          Email
-        </button>*@ 
-        @*<button class="btn btn-secondary btn-icon ripple btn-sm"><i class="i-Speach-Bubble"></i>
-          SMS
-        </button>*@
-        @*<button class="btn btn-primary btn-icon ripple btn-sm"><i class="i-File-TXT"></i> PDF
-        </button>*@
-        <button onclick="printDiv('PrintDiv')" class="btn btn-warning btn-icon ripple btn-sm"><i class="i-Billing"></i>
-          打印
-        </button> <button class="btn btn-danger btn-icon ripple btn-sm"><i class="i-Close-Window"></i>
-          删除
-        </button>
-        </div>
-        </div>
+                        <div class="row">
+                            <div class="mb-2 col-md-12">
+                                <a href="/sales/salesinvoiceedit/@id" class="btn btn-success btn-icon ripple btn-sm" title="Edit"><i class="i-Edit"></i> <span>编辑</span></a>
+                                @*        <button class="btn btn-info btn-icon ripple btn-sm"><i class="i-Envelope-2"></i>
+                                Email
+                                </button>*@
+                                @*<button class="btn btn-secondary btn-icon ripple btn-sm"><i class="i-Speach-Bubble"></i>
+                                SMS
+                                </button>*@
+                                @*<button class="btn btn-primary btn-icon ripple btn-sm"><i class="i-File-TXT"></i> PDF
+                                </button>*@
+
+                                 <button class="btn btn-primary btn-icon ripple btn-sm">
+                                    <i class="i-Check"></i>
+                                    审核
+                                </button>
+
+                                 <button class="btn btn-danger btn-icon ripple btn-sm">
+                                    <i class="i-Reset"></i>
+                                    红冲
+                                </button>
+
+                                <button onclick="printDiv('PrintDiv')" class="btn btn-warning btn-icon ripple btn-sm">
+                                    <i class="i-Billing"></i>
+                                    打印
+                                </button>
+                                <button class="btn btn-danger btn-icon ripple btn-sm">
+                                    <i class="i-Close-Window"></i>
+                                    删除
+                                </button>
+                            </div>
+                        </div>
 
 
 
@@ -104,12 +119,12 @@
                                               <tbody><tr><td class="bold">@localizer["Tax"]</td>
                                                   <td><span>@master.TotalTax</span></td></tr>
                                                   <tr><td class="bold">@localizer["Discount"]</td> <td>@master.BillDiscount</td></tr>
-                                                  <tr><td class="bold">@localizer["Shipping"]</td> <td>@master.ShippingAmount</td></tr> 
+                                                  <tr><td class="bold">@localizer["运费"]</td> <td>@master.ShippingAmount</td></tr> 
                                                   <tr><td><span class="font-weight-bold">@localizer["Grand Total"]</span>
                                                       </td> <td><span class="font-weight-bold">@master.GrandTotal</span></td></tr>
                                                       <tr><td><span class="font-weight-bold">@localizer["Paid"]</span></td> <td>
                                                           <span class="font-weight-bold">@master.PaymentAmount</span></td></tr> 
-                                                          <tr><td><span class="font-weight-bold">@localizer["Due"]</span></td> 
+                                                          <tr><td><span class="font-weight-bold">@localizer["预付余额"]</span></td> 
                                                               <td><span class="font-weight-bold">@master.BalanceDue</span></td></tr>
                                                               </tbody>
                                                               </table></div></div> 

@@ -4,7 +4,7 @@
 @inject IRole _role
 @using DCMS.SE.Services.IService
 @inject IProduct _product
-@inject ICatagory _Catagory
+@inject ICatagory _catagory
 @inject IBrand _brand
 @inject IUnit _unit
 @inject ITax _tax
@@ -48,11 +48,11 @@
                                 </div>
                                 <div class="col-md-6 form-group mb-3">
                                     <label for="exampleInputEmail1">商品类别</label>
-                                    <select class="form-control" @bind="master.GroupId">
+                                    <select class="form-control" @bind="master.CatagoryId">
                                         <option value="0">选择</option>
                                         @foreach (var item in listCatagory)
                                         {
-                                            <option value="@item.GroupId">@item.GroupName</option>
+                                            <option value="@item.CatagoryId">@item.CatagoryName</option>
                                         }
                                     </select>
                                 </div>
@@ -218,11 +218,11 @@
         }
         //string strProductCode = _product.GetProductNo(1);
         master.ProductCode = "310100800081405";
-        listCatagory = _Catagory.GetAll();
+        listCatagory = _catagory.GetAll();
         listBrand = _brand.GetAll();
         listUnit = _unit.GetAll();
         listTax = _tax.GetAll();
-        master.GroupId = 0;
+        master.CatagoryId = 0;
         master.BrandId = 0;
         master.UnitId = 0;
         master.TaxId = 0;
@@ -244,7 +244,7 @@
 
     public void HandleValidSubmit()
     {
-        if (master.GroupId == 0)
+        if (master.CatagoryId == 0)
         {
             Snackbar.Add("Choose Product Group.", Severity.Info);
         }

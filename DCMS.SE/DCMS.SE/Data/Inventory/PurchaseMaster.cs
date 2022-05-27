@@ -16,7 +16,7 @@ namespace DCMS.SE.Data.Inventory
         public int WarehouseId { get; set; }
         public int VoucherTypeId { get; set; }
         public DateTime Date { get; set; }
-        public int TerminalId { get; set; }
+        public int ManufacturerId { get; set; }
         public string Narration { get; set; }
         public int PurchaseOrderMasterId { get; set; }
         public decimal TotalTax { get; set; }

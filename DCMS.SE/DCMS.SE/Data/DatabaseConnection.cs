@@ -20,10 +20,10 @@ namespace DCMS.SE.Data
         }
         public DataTable ExecuteDataTable(string sql, List<SqlParameter> param)
         {
-            SqlConnection conn = new SqlConnection(DbConn);
+            SqlConnection conn = new (DbConn);
 
             conn.Open();
-            SqlCommand cmd = new SqlCommand(sql, conn);
+            SqlCommand cmd = new (sql, conn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             foreach (SqlParameter p in param)

@@ -3,7 +3,7 @@
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
 @inject IInventoryReport _report
-@inject ICatagory _Catagory
+@inject ICatagory _catagory
 @inject IProduct _product
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
@@ -93,11 +93,11 @@
         <fieldset class="form-group">
             <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["Product Group"]</legend>
             <div>
-<select class="form-control" @bind="GroupId" style="width:238px;">
+<select class="form-control" @bind="CatagoryId" style="width:238px;">
     <option value="0">Choose Catagory</option>
                               @foreach(var item in listGroup)
                                 {
-                                    <option value="@item.GroupId">@item.GroupName</option>
+                                    <option value="@item.CatagoryId">@item.CatagoryName</option>
                                 }
                             </select>
     </div>
@@ -143,7 +143,7 @@
     List<InventoryViewFinal> listModel = new List<InventoryViewFinal>();
     List<Catagory> listGroup = new List<Catagory>();
     List<ProductView> listProduct = new List<ProductView>();
-    int GroupId = 0;
+    int CatagoryId = 0;
     int ProductId = 0;
     string strMenu = "StockReport";
     bool strAdd = true;
@@ -176,14 +176,14 @@
             strDelete = true;
             strShow = true;
         }
-        listGroup = _Catagory.GetAll();
+        listGroup = _catagory.GetAll();
         listProduct = _product.ViewAllProduct(1);
         LoadData();
         StateHasChanged();
     }
     private  void LoadData()
     {
-        listModel = _report.StockReport(GroupId, ProductId, 1);
+        listModel = _report.StockReport(CatagoryId, ProductId, 1);
     }
     private bool Search(InventoryViewFinal element)
     {

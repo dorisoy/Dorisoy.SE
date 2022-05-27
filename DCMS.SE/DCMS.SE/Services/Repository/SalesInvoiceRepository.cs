@@ -61,14 +61,14 @@ namespace DCMS.SE.Services.Repository
 
         public bool DeleteSalesInvoice(int SalesMasterId, string VoucherNo, int StoreId, int FinancialYearId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("SalesInvoiceDelete", sqlcon);
+                SqlCommand cmd = new ("SalesInvoiceDelete", sqlcon);
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@SalesMasterId", SqlDbType.Int);
@@ -101,7 +101,7 @@ namespace DCMS.SE.Services.Repository
 
         public SalesMaster EditSalesMaster(int SalesMasterId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@SalesMasterId", SalesMasterId);
@@ -112,7 +112,7 @@ namespace DCMS.SE.Services.Repository
 
         public string GetVoucherNo(int StoreId, int FinancialYearId, int VoucherTypeId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 string val = string.Empty;
                 var para = new DynamicParameters();
@@ -155,7 +155,7 @@ namespace DCMS.SE.Services.Repository
 
         public List<SalesMasterView> SaleReportsdetails(DateTime FromDate, DateTime ToDate, int TerminalId, int WarehouseId, string Status)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@FromDate", FromDate);
@@ -385,7 +385,7 @@ namespace DCMS.SE.Services.Repository
             try
             {
 
-                SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+                SqlConnection sqlcon = new (_conn.DbConn);
                 sqlcon.Open();
                 var para = new DynamicParameters();
                 para.Add("@SalesMasterId", model.SalesMasterId);
@@ -534,7 +534,7 @@ namespace DCMS.SE.Services.Repository
                 }
 
                 //DeleteTerminalPosting
-                //using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+                //using (SqlConnection sqlcon = new (_conn.DbConn))
                 //{
                     var paraScDelete = new DynamicParameters();
                     paraScDelete.Add("@DetailsId", model.SalesMasterId);

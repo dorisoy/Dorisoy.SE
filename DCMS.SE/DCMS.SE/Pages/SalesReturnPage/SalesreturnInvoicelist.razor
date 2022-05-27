@@ -10,94 +10,109 @@
 @using NPOI.SS.UserModel
 @using NPOI.XSSF.UserModel
 @using System.IO
+
+
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1>销售退货</h1>
+        <div class="breadcrumb">
+            <h1> 销售 </h1>
             <ul>
-                <li><a href=""> 销售退货发票 </a></li> 
-                <li> list </li>
+                <li><a href=""> 销售退货 </a></li>
+                <li>列表 </li>
             </ul>
-            </div>
-            <div class="separator-breadcrumb border-top">
+        </div>
+        <div class="separator-breadcrumb border-top">
+        </div>
+    </div>
+    <div class="card wrapper">
+        <div class="card-body">
+            <div class="vgt-wrap ">
+                <div class="vgt-inner-wrap">
+                    <div class="vgt-global-search vgt-clearfix">
+                        <div class="vgt-global-search__actions vgt-pull-right">
 
-            </div>
-            </div>
-            <div class="card wrapper">
-            <div class="card-body">
-            <div class="vgt-wrap "> 
-            <div class="vgt-inner-wrap">
-                <div class="vgt-global-search vgt-clearfix">
-                 <div class="vgt-global-search__actions vgt-pull-right">
-                     <div class="mt-2 mb-3">
-                         <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf"><i class="i-File-TXT"></i> PDF
-        </button>
-        <button type="button" @onclick="@(async ()=> {await GenerateExcel();})" class="btn btn-outline-danger btn-icon m-1"><i class="i-File-Excel"></i> EXCEL
-        </button>
-                         <a href="/sales/salesreturninvoiceadd" class="btn btn-outline btn-btn btn-primary btn-icon m-1"><i class="i-Add"></i>
-          Create
-        </a>
-        </div>
-        </div>
-        </div>
-        <div class="vgt-responsive">
-            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<SalesReturnMasterView,bool>(Search)">
-    <ToolBarContent>
-        <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>VoucherNo</MudTh>
-        <MudTh>Date</MudTh>
-        <MudTh>Cusomer Name</MudTh>
-        @*<MudTh>VoucherType</MudTh>*@
-        <MudTh>Amount</MudTh>
-        <MudTh>Paid</MudTh>
-        <MudTh>BalanceDue</MudTh>
-        <MudTh>Status</MudTh>
-        <MudTh></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="">@context.VoucherNo</MudTd>
-        <MudTd DataLabel="">@context.Date</MudTd>
-        <MudTd DataLabel="">@context.TerminalName</MudTd>
-        @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
-        <MudTd DataLabel="">@context.GrandTotal</MudTd>
-        <MudTd DataLabel="">@context.PaymentAmount</MudTd>
-        <MudTd DataLabel="">@context.BalanceDue</MudTd>
-        <MudTd DataLabel="">
-            @if(context.Status == "Paid")
-            {
-             <span class="badge badge-outline-success">@context.Status</span>
-            }
-            else if(context.Status == "部分支付")
-            {
-             <span class="badge badge-outline-primary">@context.Status</span>
-            }
-             else
-            {
-                 <span class="badge badge-outline-success">@context.Status</span>                       
-            }
-           </MudTd>
-        <MudTd DataLabel="">
-            <div class="dropdown">
-              <button class="btn dropdown-toggle btn-link btn-lg text-decoration-none dropdown-toggle-no-caret" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-             </button>
-             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 34px, 0px);">
-                 <a class="dropdown-item" href="/sales/salesreturninvoicedetails/@context.SalesReturnMasterId"><i class="nav-icon i-Eye font-weight-bold mr-2"></i>SalesReturn Details</a>
-                 <a class="dropdown-item" href="/sales/salesreturninvoiceedit/@context.SalesReturnMasterId"><i class="nav-icon i-Pen-2 font-weight-bold mr-2"></i>Edit SalesReturn</a>
-         <a class="dropdown-item" @onclick="() => Delete(context.SalesReturnMasterId)"><i class="nav-icon i-Close-Window font-weight-bold mr-2"></i>Delete Sales</a></div>
-                                                </div>
-        </MudTd>
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数"/>
-    </PagerContent>
-</MudTable>
+
+                            <div class="mt-2 mb-3">
+
+
+                                <MudButton Link="/sales/salesreturninvoiceadd" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add">添加</MudButton>
+
+
+
+                                <button class="btn btn-outline-success ripple m-1" @onclick="GeneratePdf">
+                                    <i class="i-File-TXT"></i> PDF
+                                </button>
+                                <button type="button" @onclick="@(async ()=> {await GenerateExcel();})" class="btn btn-outline-danger btn-icon m-1">
+                                    <i class="i-File-Excel"></i> EXCEL
+                                </button>
+
+                                <MudButton Variant="Variant.Filled" Color="Color.Info" EndIcon="@Icons.Material.Filled.ImportantDevices">导入</MudButton>
+
+                                <MudButton Variant="Variant.Filled" Color="Color.Warning" EndIcon="@Icons.Material.Filled.Print">打印</MudButton>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vgt-responsive">
+                        <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<SalesReturnMasterView,bool>(Search)">
+                            <ToolBarContent>
+                                <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>单号</MudTh>
+                                <MudTh>开单时间</MudTh>
+                                <MudTh>客户名称</MudTh>
+                                @*<MudTh>VoucherType</MudTh>*@
+                                <MudTh>金额</MudTh>
+                                <MudTh>付款方式</MudTh>
+                                <MudTh>余额</MudTh>
+                                <MudTh>状态</MudTh>
+                                <MudTh>操作</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="">@context.VoucherNo</MudTd>
+                                <MudTd DataLabel="">@context.Date</MudTd>
+                                <MudTd DataLabel="">@context.TerminalName</MudTd>
+                                @*<MudTd DataLabel="">@context.VoucherTypeName</MudTd>*@
+                                <MudTd DataLabel="">@context.GrandTotal</MudTd>
+                                <MudTd DataLabel="">@context.PaymentAmount</MudTd>
+                                <MudTd DataLabel="">@context.BalanceDue</MudTd>
+                                <MudTd DataLabel="">
+                                    @if (context.Status == "Paid")
+                                    {
+                                        <span class="badge badge-outline-success">@context.Status</span>
+                                    }
+                                    else if (context.Status == "部分支付")
+                                    {
+                                        <span class="badge badge-outline-primary">@context.Status</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-outline-success">@context.Status</span>
+                                    }
+                                </MudTd>
+                                <MudTd DataLabel="">
+                                    <div class="dropdown">
+                                        <button class="btn dropdown-toggle btn-link btn-lg text-decoration-none dropdown-toggle-no-caret" id="dropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 34px, 0px);">
+                                            <a class="dropdown-item" href="/sales/salesreturninvoicedetails/@context.SalesReturnMasterId"><i class="nav-icon i-Eye font-weight-bold mr-2"></i>SalesReturn Details</a>
+                                            <a class="dropdown-item" href="/sales/salesreturninvoiceedit/@context.SalesReturnMasterId"><i class="nav-icon i-Pen-2 font-weight-bold mr-2"></i>Edit SalesReturn</a>
+                                            <a class="dropdown-item" @onclick="() => Delete(context.SalesReturnMasterId)"><i class="nav-icon i-Close-Window font-weight-bold mr-2"></i>Delete Sales</a>
+                                        </div>
+                                    </div>
+                                </MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数" />
+                            </PagerContent>
+                        </MudTable>
+                    </div>
                 </div>
+            </div>
         </div>
-        </div>
-        </div>
-        </div>
-        </div>
+    </div>
+</div>
 @code {
     [CascadingParameter]
     public Task<AuthenticationState> authenticationState { get; set; }
@@ -115,7 +130,7 @@
     bool strShow = true;
     int RoleId = 1;
     Privilege privi = new Privilege();
-    protected  override void OnInitialized()
+    protected override void OnInitialized()
     {
         //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
         //CheckPriviliage
@@ -142,7 +157,7 @@
         LoadData();
         StateHasChanged();
     }
-    private  void LoadData()
+    private void LoadData()
     {
         listModel = _salesInvoice.SalesReturnInvoiceView(1); // 1 is StoreId
     }
@@ -154,7 +169,7 @@
             SalesReturnMaster view = new SalesReturnMaster();
             view = _salesInvoice.Edit(id);
             bool isSave = false;
-            isSave = _salesInvoice.Delete(id , view.VoucherNo, 1 , 1);
+            isSave = _salesInvoice.Delete(id, view.VoucherNo, 1, 1);
             if (isSave == true)
             {
                 Snackbar.Add("Delete Successfully.", Severity.Success);
@@ -219,7 +234,7 @@
 
         //Tble Body
         foreach (var objDue in listModel)
-    {
+        {
             row = worksheet.CreateRow(rowNumber++);
 
             cell = row.CreateCell(0);

@@ -32,14 +32,14 @@ namespace DCMS.SE.Services.Repository
 
         public void Update(VoucherType voucherType)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("UPDATE VoucherType SET VoucherTypeName=@VoucherTypeName,StartIndex=@StartIndex,Prefix=@Prefix,Suffix=@Suffix,StoreId=@StoreId,ShowNote=@ShowNote,ShowAddress=@ShowAddress,ShowEmail=@ShowEmail,ShowPhone=@ShowPhone,ShowDiscount=@ShowDiscount,ShowTax=@ShowTax,ShowBarcode=@ShowBarcode,IsActive=@IsActive where VoucherTypeId=@VoucherTypeId", sqlcon);
+                SqlCommand cmd = new ("UPDATE VoucherType SET VoucherTypeName=@VoucherTypeName,StartIndex=@StartIndex,Prefix=@Prefix,Suffix=@Suffix,StoreId=@StoreId,ShowNote=@ShowNote,ShowAddress=@ShowAddress,ShowEmail=@ShowEmail,ShowPhone=@ShowPhone,ShowDiscount=@ShowDiscount,ShowTax=@ShowTax,ShowBarcode=@ShowBarcode,IsActive=@IsActive where VoucherTypeId=@VoucherTypeId", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@VoucherTypeId", SqlDbType.Int);

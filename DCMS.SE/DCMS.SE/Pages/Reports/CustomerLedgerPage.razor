@@ -185,7 +185,7 @@
 
             //OpeningBlnce
             DataTable dtblsubOpening = new DataTable();
-            DataSet dsetOpening = new DataSet();
+            DataSet dsetOpening = new();
             dsetOpening = report.CustomerTerminalOpening(Convert.ToDateTime(FromDate), CustomerId, 1);
             int counter1 = 0;
             dtblsubOpening = dsetOpening.Tables[0];
@@ -215,7 +215,7 @@
             }
 
             DataTable dtblsub = new DataTable();
-            DataSet dset = new DataSet();
+            DataSet dset = new();
             dset = report.CustomerTerminal(Convert.ToDateTime(FromDate), Convert.ToDateTime(ToDate), CustomerId, 1);
             int counter = 0;
             dtblsub = dset.Tables[0];

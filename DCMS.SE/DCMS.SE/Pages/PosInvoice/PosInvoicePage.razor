@@ -29,7 +29,7 @@
                         <div class="col-sm-12 col-md-12 col-lg-12"><span>
                             <div role="group" class="input-group input-customer">
                                 <select class="form-control" @bind="master.TerminalId">
-                                    <option value="0">Choose Customer</option>
+                                    <option value="0">选择客户</option>
                                     @foreach(var item in listAccountledger)
                                                 {
                                                     <option value="@item.TerminalId">@item.TerminalName</option>
@@ -39,7 +39,7 @@
                             <div class="col-sm-12 col-md-12 col-lg-12"><span>
                             <div role="group" class="input-group input-customer">
                                 <select class="form-control" @bind="master.WarehouseId" style="margin-top:10px;">
-                                    <option value="0">Choose Warehouse</option>
+                                    <option value="0">选择仓库</option>
                                     @foreach(var item in listWarehouse)
                                                 {
                                                     <option value="@item.WarehouseId">@item.Name</option>
@@ -59,7 +59,7 @@
                                                                             <th scope="col">@localizer["Stock"]</th>
                                                                             <th scope="col">@localizer["Qty"]</th>
                                                                             <th scope="col">@localizer["Subtotal"]  </th> 
-                                                                            <th scope="col" class="text-center"><i class="fa fa-trash"></i></th>
+                                                                            <th scope="col" class="text-center">操作</th>
                                                                             </tr>
                                                                             </thead> 
                                                                             <tbody>
@@ -146,7 +146,7 @@
                                                                                         <div class="col-sm-12 col-md-4 col-lg-4">
                                         <span>
                                         <fieldset class="form-group" id="__BVID__115">
-                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0" id="__BVID__115__BV_label_">@localizer["Receive Amount"]</legend><div>
+                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0" id="__BVID__115__BV_label_">@localizer["收款金额"]</legend><div>
                                                 <div role="group" class="input-group">
                                                     <input type="text" class="form-control is-valid" @bind="master.PayAmount" @onkeyup="@CalculateTotal" @bind:event="oninput">
                                                     <div class="input-group-append"><div class="input-group-text"></div></div></div> 
@@ -160,7 +160,7 @@
                                                     <div class="col-sm-12 col-md-4 col-lg-4">
                                         <span>
                                         <fieldset class="form-group" id="__BVID__115">
-                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0" id="__BVID__115__BV_label_">@localizer["Change Amount"]</legend><div>
+                                            <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0" id="__BVID__115__BV_label_">@localizer["尚欠金额"]</legend><div>
                                                 <div role="group" class="input-group">
                                                     <input type="text" class="form-control is-valid" @bind="decChangeAmount" readonly>
                                                     <div class="input-group-append"><div class="input-group-text"></div></div></div> 
@@ -173,11 +173,11 @@
                                                     </div> 
                                                     <div class="col-sm-12 col-md-6">
                                                         <button type="button" class="btn btn-danger ripple btn-rounded btn-block mt-1" @onclick="Cancel"><i class="i-Power-2"></i>
-                        @localizer["Back"]
+                        @localizer["返回"]
                       </button></div>
                       <div class="col-sm-12 col-md-6">
                           <button type="button" class="btn btn-primary ripple mt-1 btn-rounded btn-block" @onclick="(() => HandleValidSubmit())"><i class="i-Checkout"></i>
-                        @localizer["Pay Now"]
+                        @localizer["确认"]
                       </button></div></div></div>
                 </div>
             </span>
@@ -193,11 +193,11 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                            <select class="form-control" @bind="GroupId" @onclick="() =>CategoryClicked()">
-                                    <option value="0">Choose Catagory</option>
+                            <select class="form-control" @bind="CatagoryId" @onclick="() =>CategoryClicked()">
+                                    <option value="0">选择商品类别</option>
                                     @foreach(var item in listCatagory)
                                                 {
-                                                    <option value="@item.GroupId">@item.GroupName</option>
+                                                    <option value="@item.CatagoryId">@item.CatagoryName</option>
                                                 }
                                             </select>    
                             </div>
@@ -214,7 +214,7 @@
 
 
 
-                                <div class="mt-2 mb-2 col-md-12"><h6>Product</h6> 
+                                <div class="mt-2 mb-2 col-md-12"><h6>商品</h6> 
                                     <div id="autocomplete" class="autocomplete">
                                         <Radzen.Blazor.RadzenAutoComplete Data=@listProduct TextProperty="ProductName" Change=@(args => OnChange(args, "AutoComplete")) Style="width: 100%;" placeholder="@localizer["根据商品名称或者编码搜索商品"]" /> 
                                      </div>
@@ -332,7 +332,7 @@ else
     bool isShow = false;
     string Title;
     string strSerialNo;
-    int GroupId = 0;
+    int CatagoryId = 0;
     int BrandId = 0;
     decimal decChangeAmount = 0;
     string strMenu = "Sales Invoice";
@@ -776,9 +776,9 @@ else
     }
     protected  void CategoryClicked()
     {
-        if (GroupId > 0)
+        if (CatagoryId > 0)
         {
-            listProduct = _product.ViewCategoryWiseProduct(GroupId);//1 is GroupId
+            listProduct = _product.ViewCategoryWiseProduct(CatagoryId);//1 is CatagoryId
             StateHasChanged();
         }
     }

@@ -25,8 +25,8 @@ namespace DCMS.SE.Services.Repository
         public bool CheckName(string name)
         {
             var checkResult = (from progm in _context.Catagory
-                                     where progm.GroupName == name
-                               select progm.GroupId).Count();
+                                     where progm.CatagoryName == name
+                               select progm.CatagoryId).Count();
             if (checkResult > 0)
             {
                 return true;
@@ -40,14 +40,14 @@ namespace DCMS.SE.Services.Repository
         public int CheckNameId(string name)
         {
             var checkResult = (from progm in _context.Catagory
-                               where progm.GroupName == name
-                               select progm.GroupId).Count();
+                               where progm.CatagoryName == name
+                               select progm.CatagoryId).Count();
             if (checkResult > 0)
             {
 
                 var checkAccount = (from progm in _context.Catagory
-                                    where progm.GroupName == name
-                                    select progm.GroupId).FirstOrDefault();
+                                    where progm.CatagoryName == name
+                                    select progm.CatagoryId).FirstOrDefault();
                 return checkAccount;
             }
             else
@@ -56,20 +56,20 @@ namespace DCMS.SE.Services.Repository
             }
         }
 
-        public bool Delete(int GroupId)
+        public bool Delete(int catagoryId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("IF NOT EXISTS (SELECT GroupId from Product where GroupId=@GroupId) DELETE FROM Catagory where GroupId=@GroupId", sqlcon);
+                SqlCommand cmd = new ("IF NOT EXISTS (SELECT CatagoryId from Product where CatagoryId=@CatagoryId) DELETE FROM Catagory where CatagoryId=@CatagoryId", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
-                para = cmd.Parameters.Add("@GroupId", SqlDbType.Int);
-                para.Value = GroupId;
+                para = cmd.Parameters.Add("@CatagoryId", SqlDbType.Int);
+                para.Value = catagoryId;
                 long rowAffacted = cmd.ExecuteNonQuery();
                 if (rowAffacted > 0)
                 {
@@ -91,7 +91,7 @@ namespace DCMS.SE.Services.Repository
         }
         public List<CatagoryView> ViewAllCatagory()
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var ListofPlan = sqlcon.Query<CatagoryView>("CatagoryViewForGridFill", null, null, true, 0, commandType: CommandType.StoredProcedure).ToList();
                 return ListofPlan;
@@ -105,7 +105,7 @@ namespace DCMS.SE.Services.Repository
 
         public List<Catagory> GetAll()
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var param = new DynamicParameters();
                 var ListofPlan = sqlcon.Query<Catagory>("SELECT *FROM Catagory", null, null, true, 0, commandType: CommandType.Text).ToList();
@@ -117,7 +117,7 @@ namespace DCMS.SE.Services.Repository
         {
             _context.Catagory.Add(model);
             _context.SaveChanges();
-            int id = model.GroupId;
+            int id = model.CatagoryId;
             return id;
         }
 

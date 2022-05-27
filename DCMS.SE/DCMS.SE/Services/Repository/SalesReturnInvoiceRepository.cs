@@ -61,14 +61,14 @@ namespace DCMS.SE.Services.Repository
 
         public bool Delete(int SalesReturnMasterId, string VoucherNo, int StoreId, int FinancialYearId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("SalesReturnInvoiceDelete", sqlcon);
+                SqlCommand cmd = new ("SalesReturnInvoiceDelete", sqlcon);
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@SalesReturnMasterId", SqlDbType.Int);
@@ -101,7 +101,7 @@ namespace DCMS.SE.Services.Repository
 
         public SalesReturnMaster Edit(int SalesReturnMasterId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@SalesReturnMasterId", SalesReturnMasterId);
@@ -112,7 +112,7 @@ namespace DCMS.SE.Services.Repository
 
         public string GetVoucherNo(int StoreId, int FinancialYearId, int VoucherTypeId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 string val = string.Empty;
                 var para = new DynamicParameters();
@@ -481,7 +481,7 @@ namespace DCMS.SE.Services.Repository
                 }
 
                 //DeleteTerminalPosting
-                using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+                using (SqlConnection sqlcon = new (_conn.DbConn))
                 {
                     var paraScDelete = new DynamicParameters();
                     paraScDelete.Add("@DetailsId", model.SalesReturnMasterId);

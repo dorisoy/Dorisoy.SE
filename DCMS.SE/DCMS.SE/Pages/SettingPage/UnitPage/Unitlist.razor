@@ -39,19 +39,23 @@
     <HeaderContent>
         <MudTh>@localizer["Unit"]</MudTh>
         <MudTh>@localizer["No Of Decimal"]</MudTh>
-        <MudTh></MudTh>
+        <MudTh>操作</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="">@context.UnitName</MudTd>
         <MudTd DataLabel="">@context.NoOfDecimalplaces</MudTd>
         <MudTd DataLabel="">
             <center>
-                                     <a style="cursor:pointer;" href="/setting/unitedit/@context.UnitId">
+                                  @*   <a style="cursor:pointer;" href="/setting/unitedit/@context.UnitId">
                                          <i class="i-Edit text-25 text-success"></i>
                                          </a>
                                           <a style="cursor:pointer;" @onclick="() => Delete(context.UnitId)">
                                               <i class="i-Close-Window text-25 text-danger"></i></a>
-                                                                                
+                                                             *@     
+                                                             
+                                                               <MudButton Link="@("/setting/unitedit/"+context.UnitId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
+
+                                        <MudButton  @onclick="() => Delete(context.UnitId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
                                     </center>
         </MudTd>
     </RowTemplate>

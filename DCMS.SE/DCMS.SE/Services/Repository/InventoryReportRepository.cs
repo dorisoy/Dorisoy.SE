@@ -29,8 +29,8 @@ namespace DCMS.SE.Services.Repository
 
         public DataSet CustomerTerminal(DateTime fromDate, DateTime toDate, int TerminalId, int StoreId)
         {
-            DataSet dtbl = new DataSet();
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            DataSet dtbl = new();
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
@@ -73,8 +73,8 @@ namespace DCMS.SE.Services.Repository
 
         public DataSet CustomerTerminalOpening(DateTime fromDate, int TerminalId, int StoreId)
         {
-            DataSet dtbl = new DataSet();
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            DataSet dtbl = new();
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
@@ -110,7 +110,7 @@ namespace DCMS.SE.Services.Repository
 
         public List<FinancialReport> GettopProduct(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var paramater = new DynamicParameters();
                 paramater.Add("@StoreId", StoreId);
@@ -135,7 +135,7 @@ namespace DCMS.SE.Services.Repository
 
         public List<SalesMasterView> SalesInvoiceViewGraph(int StoreId, int FinancialYearId , DateTime FromDate, DateTime ToDate)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@StoreId", StoreId);
@@ -148,7 +148,7 @@ namespace DCMS.SE.Services.Repository
         }
         public List<PaymentReceiveView> PaymentSent(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@StoreId", StoreId);
@@ -158,7 +158,7 @@ namespace DCMS.SE.Services.Repository
         }
         public List<PaymentReceiveView> PaymentReceive(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@StoreId", StoreId);
@@ -169,7 +169,7 @@ namespace DCMS.SE.Services.Repository
 
         public DashboardView SalesTotal(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@StoreId", StoreId);
@@ -179,7 +179,7 @@ namespace DCMS.SE.Services.Repository
         }
         public DashboardView SalesTotalwarehouse(int WarehouseId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@WarehouseId", WarehouseId);
@@ -189,7 +189,7 @@ namespace DCMS.SE.Services.Repository
         }
         public DashboardView PurchaseTotal(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@StoreId", StoreId);
@@ -199,7 +199,7 @@ namespace DCMS.SE.Services.Repository
         }
         public DashboardView PurchaseTotalwarehouse(int WarehouseId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@WarehouseId", WarehouseId);
@@ -209,7 +209,7 @@ namespace DCMS.SE.Services.Repository
         }
         public DashboardView PurchaseReturnTotal(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@StoreId", StoreId);
@@ -219,7 +219,7 @@ namespace DCMS.SE.Services.Repository
         }
         public DashboardView PurchaseReturnTotalwarehouse(int WarehouseId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@WarehouseId", WarehouseId);
@@ -229,7 +229,7 @@ namespace DCMS.SE.Services.Repository
         }
         public DashboardView SalesReturnTotal(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@StoreId", StoreId);
@@ -239,7 +239,7 @@ namespace DCMS.SE.Services.Repository
         }
         public DashboardView SalesReturnTotalwarehouse(int WarehouseId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@WarehouseId", WarehouseId);
@@ -248,14 +248,14 @@ namespace DCMS.SE.Services.Repository
             }
         }
 
-        public List<InventoryViewFinal> StockReport(int GroupId, int ProductId, int StoreId)
+        public List<InventoryViewFinal> StockReport(int catagoryId, int ProductId, int StoreId)
         {
             List<InventoryViewFinal> _UsersModel = new List<InventoryViewFinal>();
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             sqlcon.Open();
-            SqlCommand cmd = new SqlCommand("StockReport", sqlcon);//call Stored Procedure
+            SqlCommand cmd = new ("StockReport", sqlcon);//call Stored Procedure
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@GroupId", GroupId);
+            cmd.Parameters.AddWithValue("@CatagoryId", catagoryId);
             cmd.Parameters.AddWithValue("@ProductId", ProductId);
             cmd.Parameters.AddWithValue("@StoreId", StoreId);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -297,7 +297,7 @@ namespace DCMS.SE.Services.Repository
 
         public List<FinancialReport> TopReceive(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var paramater = new DynamicParameters();
                 paramater.Add("@StoreId", StoreId);
@@ -308,7 +308,7 @@ namespace DCMS.SE.Services.Repository
 
         public List<PurchaseMasterView> ViewAllPurchseInvoiceGraph(int StoreId, int FinancialYearId , DateTime FromDate , DateTime ToDate)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@StoreId", StoreId);
@@ -319,10 +319,10 @@ namespace DCMS.SE.Services.Repository
                 return ListofPlan;
             }
         }
-        public DataTable StockSearch(int groupId, int productId, string criteria, int StoreId)
+        public DataTable StockSearch(int catagoryId, int productId, string criteria, int StoreId)
         {
             DataTable dtblReg = new DataTable();
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
@@ -332,8 +332,8 @@ namespace DCMS.SE.Services.Repository
                 SqlDataAdapter sqlda = new SqlDataAdapter("StockSearch", sqlcon);
                 sqlda.SelectCommand.CommandType = CommandType.StoredProcedure;
                 SqlParameter param = new SqlParameter();
-                param = sqlda.SelectCommand.Parameters.Add("@groupId", SqlDbType.Int);
-                param.Value = groupId;
+                param = sqlda.SelectCommand.Parameters.Add("@catagoryId", SqlDbType.Int);
+                param.Value = catagoryId;
                 param = sqlda.SelectCommand.Parameters.Add("@productId", SqlDbType.Int);
                 param.Value = productId;
                 param = sqlda.SelectCommand.Parameters.Add("@criteria", SqlDbType.NVarChar);

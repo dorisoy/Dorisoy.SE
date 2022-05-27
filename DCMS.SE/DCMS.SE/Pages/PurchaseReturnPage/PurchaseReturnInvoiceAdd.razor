@@ -4,7 +4,7 @@
 @inject IRole _role
 @inject IProduct _product
 @inject IWarehouse _warehouse
-@inject ITerminal _accountTerminal
+@inject IManufacturer _accountManufacturer
 @inject IPurchaseReturnService CartService
 @inject IVoucherType _voucherType
 @inject IPurchaseReturnInvoice _purchaseInvoice
@@ -15,10 +15,11 @@
 @using Radzen
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1> @localizer["PurchaseReturn Invoice"]</h1>
+         <div class="breadcrumb">
+            <h1>@localizer["采购"]</h1>
             <ul>
-                <li><a href=""> @localizer["PurchaseReturn Invoice"] </a></li> 
-                <li>@localizer["Add"] </li>
+                <li><a href=""> @localizer["采购退货"] </a></li>
+                <li>@localizer["添加"] </li>
             </ul>
             </div>
             <div class="separator-breadcrumb border-top">
@@ -79,9 +80,9 @@
 
                                             </legend>
                                             <div>
-                                                <Radzen.Blazor.RadzenDropDown AllowClear="true" @bind-Value="master.TerminalId" AllowVirtualization="true" Class="w-100" 
-                            AllowFiltering="true" Data=@listAccountledger TextProperty="TerminalName" ValueProperty="TerminalId"
-         Change="() =>TerminalClicked()" style="height:32px; font-size:10px;" />
+                                                <Radzen.Blazor.RadzenDropDown AllowClear="true" @bind-Value="master.ManufacturerId" AllowVirtualization="true" Class="w-100" 
+                            AllowFiltering="true" Data=@listAccountledger TextProperty="ManufacturerName" ValueProperty="ManufacturerId"
+         Change="() =>ManufacturerClicked()" style="height:32px; font-size:10px;" />
                                                 </div>
                                                 </fieldset>
                                                 </span>
@@ -321,7 +322,7 @@ else
     PurchaseReturnMaster master = new PurchaseReturnMaster();
     CartItem productDetails = new CartItem();
     IEnumerable<ProductView> listProduct;
-    List<TerminalView> listAccountledger;
+    List<ManufacturerView> listAccountledger;
     List<Tax> listTax;
     List<Warehouse> listWarehouse;
     ProductView product = new ProductView();
@@ -367,7 +368,7 @@ else
         var voucherType = _voucherType.Edit(decPurchaseReturnInvoiceVoucherType);
         strSerialNo = _purchaseInvoice.GetVoucherNo(1, 1, decPurchaseReturnInvoiceVoucherType);
         master.VoucherNo = CommonHelper.GetBillNumber(voucherType.Prefix, 130);
-        listAccountledger = _accountTerminal.ViewAllSupplier(1);
+        listAccountledger = _accountManufacturer.ViewAllSupplier(1);
         listWarehouse = _warehouse.GetAll();
         listProduct = _product.ViewAllProduct(1);
         master.Date = DateTime.UtcNow;
@@ -391,7 +392,7 @@ else
         {
             Snackbar.Add("Choose Warehouse.", Severity.Warning);
         }
-        else if (master.TerminalId == 0)
+        else if (master.ManufacturerId == 0)
         {
             Snackbar.Add("Choose Supplier.", Severity.Warning);
         }
@@ -474,11 +475,11 @@ else
             }
         }
         }
-    protected  void TerminalClicked()
+    protected  void ManufacturerClicked()
     {
-        if (master.TerminalId > 0)
+        if (master.ManufacturerId > 0)
         {
-            //var view = salesInvoiceRepository.CustomerSalesDue(master.TerminalId);
+            //var view = salesInvoiceRepository.CustomerSalesDue(master.ManufacturerId);
             //master.PreviousDue = view.DueBalance;
         }
         else

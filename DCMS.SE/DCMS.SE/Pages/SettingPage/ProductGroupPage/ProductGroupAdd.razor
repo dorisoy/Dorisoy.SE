@@ -2,7 +2,7 @@
 @inject IStringLocalizer<App> localizer
 @inject ILocalStorageService sessionStorage
 @inject IRole _role
-@inject ICatagory _Catagory
+@inject ICatagory _catagory
 @inject IJSRuntime JsRuntime
 @inject NavigationManager navManager
 @inject ISnackbar Snackbar
@@ -29,8 +29,8 @@
                                         <div class="form-group">
                                             <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["类别名称"]</legend>
                                             <div>
-                                                <input type="text" class="form-control" @bind="master.GroupName" placeholder="类别名称">
-                                    <ValidationMessage For="@(() => master.GroupName)" />
+                                                <input type="text" class="form-control" @bind="master.CatagoryName" placeholder="类别名称">
+                                    <ValidationMessage For="@(() => master.CatagoryName)" />
                                                 </div>
                                                 </div>
                                                 </span>
@@ -40,10 +40,10 @@
                                         <div class="form-group">
                                             <legend tabindex="-1" class="bv-no-focus-ring col-form-label pt-0">@localizer["所属"]</legend>
                                             <div>
-                                                <select class="form-control" @bind="master.GroupUnder">
+                                                <select class="form-control" @bind="master.CatagoryUnder">
                                           @foreach(var item in listProductgorup)
                                     {
-                                    <option value="@item.GroupId"> @item.GroupName</option>
+                                    <option value="@item.CatagoryId"> @item.CatagoryName</option>
 
                                     }
                                         </select>
@@ -108,13 +108,13 @@
             strDelete = true;
             strShow = true;
         }
-        listProductgorup = _Catagory.GetAll();
-        master.GroupUnder = 1;
+        listProductgorup = _catagory.GetAll();
+        master.CatagoryUnder = 1;
         StateHasChanged();
     }
     public  void HandleValidSubmit()
     {
-        var isCheck = _Catagory.CheckName(master.GroupName);
+        var isCheck = _catagory.CheckName(master.CatagoryName);
             if (isCheck == true)
             {
                 Snackbar.Add("Already Exists.", Severity.Info);
@@ -123,7 +123,7 @@
             {
                 master.StoreId = 1;
                 master.AddedDate = DateTime.Now;
-                _Catagory.Save(master);
+                _catagory.Save(master);
                 Snackbar.Add("Saved Successfully.", Severity.Success);
                 navManager.NavigateTo("/product/Catagorylist");
             }

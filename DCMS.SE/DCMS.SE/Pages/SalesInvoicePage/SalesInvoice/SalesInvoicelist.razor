@@ -33,6 +33,10 @@
                     <div class="vgt-global-search vgt-clearfix">
                         <div class="vgt-global-search__actions vgt-pull-right">
                             <div class="mt-2 mb-3">
+
+                                   <MudButton Link="/sales/salesinvoiceadd" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add">添加</MudButton>
+
+
                                 <button class="btn btn-outline-success ripple m-1" @onclick="@(() => OpenDrawer(Anchor.End))">
                                     <i class="i-File-TXT"></i> @localizer["Filter"]
                                 </button>
@@ -42,15 +46,17 @@
                                 <button type="button" @onclick="@(async ()=> {await GenerateExcel();})" class="btn btn-outline-danger btn-icon m-1">
                                     <i class="i-File-Excel"></i> EXCEL
                                 </button>
-                                <a href="/sales/salesinvoiceadd" class="btn btn-outline btn-btn btn-primary btn-icon m-1">
-                                    <i class="i-Add"></i>
-                                    @localizer["Create"]
-                                </a>
+
+                                 <MudButton Variant="Variant.Filled" Color="Color.Info" EndIcon="@Icons.Material.Filled.ImportantDevices">导入</MudButton>
+
+                                <MudButton Variant="Variant.Filled" Color="Color.Warning" EndIcon="@Icons.Material.Filled.Print">打印</MudButton>
+
+                         
                             </div>
                         </div>
                     </div>
                     <div class="vgt-responsive">
-                        <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<SalesMasterView,bool>(Search)">
+                        <MudTable RowsPerPage="25" Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<SalesMasterView,bool>(Search)">
                             <ToolBarContent>
                                 <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                             </ToolBarContent>
@@ -63,7 +69,7 @@
                                 <MudTh>@localizer["Paid"]</MudTh>
                                 <MudTh>@localizer["BalanceDue"]</MudTh>
                                 <MudTh>@localizer["Status"]</MudTh>
-                                <MudTh></MudTh>
+                                <MudTh>操作</MudTh>
                             </HeaderContent>
                             <RowTemplate>
                                 <MudTd DataLabel="">@context.VoucherNo</MudTd>
@@ -103,7 +109,7 @@
                                 </MudTd>
                             </RowTemplate>
                             <PagerContent>
-                                <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数" />
+                                <MudTablePager  PageSizeOptions="new int[] {25,35, 50, 100}" RowsPerPageString="每页行数" />
                             </PagerContent>
                         </MudTable>
                     </div>

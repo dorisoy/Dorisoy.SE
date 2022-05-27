@@ -40,14 +40,14 @@ namespace DCMS.SE.Services.Repository
 
         public bool Delete( int ExpensiveMasterId , string VoucherNo, int VoucherTypeId, int FinancialYearId, int StoreId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("ExpenseDelete", sqlcon);
+                SqlCommand cmd = new ("ExpenseDelete", sqlcon);
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@ExpensiveMasterId", SqlDbType.Int);
@@ -81,7 +81,7 @@ namespace DCMS.SE.Services.Repository
         }
         public ExpenseMaster EdiById(int ExpensiveMasterId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@ExpensiveMasterId", ExpensiveMasterId);
@@ -92,7 +92,7 @@ namespace DCMS.SE.Services.Repository
 
         public string GetVoucherNo(int StoreId, int FinancialYearId, int VoucherTypeId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 string val = string.Empty;
                 var para = new DynamicParameters();
@@ -180,7 +180,7 @@ namespace DCMS.SE.Services.Repository
                 _context.SaveChanges();
 
                 //DeleteTerminalPosting
-                using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+                using (SqlConnection sqlcon = new (_conn.DbConn))
                 {
                     var paraScDelete = new DynamicParameters();
                     paraScDelete.Add("@DetailsId", model.ExpensiveMasterId);

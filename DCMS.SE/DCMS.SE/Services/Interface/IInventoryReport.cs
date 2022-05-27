@@ -18,7 +18,7 @@ namespace DCMS.SE.Services.Interface
         DataSet SupplierTerminalDueSingle(DateTime fromDate, DateTime toDate, int TerminalId);
         List<PurchaseSales> SupplierCountPurchase(DateTime fromDate, DateTime toDate, int TerminalId, int VoucherTypeId);
         List<PurchaseSales> PurchaseRepports(DateTime fromDate, DateTime toDate, int TerminalId, int VoucherTypeId);
-        public List<InventoryViewFinal> StockReport(int GroupId, int ProductId, int StoreId);
+        public List<InventoryViewFinal> StockReport(int catagoryId, int ProductId, int StoreId);
         DataSet DayBook(DateTime fromDate, DateTime toDate, int VoucherTypeId, int TerminalId);
         DataSet TerminalcountReport(DateTime fromDate, DateTime toDate, int TerminalId, string TerminalName, int StoreId);
         //Dashboard
@@ -38,6 +38,6 @@ namespace DCMS.SE.Services.Interface
         List<PaymentReceiveView> PaymentSent(int StoreId);
         List<PaymentReceiveView> PaymentReceive(int StoreId);
 
-        DataTable StockSearch(int groupId, int productId, string criteria, int StoreId);
+        DataTable StockSearch(int catagoryId, int productId, string criteria, int StoreId);
     }
 }

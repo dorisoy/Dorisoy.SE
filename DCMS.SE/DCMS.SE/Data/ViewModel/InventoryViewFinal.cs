@@ -4,8 +4,8 @@ namespace DCMS.SE.Data.ViewModel
 {
     public class InventoryViewFinal
     {
-        public int GroupId { get; set; }
-        public string GroupName { get; set; }
+        public int CatagoryId { get; set; }
+        public string CatagoryName { get; set; }
         public string UnitName { get; set; }
         public string BatchNo { get; set; }
         public long ProductId { get; set; }

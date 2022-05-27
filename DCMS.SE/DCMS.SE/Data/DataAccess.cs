@@ -8,10 +8,10 @@ namespace DCMS.SE.Data
     public class DataAccess
     {
         public static string connString;
-        private SqlConnection conn;
-        private SqlCommand cmd;
-        private SqlDataAdapter sda;
-        private SqlDataReader sdr;
+        private readonly SqlConnection conn;
+        private  SqlCommand cmd;
+        private  SqlDataAdapter sda;
+        private readonly SqlDataReader sdr;
 
         public int NoOfRowAffected;
         private readonly IConfiguration _configuration;
@@ -25,9 +25,9 @@ namespace DCMS.SE.Data
         }
         public int ExecuteNonQuerySP(string sql, List<SqlParameter> param)
         {
-            SqlConnection conn = new SqlConnection(DbConn);
-           conn.Open();
-            cmd = new SqlCommand(sql, conn);
+            SqlConnection conn = new (DbConn);
+            conn.Open();
+            cmd = new (sql, conn);
             cmd.CommandType = CommandType.StoredProcedure;
             foreach (SqlParameter p in param)
             {
@@ -40,9 +40,9 @@ namespace DCMS.SE.Data
 
         public DataTable ExecuteDataTable(string sql, List<SqlParameter> param)
         {
-            SqlConnection conn = new SqlConnection(DbConn);
+            SqlConnection conn = new (DbConn);
             conn.Open();
-            cmd = new SqlCommand(sql, conn);
+            cmd = new (sql, conn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             foreach (SqlParameter p in param)

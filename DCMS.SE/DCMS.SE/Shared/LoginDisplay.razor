@@ -105,7 +105,7 @@
     protected  void LoadData()
     {
         DataTable dtbl = new DataTable();
-        DataSet dtset = new DataSet();
+        DataSet dtset = new();
 
         dtbl = report.StockSearch(0, 0, "Negative Stock", 1);
         if (dtbl.Rows.Count > 0)

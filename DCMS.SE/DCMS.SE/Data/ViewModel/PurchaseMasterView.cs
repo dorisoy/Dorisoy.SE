@@ -16,9 +16,9 @@ namespace DCMS.SE.Data.ViewModel
         public string MonthName { get; set; }
         public string NepaliDate { get; set; }
         public string VoucherTypeName { get; set; }
-        public int TerminalId { get; set; }
-        public string TerminalName { get; set; }
-        public string TerminalCode { get; set; }
+        public int ManufacturerId { get; set; }
+        public string ManufacturerName { get; set; }
+        public string ManufacturerCode { get; set; }
         public string Narration { get; set; }
         public decimal GrandTotal { get; set; }
         public decimal BillDiscount { get; set; }

@@ -27,7 +27,7 @@ namespace DCMS.SE.Services.Repository
 
             Store Store = new ();
 
-            using (var conn = new SqlConnection(_conn.DbConn))
+            using (SqlConnection conn = new (_conn.DbConn))
             {
 
                 if (conn.State == ConnectionState.Closed)

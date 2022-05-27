@@ -39,18 +39,19 @@
     <HeaderContent>
         <MudTh>@localizer["Currency Name"]</MudTh>
         <MudTh>@localizer["Symbol"]</MudTh>
-        <MudTh></MudTh>
+        <MudTh>操作</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="">@context.CurrencyName</MudTd>
         <MudTd DataLabel="">@context.CurrencySymbol</MudTd>
         <MudTd DataLabel="">
             <center>
-                                     <a style="cursor:pointer;" @onclick="() => EditModel(context.CurrencyId)">
-                                         <i class="i-Edit text-25 text-success"></i>
-                                         </a>
-                                          <a style="cursor:pointer;" @onclick="() => Delete(context.CurrencyId)">
-                                              <i class="i-Close-Window text-25 text-danger"></i></a>
+
+
+                                                  <MudButton @onclick="() => EditModel(context.CurrencyId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
+
+                                        <MudButton  @onclick="() => Delete(context.CurrencyId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
+
                                                                                 
                                     </center>
         </MudTd>

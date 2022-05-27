@@ -9,10 +9,11 @@
 @inject ISnackbar Snackbar
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1>@localizer["Purchase Details"]</h1>
+        <div class="breadcrumb">
+            <h1>@localizer["采购"]</h1>
             <ul>
-                <li><a href=""> @localizer["Purchase List"] </a></li> 
-                <li>@localizer["Purchase Details"] </li>
+                <li><a href=""> @localizer["采购退货"] </a></li>
+                <li>@localizer["明细"] </li>
             </ul>
             </div>
             <div class="separator-breadcrumb border-top">
@@ -51,7 +52,7 @@
                     </div> <hr> <div class="row mt-5">
                         <div class="mb-4 col-sm-12 col-md-4 col-lg-4">
                             <h5 class="font-weight-bold">@localizer["Supplier Info"]</h5> 
-                            <div>@master.TerminalName</div> 
+                            <div>@master.ManufacturerName</div> 
                             <div>@master.Email</div> 
                             <div>@master.Phone</div> 
                             <div>@master.Address</div>

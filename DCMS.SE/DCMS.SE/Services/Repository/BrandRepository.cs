@@ -55,14 +55,14 @@ namespace DCMS.SE.Services.Repository
 
         public bool Delete(int BrandId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             try
             {
                 if (sqlcon.State == ConnectionState.Closed)
                 {
                     sqlcon.Open();
                 }
-                SqlCommand cmd = new SqlCommand("IF NOT EXISTS (SELECT BrandId from Product where BrandId=@BrandId) DELETE FROM Brand where BrandId=@BrandId", sqlcon);
+                SqlCommand cmd = new ("IF NOT EXISTS (SELECT BrandId from Product where BrandId=@BrandId) DELETE FROM Brand where BrandId=@BrandId", sqlcon);
                 cmd.CommandType = CommandType.Text;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@BrandId", SqlDbType.Int);

@@ -18,7 +18,7 @@ namespace DCMS.SE.Services.Repository
         }
         public decimal StockCheckForProductSale(int decProductId, int decBatchId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             decimal decStock = 0;
             try
             {
@@ -26,7 +26,7 @@ namespace DCMS.SE.Services.Repository
                 {
                     sqlcon.Open();
                 }
-                SqlCommand sccmd = new SqlCommand("StocKCheckForProductSale", sqlcon);
+                SqlCommand sccmd = new ("StocKCheckForProductSale", sqlcon);
                 sccmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter sprmparam = new SqlParameter();
                 sprmparam = sccmd.Parameters.Add("@productId", SqlDbType.Decimal);

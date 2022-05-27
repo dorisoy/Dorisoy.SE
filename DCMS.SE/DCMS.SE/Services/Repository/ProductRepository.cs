@@ -59,7 +59,7 @@ namespace DCMS.SE.Services.Repository
 
         public bool Delete(int ProductId)
         {
-            SqlConnection sqlcon = new SqlConnection(_conn.DbConn);
+            SqlConnection sqlcon = new (_conn.DbConn);
             //SqlTransaction transaction;
 
             try
@@ -70,7 +70,7 @@ namespace DCMS.SE.Services.Repository
                     //transaction = sqlcon.BeginTransaction();
                 }
                 //transaction = sqlcon.BeginTransaction();
-                SqlCommand cmd = new SqlCommand("ProductDelete", sqlcon);
+                SqlCommand cmd = new ("ProductDelete", sqlcon);
                 cmd.CommandType = CommandType.StoredProcedure;
                 SqlParameter para = new SqlParameter();
                 para = cmd.Parameters.Add("@ProductId", SqlDbType.Int);
@@ -103,7 +103,7 @@ namespace DCMS.SE.Services.Repository
         }
         public List<ProductView> ViewAllProduct(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
                 para.Add("@StoreId", StoreId);
@@ -111,19 +111,19 @@ namespace DCMS.SE.Services.Repository
                 return ListofPlan;
             }
         }
-        public List<ProductView> ViewCategoryWiseProduct(int GroupId)
+        public List<ProductView> ViewCategoryWiseProduct(int catagoryId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 var para = new DynamicParameters();
-                para.Add("@GroupId", GroupId);
+                para.Add("@catagoryId", catagoryId);
                 var ListofPlan = sqlcon.Query<ProductView>("ViewAllCategory", para, null, true, 0, commandType: CommandType.StoredProcedure).ToList();
                 return ListofPlan;
             }
             //var result = (from a in _context.Product
             //                   join b in _context.Brand on a.BrandId equals b.BrandId
             //                   join d in _context.Unit on a.UnitId equals d.UnitId
-            //                   join e in _context.Catagory on a.GroupId equals e.GroupId
+            //                   join e in _context.Catagory on a.CatagoryId equals e.CatagoryId
             //                where a.StoreId == StoreId
             //              select new ProductView
             //              {
@@ -133,7 +133,7 @@ namespace DCMS.SE.Services.Repository
             //                       SalesRate = a.SalesRate,
             //                       Image = a.Image,
             //                       IsActive = a.IsActive,
-            //                       GroupName = e.GroupName,
+            //                       CatagoryName = e.CatagoryName,
             //                       UnitName = d.UnitName,
             //                       BrandName = b.Name
             //                   }).ToList();
@@ -144,7 +144,7 @@ namespace DCMS.SE.Services.Repository
 
         public string GetProductNo(int StoreId)
         {
-            using (SqlConnection sqlcon = new SqlConnection(_conn.DbConn))
+            using (SqlConnection sqlcon = new (_conn.DbConn))
             {
                 string val = string.Empty;
                 var para = new DynamicParameters();

@@ -8,64 +8,77 @@
 @inject ISnackbar Snackbar
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1>@localizer["Expense Category"]</h1>
+        <div class="breadcrumb">
+            <h1>@localizer["费用"]</h1>
             <ul>
-                <li><a href=""> @localizer["Expenses"] </a></li> 
-                <li> @localizer["Expense Category"] </li>
+                <li><a href=""> @localizer["费用类别"] </a></li>
+                <li> @localizer["列表"] </li>
             </ul>
-            </div>
-            <div class="separator-breadcrumb border-top">
+        </div>
+        <div class="separator-breadcrumb border-top">
+        </div>
+    </div>
+    <div class="card wrapper">
+        <div class="card-body">
+            <div class="vgt-wrap ">
+                <div class="vgt-inner-wrap">
+                    <div class="vgt-global-search vgt-clearfix">
+                        <div class="vgt-global-search__actions vgt-pull-right">
+                            <div class="mt-2 mb-3">
 
-            </div>
-            </div>
-            <div class="card wrapper">
-            <div class="card-body">
-            <div class="vgt-wrap "> 
-            <div class="vgt-inner-wrap">
-                <div class="vgt-global-search vgt-clearfix">
-                 <div class="vgt-global-search__actions vgt-pull-right">
-                     <div class="mt-2 mb-3">
-                         <a href="/expenses/expensescategoryadd" class="btn btn-rounded btn-btn btn-primary btn-icon m-1"><i class="i-Add"></i>
-          @localizer["Create"]
-        </a>
-        </div>
-        </div>
-        </div>
-        <div class="vgt-responsive">
-            <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<TerminalView,bool>(Search)">
-    <ToolBarContent>
-        <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>@localizer["Expenses Category"]</MudTh>
-        <MudTh>@localizer["Code"]</MudTh>
-        <MudTh></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        
-        <MudTd DataLabel="">@context.TerminalName</MudTd>
-        <MudTd DataLabel="">@context.TerminalCode</MudTd>
-        <MudTd DataLabel="">
-            <center>
-                                     <a style="cursor:pointer;" href="/expenses/expensescategoryedit/@context.TerminalId">
-                                         <i class="i-Edit text-25 text-success"></i>
-                                         </a>
-                                          <a style="cursor:pointer;" @onclick="() => Delete(context.TerminalId)">
-                                              <i class="i-Close-Window text-25 text-danger"></i></a>
-                                                                                
+
+                                <MudButton Link="/expenses/expensescategoryadd" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Add">添加</MudButton>
+
+                                <button class="btn btn-outline-success ripple m-1">
+                                    <i class="i-File-TXT"></i> PDF
+                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-icon m-1">
+                                    <i class="i-File-Excel"></i> EXCEL
+                                </button>
+
+                                <MudButton Variant="Variant.Filled" Color="Color.Info" EndIcon="@Icons.Material.Filled.ImportantDevices">导入</MudButton>
+
+                                <MudButton Variant="Variant.Filled" Color="Color.Warning" EndIcon="@Icons.Material.Filled.Print">打印</MudButton>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vgt-responsive">
+                        <MudTable Items="@listModel" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<TerminalView,bool>(Search)">
+                            <ToolBarContent>
+                                <MudTextField @bind-Value="searchString1" Placeholder="搜索" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>@localizer["Expenses Category"]</MudTh>
+                                <MudTh>@localizer["Code"]</MudTh>
+                                <MudTh>操作</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+
+                                <MudTd DataLabel="">@context.TerminalName</MudTd>
+                                <MudTd DataLabel="">@context.TerminalCode</MudTd>
+                                <MudTd DataLabel="">
+                                    <center>
+
+
+                                        <MudButton Link="@("/expenses/expensescategoryedit/"+context.TerminalId)" Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit">编辑</MudButton>
+
+                                        <MudButton @onclick="() => Delete(context.TerminalId)" Variant="Variant.Filled" Color="Color.Error" EndIcon="@Icons.Material.Filled.Delete">删除</MudButton>
+
+
                                     </center>
-        </MudTd>
-    </RowTemplate>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数"/>
-    </PagerContent>
-</MudTable>
+                                </MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager PageSizeOptions="new int[] {10, 20, 50, 100}" RowsPerPageString="每页行数" />
+                            </PagerContent>
+                        </MudTable>
+                    </div>
                 </div>
+            </div>
         </div>
-        </div>
-        </div>
-        </div>
-        </div>
+    </div>
+</div>
 @code {
     private bool dense = true;
     private bool hover = true;
@@ -85,7 +98,7 @@
     {
         LoadData();
     }
-    private  void LoadData()
+    private void LoadData()
     {
         //RoleId = await sessionStorage.GetItemAsync<int>("RoleId");
         //CheckPriviliage
@@ -111,22 +124,23 @@
         }
         listModel = accountTerminal.ViewAllExpensesCategory(1); // 1 is StoreId
     }
+
     async Task Delete(int id)
     {
         bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
         if (confirmed)
         {
-                bool isSave = false;
-                isSave = accountTerminal.Delete(id);
-                if (isSave == true)
-                {
-                    Snackbar.Add("Delete Successfully.", Severity.Success);
-                    LoadData();
-                }
-                else
-                {
-                    Snackbar.Add("Cannot be delete. already in used.", Severity.Info);
-                }
+            bool isSave = false;
+            isSave = accountTerminal.Delete(id);
+            if (isSave == true)
+            {
+                Snackbar.Add("Delete Successfully.", Severity.Success);
+                LoadData();
+            }
+            else
+            {
+                Snackbar.Add("Cannot be delete. already in used.", Severity.Info);
+            }
         }
     }
     private bool Search(TerminalView element)
@@ -135,7 +149,7 @@
             return true;
         if (element.TerminalCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
-            if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+        if (element.TerminalName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             return true;
         return false;
     }

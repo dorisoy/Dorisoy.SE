@@ -103,6 +103,7 @@ ServiceLifetime.Transient);
             services.AddScoped<IStore, StoreRepository>();
             services.AddScoped<IFinancialYear, FinancialYearRepository>();
             services.AddScoped<ITerminal, TerminalRepository>();
+            services.AddScoped<IManufacturer, ManufacturerRepository>();
             services.AddScoped<IWarehouse, WarehouseRepository>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<ICartSalesService, SalesCartService>();

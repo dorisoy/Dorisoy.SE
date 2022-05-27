@@ -26,8 +26,8 @@ namespace DCMS.SE.Data.ViewModel
         public string PartNo { get; set; }
         public string Image { get; set; }
         public string UnitName { get; set; }
-        public int GroupId { get; set; }
-        public string GroupName { get; set; }
+        public int CatagoryId { get; set; }
+        public string CatagoryName { get; set; }
         public decimal Discount { get; set; }
         public decimal DiscountAmount { get; set; }
         public decimal NetAmount { get; set; }

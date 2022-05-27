@@ -9,7 +9,7 @@ namespace DCMS.SE.Data.ViewModel
     public class CatagoryView
     {
         [Key]
-        public int GroupId { get; set; }
+        public int catagoryId { get; set; }
         public string groupName { get; set; }
         public long groupUnder { get; set; }
         public string Under { get; set; }
