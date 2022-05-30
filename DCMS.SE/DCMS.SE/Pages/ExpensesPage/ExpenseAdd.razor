@@ -43,7 +43,7 @@
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="lastName1">@localizer["仓库"]</label>
                                             <select class="form-control" @bind="@master.WarehouseId">
-                                                <option value="0">Choose Warehouse</option>
+                                                <option value="0">选择仓库</option>
                                                 @foreach(var item in listWarehouse)
                                         {
                                             <option value="@item.WarehouseId">@item.Name</option>
@@ -135,7 +135,7 @@
     {
         if (master.WarehouseId == 0)
         {
-            Snackbar.Add("Choose Warehouse.", Severity.Info);
+            Snackbar.Add("选择仓库.", Severity.Info);
         }
         else if (master.TerminalId == 0)
         {

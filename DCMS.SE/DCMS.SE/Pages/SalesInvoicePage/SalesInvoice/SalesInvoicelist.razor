@@ -505,7 +505,7 @@ else
         }
         else if (master.VoucherNo == string.Empty)
         {
-            Snackbar.Add("Type Voucherno.", Severity.Warning);
+            Snackbar.Add("凭证类型.", Severity.Warning);
         }
         else if (master.Amount == 0)
         {
@@ -679,7 +679,7 @@ else
         cell.SetCellValue("Date");
 
         cell = row.CreateCell(2);
-        cell.SetCellValue("Customer Name");
+        cell.SetCellValue("客户名称");
 
         cell = row.CreateCell(3);
         cell.SetCellValue("Voucher Type");

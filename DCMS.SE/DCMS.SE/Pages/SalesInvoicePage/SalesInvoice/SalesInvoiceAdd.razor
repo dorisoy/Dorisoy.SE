@@ -384,23 +384,23 @@ else
         decDue = decGrand - decCashBankAmount;
         if (cartItems == null)
         {
-            Snackbar.Add("Invalid Entry.", Severity.Warning);
+            Snackbar.Add("无效输入.", Severity.Warning);
         }
         else if (master.WarehouseId == 0)
         {
-            Snackbar.Add("Choose Warehouse.", Severity.Warning);
+            Snackbar.Add("选择仓库.", Severity.Warning);
         }
         else if (master.TerminalId == 0)
         {
-            Snackbar.Add("Choose Customer.", Severity.Warning);
+            Snackbar.Add("选择客户.", Severity.Warning);
         }
         else if (master.VoucherNo == string.Empty)
         {
-            Snackbar.Add("Type Voucherno.", Severity.Warning);
+            Snackbar.Add("凭证类型.", Severity.Warning);
         }
         else if (master.GrandTotal == 0)
         {
-            Snackbar.Add("Invalid Entry.", Severity.Warning);
+            Snackbar.Add("无效输入.", Severity.Warning);
         }
         else
         {

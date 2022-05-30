@@ -80,7 +80,7 @@ namespace DCMS.SE.PdfReport
             };
             _pdfTable.AddCell(_pdfCell);
 
-            _pdfCell = new PdfPCell(new Phrase("Customer Name", _fontStyle))
+            _pdfCell = new PdfPCell(new Phrase("客户名称", _fontStyle))
             {
                 HorizontalAlignment = Element.ALIGN_CENTER,
                 VerticalAlignment = Element.ALIGN_MIDDLE,

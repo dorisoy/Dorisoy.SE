@@ -75,7 +75,7 @@ namespace DCMS.SE.PdfReport
             _pdfCell.BackgroundColor = BaseColor.Gray;
             _pdfTable.AddCell(_pdfCell);
 
-            _pdfCell = new PdfPCell(new Phrase("Customer Name.", _fontStyle));
+            _pdfCell = new PdfPCell(new Phrase("客户名称.", _fontStyle));
             _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             _pdfCell.BackgroundColor = BaseColor.Gray;

@@ -37,7 +37,7 @@
                      <div class="mt-2 mb-3">
                           Warehouse
                           <select class="form-control" @bind="WarehouseId" @onclick="ChangeWarehouse">
-                              <option value="0">Choose Warehouse</option>
+                              <option value="0">选择仓库</option>
                               @foreach(var item in listWarehouse)
                               {
                                   <option value="@item.WarehouseId">@item.Name</option>
