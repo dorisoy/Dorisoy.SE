@@ -12,11 +12,11 @@ namespace DCMS.SE.PdfReport
         #region Declararion
         int _maxColumn = 7;
         Document _document;
-        PdfPTable _pdfTable = new PdfPTable(7);
+        PdfPTable _pdfTable = new (7);
         PdfPCell _pdfCell;
         Font _fontStyle;
-        MemoryStream _memoryStream = new MemoryStream();
-        List<ManufacturerView> _listReport = new List<ManufacturerView>();
+        MemoryStream _memoryStream = new ();
+        List<ManufacturerView> _listReport = new ();
         #endregion
 
       public byte[] Report(List<ManufacturerView> listReport , string title)
@@ -146,22 +146,28 @@ namespace DCMS.SE.PdfReport
                 _pdfCell.BackgroundColor = BaseColor.White;
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.Email, _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new PdfPCell(new Phrase(ostudent.Email, _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.Country, _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new PdfPCell(new Phrase(ostudent.Country, _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
-                _pdfCell = new PdfPCell(new Phrase(ostudent.City, _fontStyle));
-                _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                _pdfCell.BackgroundColor = BaseColor.White;
+                _pdfCell = new PdfPCell(new Phrase(ostudent.City, _fontStyle))
+                {
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
+                };
                 _pdfTable.AddCell(_pdfCell);
 
                 _pdfTable.CompleteRow();
