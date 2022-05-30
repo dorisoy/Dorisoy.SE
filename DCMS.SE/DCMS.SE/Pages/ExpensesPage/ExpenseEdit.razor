@@ -41,7 +41,7 @@
                                         <ValidationMessage For="@(() => master.VoucherNo)" />
                                         </div>
                                         <div class="col-md-6 form-group mb-3">
-                                            <label for="lastName1">@localizer["Warehouse"]</label>
+                                            <label for="lastName1">@localizer["仓库"]</label>
                                             <select class="form-control" @bind="@master.WarehouseId">
                                                 <option value="0">Choose Warehouse</option>
                                                 @foreach(var item in listWarehouse)

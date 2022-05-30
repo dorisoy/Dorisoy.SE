@@ -8,10 +8,10 @@
 @inject ISnackbar Snackbar
 <div class="main-content pt-4">
     <div>
-        <div class="breadcrumb"><h1> @localizer["Warehouse"]</h1>
+        <div class="breadcrumb"><h1> @localizer["仓库"]</h1>
             <ul>
                 <li><a href=""> @localizer["Setting"] </a></li> 
-                <li> @localizer["Warehouse"] / @localizer["Edit"] </li>
+                <li> @localizer["仓库"] / @localizer["Edit"] </li>
             </ul>
             </div>
             <div class="separator-breadcrumb border-top">
@@ -25,7 +25,7 @@
                 <div class="col-md-12">
                     <div class="card">
 <div class="card-body">
-                                <div class="card-title mb-3">@localizer["Warehouse"]</div>
+                                <div class="card-title mb-3">@localizer["仓库"]</div>
                                     <div class="row">
                                         <div class="col-md-6 form-group mb-3">
                                             <label for="firstName1">@localizer["Warehouse Name"]</label>
@@ -52,11 +52,15 @@
                                             <input class="form-control" @bind="master.City" type="text">
                                         <ValidationMessage For="@(() => master.City)" />
                                         </div>
-                                        <div class="col-md-12">
-                                            <button class="btn btn-primary">@localizer["Submit"]</button>
-                                            <button type="button" class="btn btn-danger" @onclick="@Cancel">返回</button>
-                                        </div>
-                                    </div>
+                                <div class="col-md-12">
+                                    <button class="btn btn-primary">
+                                        @localizer["Submit"]
+                                    </button>
+                                    <button type="button" class="btn btn-danger" @onclick="@Cancel">
+                                        返回
+                                    </button>
+                                </div>
+                            </div>
                             </div>
             </div> 
             </div>

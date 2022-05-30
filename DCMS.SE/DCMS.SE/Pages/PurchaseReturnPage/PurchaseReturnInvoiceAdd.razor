@@ -15,293 +15,316 @@
 @using Radzen
 <div class="main-content pt-4">
     <div>
-         <div class="breadcrumb">
+        <div class="breadcrumb">
             <h1>@localizer["采购"]</h1>
             <ul>
                 <li><a href=""> @localizer["采购退货"] </a></li>
                 <li>@localizer["添加"] </li>
             </ul>
-            </div>
-            <div class="separator-breadcrumb border-top">
+        </div>
+        <div class="separator-breadcrumb border-top">
+        </div>
+    </div>
+    <div class="card wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
+                                <span>
+                                    <fieldset class="form-group">
+                                        <legend class="bv-no-focus-ring col-form-label pt-0">
+                                            @localizer["Date"]
+                                        </legend>
+                                        <div>
+                                            <input type="date" @bind="master.Date" class="form-control">
+                                        </div>
+                                    </fieldset>
+                                </span>
+                            </div>
+                            <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
+                                <span>
+                                    <fieldset class="form-group">
+                                        <legend class="bv-no-focus-ring col-form-label pt-0">
+                                            @localizer["Voucher No"]
 
-            </div>
-            </div>
-            <div class="card wrapper">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Date"]
-                                            </legend>
-                                            <div>
-                                                <input type="date" @bind="master.Date" class="form-control"> 
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
-                                                <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Voucher No"]
+                                        </legend>
+                                        <div>
+                                            <input type="text" @bind="master.VoucherNo" class="form-control">
+                                        </div>
+                                    </fieldset>
+                                </span>
+                            </div>
+                            <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
+                                <span>
+                                    <fieldset class="form-group">
+                                        <legend class="bv-no-focus-ring col-form-label pt-0">
+                                            @localizer["仓库"]
 
-                                            </legend>
-                                            <div>
-                                                <input type="text" @bind="master.VoucherNo" class="form-control"> 
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
-                                                <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Warehouse"]
+                                        </legend>
+                                        <div>
+                                            <select class="form-control" @bind="master.WarehouseId">
+                                                <option value="0">选择</option>
+                                                @foreach (var item in listWarehouse)
+                                                {
+                                                    <option value="@item.WarehouseId">@item.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </fieldset>
+                                </span>
+                            </div>
+                            <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
+                                <span>
+                                    <fieldset class="form-group">
+                                        <legend class="bv-no-focus-ring col-form-label pt-0">
+                                            @localizer["Supplier"]
 
-                                            </legend>
-                                            <div>
-                                                <select class="form-control" @bind="master.WarehouseId">
-                                                    <option value="0">选择</option>
-                                                    @foreach(var item in listWarehouse)
-                                                    {
-                                                        <option value="@item.WarehouseId">@item.Name</option>
-                                                    }
-                                                </select>
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
-                                                <div class="mb-3 col-sm-12 col-md-6 col-lg-6">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Supplier"]
+                                        </legend>
+                                        <div>
+                                            <Radzen.Blazor.RadzenDropDown AllowClear="true" @bind-Value="master.ManufacturerId" AllowVirtualization="true" Class="w-100"
+                                                                          AllowFiltering="true" Data=@listAccountledger TextProperty="ManufacturerName" ValueProperty="ManufacturerId"
+                                                                          Change="() =>ManufacturerClicked()" style="height:32px; font-size:10px;" />
+                                        </div>
+                                    </fieldset>
+                                </span>
+                            </div>
 
-                                            </legend>
-                                            <div>
-                                                <Radzen.Blazor.RadzenDropDown AllowClear="true" @bind-Value="master.ManufacturerId" AllowVirtualization="true" Class="w-100" 
-                            AllowFiltering="true" Data=@listAccountledger TextProperty="ManufacturerName" ValueProperty="ManufacturerId"
-         Change="() =>ManufacturerClicked()" style="height:32px; font-size:10px;" />
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
-
-                                                <div class="mb-5 col-md-12">
-                                                    <h6>@localizer["Product"]</h6>
-                                                    <div id="autocomplete" class="autocomplete">
-                                                        <Radzen.Blazor.RadzenAutoComplete Data=@listProduct TextProperty="ProductName" Change=@(args => OnChange(args, "AutoComplete")) Style="width: 100%;" placeholder="@localizer["根据商品名称或者编码搜索商品"]" />
-                                                        </div>
-                                                        </div>
+                            <div class="mb-5 col-md-12">
+                                <h6>@localizer["Product"]</h6>
+                                <div id="autocomplete" class="autocomplete">
+                                    <Radzen.Blazor.RadzenAutoComplete Data=@listProduct TextProperty="ProductName" Change=@(args => OnChange(args, "AutoComplete")) Style="width: 100%;" placeholder="@localizer["根据商品名称或者编码搜索商品"]" />
+                                </div>
+                            </div>
 
 
 
-                                                        <div class="col-md-12">
-                                                            <h5>@localizer["单据项目"] *</h5>
-                                                            <div class="table-responsive">
-                                                                <table class="table table-hover">
-                                                                    <thead class="bg-gray-300">
-                                                                        <tr>
-                                                                            <th scope="col">#</th> 
-                                                                            <th scope="col">@localizer["Product"]</th>
-                                                                            <th scope="col">@localizer["Stock"]</th>
-                                                                            <th scope="col">@localizer["Qty"]</th>
-                                                                            <th scope="col">@localizer["Unit"]</th> 
-                                                                            <th scope="col">@localizer["Net Unit Cost"]</th>
-                                                                            <th scope="col">@localizer["Total"]</th> 
-                                                                            <th scope="col">@localizer["Discount"]</th> 
-                                                                            <th scope="col">@localizer["Tax"]</th> 
-                                                                            <th scope="col">@localizer["Subtotal"]</th> 
-                                                                            <th scope="col" class="text-center"></th>
-                                                                            </tr>
-                                                                            </thead> 
-                                                                            <tbody>
-@{
-                                int sno = 0;
-                            }
-                            @if (cartItems != null && cartItems.Count > 0)
-                            {
-                                @foreach (var td in cartItems)
-                                        {
-                                    <tr role="row">
-                                        <td></td>
-                                        <td class=" align-middle">
-                                                <span class="badge badge-success">@td.ProductName</span>
-                                                
-                                                <button type="button" @onclick="()=>ShowModel(td.ProductId)" class="btn btn-rounded btn-btn btn-primary btn-icon m-1" data-toggle="modal" data-target="#verifyModalContent2" data-whatever=""><i class="i-Edit"></i></button>
-                                            </td>
-                                        <td class=" align-middle"><span class="badge badge-outline-warning">@td.CurrentStock
-                                        </span></td>
-                                        <td class=" align-middle">
-                                            <EditForm Model="td">
-                                                <div class="quantity">
-                                                    <div role="group" class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <a @onclick="() => AddToCartAsc(td)"><span class="btn btn-primary btn-sm" style="padding:8px;">-</span>
-                                                                     </a>
-                                                            </div> 
-                                                            <input type="number" id="quantity" @bind="td.Qty"
-                                                                         class="form-control border-form-control" style="width: 40px" readonly />
-                                                            <div class="input-group-append">
-                                                                 <a @onclick="() => AddToCartDsc(td)"><span class="btn btn-primary btn-sm">+</span>
-                                                                     </a>
-                                                                     </div>
+                            <div class="col-md-12">
+                                <h5>@localizer["单据项目"] *</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="bg-gray-300">
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">@localizer["Product"]</th>
+                                                <th scope="col">@localizer["Stock"]</th>
+                                                <th scope="col">@localizer["Qty"]</th>
+                                                <th scope="col">@localizer["Unit"]</th>
+                                                <th scope="col">@localizer["Net Unit Cost"]</th>
+                                                <th scope="col">@localizer["Total"]</th>
+                                                <th scope="col">@localizer["Discount"]</th>
+                                                <th scope="col">@localizer["Tax"]</th>
+                                                <th scope="col">@localizer["Subtotal"]</th>
+                                                <th scope="col" class="text-center"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int sno = 0;
+                                            }
+                                            @if (cartItems != null && cartItems.Count > 0)
+                                            {
+                                                @foreach (var td in cartItems)
+                                                {
+                                                    <tr role="row">
+                                                        <td></td>
+                                                        <td class=" align-middle">
+                                                            <span class="badge badge-success">@td.ProductName</span>
+
+                                                            <button type="button" @onclick="()=>ShowModel(td.ProductId)" class="btn btn-rounded btn-btn btn-primary btn-icon m-1" data-toggle="modal" data-target="#verifyModalContent2" data-whatever=""><i class="i-Edit"></i></button>
+                                                        </td>
+                                                        <td class=" align-middle">
+                                                            <span class="badge badge-outline-warning">
+                                                                @td.CurrentStock
+                                                            </span>
+                                                        </td>
+                                                        <td class=" align-middle">
+                                                            <EditForm Model="td">
+                                                                <div class="quantity">
+                                                                    <div role="group" class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <a @onclick="() => AddToCartAsc(td)">
+                                                                                <span class="btn btn-primary btn-sm" style="padding:8px;">-</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <input type="number" id="quantity" @bind="td.Qty"
+                                                                       class="form-control border-form-control" style="width: 40px" readonly />
+                                                                        <div class="input-group-append">
+                                                                            <a @onclick="() => AddToCartDsc(td)">
+                                                                                <span class="btn btn-primary btn-sm">+</span>
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
-                                                                    </div>
-
-                                                              
-                                                                     </EditForm>
-                                        </td>
-                                        <td class=" align-middle">@td.UnitName</td>
-                                        <td class=" align-middle">@td.PurchaseRate</td>
-                                        <td class=" align-middle">@td.Amount</td>
-                                            <td class=" align-middle">@td.DiscountAmount</td>
-                                            <td class=" align-middle">@td.TaxAmount</td>
-                                        <td class=" align-middle">
-                                          @td.TotalAmount
-                                           </td>
-                                        <td>
-                                            <a title="Delete" class="btn btn-icon btn-sm" @onclick="(() => DeleteItem(td))"><i class="i-Close-Window text-25 text-danger"></i></a>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                                                                            </tbody>
-                                                                            </table>
-                                                                            </div>
-                                                                            </div>
+                                                                </div>
 
 
+                                                            </EditForm>
+                                                        </td>
+                                                        <td class=" align-middle">@td.UnitName</td>
+                                                        <td class=" align-middle">@td.PurchaseRate</td>
+                                                        <td class=" align-middle">@td.Amount</td>
+                                                        <td class=" align-middle">@td.DiscountAmount</td>
+                                                        <td class=" align-middle">@td.TaxAmount</td>
+                                                        <td class=" align-middle">
+                                                            @td.TotalAmount
+                                                        </td>
+                                                        <td>
+                                                            <a title="Delete" class="btn btn-icon btn-sm" @onclick="(() => DeleteItem(td))"><i class="i-Close-Window text-25 text-danger"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-                                                                            <div class="offset-md-9 col-md-3 mt-4">
-                                                                                <table class="table table-striped table-sm">
-                                                                                    <tbody>
-                                                                                        <tr><td class="bold">@localizer["Order Tax"]</td>
-                                                                                            <td><span>@master.TotalTax</span></td>
-                                                                                            </tr> <tr><td class="bold">@localizer["Discount"]</td> 
-                                                                                                <td>@master.BillDiscount</td></tr> 
-                                                                                                <tr><td class="bold">@localizer["Shipping"]</td> 
-                                                                                                    <td>@master.ShippingAmount</td></tr>
-                                                                                                    <tr><td><span class="font-weight-bold">@localizer["Grand Total"]</span></td>
-                                                                                                        <td><span class="font-weight-bold">@master.GrandTotal</span></td>
-                                                                                                        </tr>
-                                                                                                        </tbody>
-                                                                                                        </table>
-                                                                                                        </div>
 
-                                                                                                        <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Tax"]
 
-                                            </legend>
-                                            <div>
-                                                <input type="number" class="form-control" @bind="master.TaxRate" @onkeyup="@CalculateTotal" @bind:event="oninput"> 
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
-                                                <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Discount Amount"]
+                            <div class="offset-md-9 col-md-3 mt-4">
+                                <table class="table table-striped table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td class="bold">@localizer["Order Tax"]</td>
+                                            <td><span>@master.TotalTax</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="bold">@localizer["Discount"]</td>
+                                            <td>@master.BillDiscount</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="bold">@localizer["Shipping"]</td>
+                                            <td>@master.ShippingAmount</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="font-weight-bold">@localizer["Grand Total"]</span></td>
+                                            <td><span class="font-weight-bold">@master.GrandTotal</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                                            </legend>
-                                            <div>
-                                                <input type="number" @bind="master.BillDiscount" class="form-control" @onkeyup="@CalculateTotal" @bind:event="oninput"> 
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
-                                                <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Shipping"]
+                            <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
+                                <span>
+                                    <fieldset class="form-group">
+                                        <legend class="bv-no-focus-ring col-form-label pt-0">
+                                            @localizer["Tax"]
 
-                                            </legend>
-                                            <div>
-                                                <input type="number" @bind="master.ShippingAmount" class="form-control" @onkeyup="@CalculateTotal" @bind:event="oninput"> 
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>
+                                        </legend>
+                                        <div>
+                                            <input type="number" class="form-control" @bind="master.TaxRate" @onkeyup="@CalculateTotal" @bind:event="oninput">
+                                        </div>
+                                    </fieldset>
+                                </span>
+                            </div>
+                            <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
+                                <span>
+                                    <fieldset class="form-group">
+                                        <legend class="bv-no-focus-ring col-form-label pt-0">
+                                            @localizer["Discount Amount"]
 
-                                                @*<div class="mb-3 col-sm-12 col-md-4 col-lg-4">
-                                    <span>
-                                        <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">Payment Status
+                                        </legend>
+                                        <div>
+                                            <input type="number" @bind="master.BillDiscount" class="form-control" @onkeyup="@CalculateTotal" @bind:event="oninput">
+                                        </div>
+                                    </fieldset>
+                                </span>
+                            </div>
+                            <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
+                                <span>
+                                    <fieldset class="form-group">
+                                        <legend class="bv-no-focus-ring col-form-label pt-0">
+                                            @localizer["Shipping"]
 
-                                            </legend>
-                                            <div>
-                                                <select class="form-control" @bind="master.PaymentId">
-                                                    <option value="Received">Received</option>
-                                                    <option value="Received">Pending</option>
-                                                </select>
-                                                </div>
-                                                </fieldset>
-                                                </span>
-                                                </div>*@
+                                        </legend>
+                                        <div>
+                                            <input type="number" @bind="master.ShippingAmount" class="form-control" @onkeyup="@CalculateTotal" @bind:event="oninput">
+                                        </div>
+                                    </fieldset>
+                                </span>
+                            </div>
 
-                                                <div class="col-md-12"><fieldset class="form-group">
-                                                    <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Note"]</legend>
-                                                    <div>
-                                                        <textarea rows="4" @bind="master.Narration" placeholder="在这里备注 ..." class="form-control">
+                            @*<div class="mb-3 col-sm-12 col-md-4 col-lg-4">
+                            <span>
+                            <fieldset class="form-group">
+                            <legend class="bv-no-focus-ring col-form-label pt-0">Payment Status
+
+                            </legend>
+                            <div>
+                            <select class="form-control" @bind="master.PaymentId">
+                            <option value="Received">Received</option>
+                            <option value="Received">Pending</option>
+                            </select>
+                            </div>
+                            </fieldset>
+                            </span>
+                            </div>*@
+
+                            <div class="col-md-12">
+                                <fieldset class="form-group">
+                                    <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Note"]</legend>
+                                    <div>
+                                        <textarea rows="4" @bind="master.Narration" placeholder="在这里备注 ..." class="form-control">
 
                                                         </textarea>
-                                                        </div>
-                                                        </fieldset>
-                                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
 
 
 
-                                                        <div class="col-md-12"><fieldset class="form-group">
-                                                            <div>
-                                                                <button type="button" class="btn btn-primary" @onclick="(() => HandleValidSubmit())">@localizer["Submit"]</button></div>
-                                                            </fieldset>
-                                                            </div>
+                            <div class="col-md-12">
+                                <fieldset class="form-group">
+                                    <div>
+
+                                      <MudButton StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Primary"  @onclick="(() => HandleValidSubmit())">提交</MudButton>
+
+                                    </div>
+                                </fieldset>
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
-            </div>
-            </div>
-            </div>
+        </div>
+    </div>
+</div>
 
 
 
-            @if (isShow == true)
+@if (isShow == true)
 {
     <div class="modal fade" id="myModal" style="display:block" aria-modal="true" role="dialog">
-       <div class="modal-dialog" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-               <!-- Modal Header -->
+                <!-- Modal Header -->
                 <div class="modal-header">
                     <h3 class="modal-title" style="float:left; margin-top: 14px;margin-left:10px;">@productDetails.ProductName , (@productDetails.ProductCode)</h3>
-                    <button class="close" type="button"style="margin:0px 0px 0px 0px;" @onclick="@CloseModel"><span aria-hidden="true">×</span></button>
+                    <button class="close" type="button" style="margin:0px 0px 0px 0px;" @onclick="@CloseModel"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
-                        <div class="form-group">
-                            <label class="col-form-label" for="recipient-name-1">@localizer["Rate"]:</label>
-                            <input class="form-control" @bind="productDetails.PurchaseRate" readonly type="text" />
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label" for="recipient-name-1">@localizer["Tax"]:</label>
-                            <select class="form-control" @bind="productDetails.TaxId">
-                                @foreach(var item in listTax)
+                    <div class="form-group">
+                        <label class="col-form-label" for="recipient-name-1">@localizer["Rate"]:</label>
+                        <input class="form-control" @bind="productDetails.PurchaseRate" readonly type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="recipient-name-1">@localizer["Tax"]:</label>
+                        <select class="form-control" @bind="productDetails.TaxId">
+                            @foreach (var item in listTax)
                             {
                                 <option value="@item.TaxId">@item.TaxName</option>
                             }
                         </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label" for="recipient-name-1">@localizer["Tax"] (%):</label>
-                            <input class="form-control" @bind="productDetails.TaxRate" type="text" />
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label" for="recipient-name-1">@localizer["Discount Amount"]:</label>
-                            <input class="form-control" @bind="productDetails.DiscountAmount" type="text" />
-                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="recipient-name-1">@localizer["Tax"] (%):</label>
+                        <input class="form-control" @bind="productDetails.TaxRate" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label" for="recipient-name-1">@localizer["Discount Amount"]:</label>
+                        <input class="form-control" @bind="productDetails.DiscountAmount" type="text" />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" @onclick="CloseModel" type="button">@localizer["Close"]</button>
@@ -313,7 +336,7 @@
 }
 else
 {
-    
+
 }
 @code {
     [CascadingParameter]
@@ -373,7 +396,7 @@ else
         listProduct = _product.ViewAllProduct(1);
         master.Date = DateTime.UtcNow;
         listTax = _tax.GetAll();
-      await  CartService.EmptyCart();
+        await CartService.EmptyCart();
         StateHasChanged();
     }
     public async Task HandleValidSubmit()
@@ -459,7 +482,7 @@ else
 
                 }
                 int id = _purchaseInvoice.Save(master);
-                if(id > 0)
+                if (id > 0)
                 {
                     Snackbar.Add("Successfully Saved.", Severity.Success);
                     navManager.NavigateTo("/purchase/purchasereturnlist");
@@ -474,8 +497,8 @@ else
                 Snackbar.Add("Voucher no already exists.", Severity.Info);
             }
         }
-        }
-    protected  void ManufacturerClicked()
+    }
+    protected void ManufacturerClicked()
     {
         if (master.ManufacturerId > 0)
         {
@@ -492,9 +515,9 @@ else
         var myTodoss = listProduct.FirstOrDefault(x => x.ProductName == value.ToString());
         @if (myTodoss != null)
         {
-            foreach(var item in cartItems)
+            foreach (var item in cartItems)
             {
-                if(myTodoss.ProductId == item.ProductId)
+                if (myTodoss.ProductId == item.ProductId)
                 {
                     Snackbar.Add("This product is already added.", Severity.Warning);
                     return;
@@ -503,33 +526,33 @@ else
             cartItem.ProductId = myTodoss.ProductId;
             cartItem.ProductCode = myTodoss.ProductCode;
             cartItem.ProductName = myTodoss.ProductName;
-        cartItem.Barcode = myTodoss.Barcode;
-        cartItem.UnitId = myTodoss.UnitId;
-        cartItem.BatchId = myTodoss.BatchId;
-        cartItem.PurchaseRate = myTodoss.PurchaseRate;
-        cartItem.Mrp = myTodoss.Mrp;
-        cartItem.SalesRate = myTodoss.SalesRate;
-        cartItem.Discount = myTodoss.Discount;
-        cartItem.DiscountAmount = myTodoss.DiscountAmount;
-        cartItem.TaxId = myTodoss.TaxId;
-        cartItem.TaxRate = myTodoss.TaxRate;
-        cartItem.TaxAmount = myTodoss.TaxAmount;
-        cartItem.Amount = Math.Round(1 * myTodoss.PurchaseRate , 2);
-        cartItem.TotalAmount = Math.Round(1 * myTodoss.PurchaseRate , 2);
-        cartItem.NetAmount = myTodoss.NetAmount;
-        cartItem.UnitName = myTodoss.UnitName;
-        cartItem.TaxName = myTodoss.TaxName;
-        cartItem.CurrentStock = myTodoss.CurrentStock;
-        await CartService.AddToCart(cartItem);
-        //Snackbar.Add("Successfully add to cart.", Severity.Info);
-        cartItems = await CartService.GetCartItems();
+            cartItem.Barcode = myTodoss.Barcode;
+            cartItem.UnitId = myTodoss.UnitId;
+            cartItem.BatchId = myTodoss.BatchId;
+            cartItem.PurchaseRate = myTodoss.PurchaseRate;
+            cartItem.Mrp = myTodoss.Mrp;
+            cartItem.SalesRate = myTodoss.SalesRate;
+            cartItem.Discount = myTodoss.Discount;
+            cartItem.DiscountAmount = myTodoss.DiscountAmount;
+            cartItem.TaxId = myTodoss.TaxId;
+            cartItem.TaxRate = myTodoss.TaxRate;
+            cartItem.TaxAmount = myTodoss.TaxAmount;
+            cartItem.Amount = Math.Round(1 * myTodoss.PurchaseRate, 2);
+            cartItem.TotalAmount = Math.Round(1 * myTodoss.PurchaseRate, 2);
+            cartItem.NetAmount = myTodoss.NetAmount;
+            cartItem.UnitName = myTodoss.UnitName;
+            cartItem.TaxName = myTodoss.TaxName;
+            cartItem.CurrentStock = myTodoss.CurrentStock;
+            await CartService.AddToCart(cartItem);
+            //Snackbar.Add("Successfully add to cart.", Severity.Info);
+            cartItems = await CartService.GetCartItems();
             listProduct = _product.ViewAllProduct(1);
             CalculateTotal();
             StateHasChanged();
         }
         else
         {
-            
+
         }
     }
     private async Task DeleteItem(CartItem item)
@@ -676,7 +699,7 @@ else
         //}
         //else
         //{
-        if(master.TaxRate > 0)
+        if (master.TaxRate > 0)
         {
             decTaxAmount = decTotalDisTax * master.TaxRate / 100;
             master.TotalTax = Math.Round(decTaxAmount, 2);
@@ -721,26 +744,26 @@ else
             productDetails.ProductId = myTodoss.ProductId;
             productDetails.ProductCode = myTodoss.ProductCode;
             productDetails.ProductName = myTodoss.ProductName;
-        productDetails.Barcode = myTodoss.Barcode;
-        productDetails.UnitId = myTodoss.UnitId;
-        productDetails.PurchaseRate = myTodoss.PurchaseRate;
-        productDetails.Mrp = myTodoss.Mrp;
-        productDetails.SalesRate = myTodoss.SalesRate;
-        productDetails.Discount = myTodoss.Discount;
-        productDetails.DiscountAmount = myTodoss.DiscountAmount;
-        productDetails.TaxId = myTodoss.TaxId;
-        productDetails.TaxRate = myTodoss.TaxRate;
-        productDetails.TaxAmount = myTodoss.TaxAmount;
-        productDetails.Amount = Math.Round(1 * myTodoss.PurchaseRate , 2);
-        productDetails.TotalAmount = Math.Round(1 * myTodoss.PurchaseRate , 2);
-        productDetails.NetAmount = myTodoss.NetAmount;
-        productDetails.UnitName = myTodoss.UnitName;
-        productDetails.TaxName = myTodoss.TaxName;
-        productDetails.CurrentStock = myTodoss.CurrentStock;
+            productDetails.Barcode = myTodoss.Barcode;
+            productDetails.UnitId = myTodoss.UnitId;
+            productDetails.PurchaseRate = myTodoss.PurchaseRate;
+            productDetails.Mrp = myTodoss.Mrp;
+            productDetails.SalesRate = myTodoss.SalesRate;
+            productDetails.Discount = myTodoss.Discount;
+            productDetails.DiscountAmount = myTodoss.DiscountAmount;
+            productDetails.TaxId = myTodoss.TaxId;
+            productDetails.TaxRate = myTodoss.TaxRate;
+            productDetails.TaxAmount = myTodoss.TaxAmount;
+            productDetails.Amount = Math.Round(1 * myTodoss.PurchaseRate, 2);
+            productDetails.TotalAmount = Math.Round(1 * myTodoss.PurchaseRate, 2);
+            productDetails.NetAmount = myTodoss.NetAmount;
+            productDetails.UnitName = myTodoss.UnitName;
+            productDetails.TaxName = myTodoss.TaxName;
+            productDetails.CurrentStock = myTodoss.CurrentStock;
         }
         else
         {
-            
+
         }
         StateHasChanged();
     }

@@ -58,7 +58,7 @@
                                                 <div class="mb-3 col-sm-12 col-md-4 col-lg-4">
                                     <span>
                                         <fieldset class="form-group">
-                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["Warehouse"]
+                                            <legend class="bv-no-focus-ring col-form-label pt-0">@localizer["仓库"]
 
                                             </legend>
                                             <div>
@@ -255,7 +255,8 @@
 
                                                         <div class="col-md-12"><fieldset class="form-group">
                                                             <div>
-                                                                <button type="button" class="btn btn-primary" @onclick="(() => HandleValidSubmit())">@localizer["Submit"]</button></div>
+                                                                <MudButton StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Primary"  @onclick="(() => HandleValidSubmit())">提交</MudButton>
+                                                                </div>
                                                             </fieldset>
                                                             </div>
                             </div>
