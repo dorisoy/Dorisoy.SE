@@ -1,4 +1,5 @@
 # Dorisoy.POS
+基于Blazor的.Net 6.0 新零售快消进销存系统
 
 <img src="https://github.com/dorisoy/Doris-POS/blob/master/Scn/SE%20(1).png" alt="SE (1).png">
 <img src="https://github.com/dorisoy/Doris-POS/blob/master/Scn/SE%20(2).png" alt="SE (2).png">
